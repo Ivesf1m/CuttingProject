@@ -5,7 +5,10 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
+#include <QKeyEvent>
 #include "mesh.h"
+
+using glm::mat4;
 
 class QOpenGLShaderProgram;
 
@@ -21,6 +24,11 @@ class Window : public QOpenGLWindow,
 
         void setMesh(Mesh* mesh);
 
+		//Static variables
+		//Interator translations
+		static float interatorX;
+		static float interatorY;
+
     protected slots:
         void teardownGL();
 
@@ -29,9 +37,14 @@ class Window : public QOpenGLWindow,
         QOpenGLVertexArrayObject m_object;
         QOpenGLShaderProgram* m_program;
         Mesh* mesh;
+		mat4 mvp;
 
+		//Private functions
 
+		//Setup for the model-view-projection matrix.
+		void mvpSetup();
         void printVersionInformation();
+		void keyPressEvent(QKeyEvent* keyEvent);
 };
 
 #endif // WINDOW_H

@@ -3,6 +3,12 @@
 #include <QString>
 #include <QOpenGLShaderProgram>
 #include "mesh.h"
+#include <gtx\transform.hpp>
+#include <gtc\matrix_transform.hpp>
+#include <gtc\type_ptr.hpp>
+
+float Window::interatorX = 0.0f;
+float Window::interatorY = 0.0f;
 
 void Window::initializeGL()
 {
@@ -33,6 +39,8 @@ void Window::initializeGL()
     m_object.release();
     m_vertex.release();
     m_program->release();
+
+	mvpSetup();
 }
 
 void Window::resizeGL(int width, int height)
@@ -46,6 +54,7 @@ void Window::paintGL()
     glClear(GL_COLOR_BUFFER_BIT);
     m_program->bind();
     m_object.bind();
+	m_program->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
     glDrawArrays(GL_TRIANGLES, 0, mesh->getNumberOfVertices());
     m_object.release();
     m_program->release();
@@ -61,6 +70,57 @@ void Window::teardownGL()
 void Window::setMesh(Mesh* mesh)
 {
     this->mesh = mesh;
+}
+
+void printMatrix(mat4& m)
+{
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			cout << m[j][i] << "\t";
+		}
+		cout << endl;
+	}
+	cout << endl;
+}
+
+void Window::mvpSetup()
+{
+	//Setting up MVP matrix
+	mat4 model = mat4(1.0f);
+	model = glm::scale(model, vec3(0.1, 0.1f, 1.0f));
+	model = glm::translate(model, vec3(-1.0f, -1.0f, 0.0f));
+
+	mat4 view;
+	vec3 cameraPos(0.0f, 0.0f, 1.0f);
+	vec3 cameraTarget(0.0f, 0.0f, 0.0f);
+	vec3 up(0.0f, 1.0f, 0.0f);
+	view = glm::lookAt(cameraPos, cameraTarget, up);
+
+	mat4 projection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
+	//mat4 projection = glm::perspective(45.0f, 1.0f, 0.1f, 10.0f);
+
+	mvp = projection * view * model;
+}
+
+void Window::keyPressEvent(QKeyEvent* keyEvent)
+{
+	switch (keyEvent->key()) {
+		case Qt::Key_Up:
+			Window::interatorY += 0.1f;
+			break;
+		case Qt::Key_Down:
+			Window::interatorY -= 0.1f;
+			break;
+		case Qt::Key_Left:
+			Window::interatorX -= 0.1f;
+			break;
+		case Qt::Key_Right:
+			Window::interatorX += 0.1f;
+			break;
+		default:
+			break;
+	}
+	cout << Window::interatorX << "\t" << Window::interatorY << endl;
 }
 
 void Window::printVersionInformation()

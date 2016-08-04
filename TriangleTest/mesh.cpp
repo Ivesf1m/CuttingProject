@@ -7,6 +7,11 @@ Mesh::Mesh()
 
 }
 
+Mesh::~Mesh()
+{
+	//Nothing to delete.
+}
+
 void Mesh::addVertex(const Vertex& v)
 {
     vertices.push_back(v);

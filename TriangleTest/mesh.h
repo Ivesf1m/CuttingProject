@@ -10,6 +10,7 @@ class Mesh{
 
     public:
         Mesh();
+		virtual ~Mesh();
         void addVertex(const Vertex& v);
         void addVertices(const vector<Vertex>& verts);
         void removeVertex(unsigned int vertexIndex);

@@ -2,6 +2,7 @@
 #include "window.h"
 #include "trianglecutter.h"
 #include "mesh.h"
+#include "Grid.h"
 
 Mesh mesh;
 
@@ -49,13 +50,16 @@ int main(int argc, char* argv[])
     mesh.addVertex(Vertex(vec3(-1.00f, -0.5f, 1.0f), vec3(0.0f, 1.0f, 0.0f)));
     mesh.addVertex(Vertex(vec3( 0.00f, -0.5f, 1.0f), vec3(0.0f, 0.0f, 1.0f)));
 
+	//Grid for test
+	Grid grid(5);
+
     Window window;
-    window.setMesh(&mesh);
+    window.setMesh(&grid);
     window.setFormat(format);
     window.resize(QSize(800, 600));
     window.show();
 
-    Triangle t(&mesh, 0, 1, 2);
+    /*Triangle t(&mesh, 0, 1, 2);
     t.printTriangleInfo();
 
 
@@ -64,7 +68,7 @@ int main(int argc, char* argv[])
     vec3 internal(-0.5f, 0.0f, 1.0f);
     TriangleCutter tc(0, t, entrance, internal, exit);
     tc.cut();
-    updateMesh(tc);
+    updateMesh(tc);*/
 
     return app.exec();
 }
