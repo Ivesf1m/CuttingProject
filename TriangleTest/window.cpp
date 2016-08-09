@@ -10,6 +10,12 @@
 float Window::interatorX = 0.0f;
 float Window::interatorY = 0.0f;
 
+Window::Window()
+	: mesh(NULL), interator(NULL), collisionDetector(NULL, NULL)
+{
+	//intentionally blank
+}
+
 void Window::initializeGL()
 {
     initializeOpenGLFunctions();
@@ -18,19 +24,24 @@ void Window::initializeGL()
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-    m_program = new QOpenGLShaderProgram();
+    //Loading, compiling and linking shaders.
+	m_program = new QOpenGLShaderProgram();
     m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ".\\simple.vert");
     m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ".\\simple.frag");
     m_program->link();
     m_program->bind();
 
+	//Creating the VBO
     m_vertex.create();
     m_vertex.bind();
     m_vertex.setUsagePattern(QOpenGLBuffer::DynamicDraw);
     m_vertex.allocate(mesh->getVertices(), mesh->getNumberOfBytes());
 
+	//Creating the VAO
     m_object.create();
     m_object.bind();
+
+	//Enabling attribute arrays for vertex and color data.
     m_program->enableAttributeArray(0);
     m_program->enableAttributeArray(1);
     m_program->setAttributeBuffer(0, GL_FLOAT, Vertex::positionOffset(), Vertex::PositionTupleSize, Vertex::stride());
@@ -40,7 +51,15 @@ void Window::initializeGL()
     m_vertex.release();
     m_program->release();
 
+	//Setting up model, view and projection matrices.
 	mvpSetup();
+
+	//Creating interator ray
+	interator = new Ray(vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f));
+
+	//Setting up the collision detector
+	collisionDetector.setMesh(mesh);
+	collisionDetector.setRay(interator);
 }
 
 void Window::resizeGL(int width, int height)
@@ -52,6 +71,7 @@ void Window::resizeGL(int width, int height)
 void Window::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT);
+	collisionDetector.testCollision();
     m_program->bind();
     m_object.bind();
 	m_program->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
@@ -65,6 +85,7 @@ void Window::teardownGL()
     m_object.destroy();
     m_vertex.destroy();
     delete m_program;
+	delete interator;
 }
 
 void Window::setMesh(Mesh* mesh)
@@ -120,7 +141,11 @@ void Window::keyPressEvent(QKeyEvent* keyEvent)
 		default:
 			break;
 	}
+	vec3 origin(interatorX, interatorY, 0.0);
+	interator->setOrigin(origin);
+	collisionDetector.getRay()->printRayInfo();
 	cout << Window::interatorX << "\t" << Window::interatorY << endl;
+	paintGL();
 }
 
 void Window::printVersionInformation()

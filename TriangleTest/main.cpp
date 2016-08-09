@@ -1,8 +1,8 @@
 #include <QGuiApplication>
 #include "window.h"
 #include "trianglecutter.h"
-#include "mesh.h"
 #include "Grid.h"
+#include "CollisionDetector.h"
 
 Mesh mesh;
 

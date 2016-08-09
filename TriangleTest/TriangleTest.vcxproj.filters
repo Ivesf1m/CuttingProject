@@ -77,6 +77,9 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionDetector.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mesh.h">
@@ -98,6 +101,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <ClInclude Include="Grid.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionDetector.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>

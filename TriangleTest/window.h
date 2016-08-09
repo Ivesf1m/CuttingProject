@@ -7,6 +7,7 @@
 #include <QOpenGLVertexArrayObject>
 #include <QKeyEvent>
 #include "mesh.h"
+#include "CollisionDetector.h"
 
 using glm::mat4;
 
@@ -18,7 +19,9 @@ class Window : public QOpenGLWindow,
     Q_OBJECT;
 
     public:
-        void initializeGL();
+		Window();
+		
+		void initializeGL();
         void resizeGL(int width, int height);
         void paintGL();
 
@@ -37,6 +40,8 @@ class Window : public QOpenGLWindow,
         QOpenGLVertexArrayObject m_object;
         QOpenGLShaderProgram* m_program;
         Mesh* mesh;
+		Ray* interator;
+		CollisionDetector collisionDetector;
 		mat4 mvp;
 
 		//Private functions
