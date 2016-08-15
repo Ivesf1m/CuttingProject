@@ -139,6 +139,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CollisionDetector.cpp" />
+    <ClCompile Include="DeformableMesh.cpp" />
+    <ClCompile Include="DeformationNode.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_window.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -156,6 +158,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionDetector.h" />
+    <ClInclude Include="DeformableMesh.h" />
+    <ClInclude Include="DeformationNode.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="ray.h" />

@@ -80,6 +80,12 @@
     <ClCompile Include="CollisionDetector.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="DeformationNode.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeformableMesh.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mesh.h">
@@ -104,6 +110,12 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="CollisionDetector.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeformationNode.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeformableMesh.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>

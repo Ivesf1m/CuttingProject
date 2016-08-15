@@ -108,8 +108,8 @@ void Window::mvpSetup()
 {
 	//Setting up MVP matrix
 	mat4 model = mat4(1.0f);
-	model = glm::scale(model, vec3(0.1, 0.1f, 1.0f));
-	model = glm::translate(model, vec3(-1.0f, -1.0f, 0.0f));
+	//model = glm::scale(model, vec3(0.1, 0.1f, 1.0f));
+	//model = glm::translate(model, vec3(-1.0f, -1.0f, 0.0f));
 
 	mat4 view;
 	vec3 cameraPos(0.0f, 0.0f, 1.0f);
@@ -143,8 +143,6 @@ void Window::keyPressEvent(QKeyEvent* keyEvent)
 	}
 	vec3 origin(interatorX, interatorY, 0.0);
 	interator->setOrigin(origin);
-	collisionDetector.getRay()->printRayInfo();
-	cout << Window::interatorX << "\t" << Window::interatorY << endl;
 	paintGL();
 }
 

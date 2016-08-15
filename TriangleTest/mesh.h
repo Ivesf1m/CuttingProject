@@ -24,7 +24,7 @@ class Mesh{
         unsigned int getNumberOfBytes();
 
 
-    private:
+    protected:
         unsigned int numberOfVertices;
         unsigned int numberOfBytes;
         vector<Vertex> vertices;

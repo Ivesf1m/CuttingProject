@@ -32,10 +32,13 @@ void CollisionDetector::setRay(Ray* ray)
 	this->ray = ray;
 }
 
+/* This is the non-culling version*/
 bool CollisionDetector::akenineMollerCollisionTest(unsigned int index)
 {
 	vec3 edge1, edge2;
 	vec3 p, q, t;
+	//u and v are the barycentric coordinates of the point of
+	//intersection in the triangle (should it exist)
 	float det, inv_det, u, v;
 	float lambda;
 
@@ -68,11 +71,11 @@ bool CollisionDetector::akenineMollerCollisionTest(unsigned int index)
 	//Calculating v
 	q = glm::cross(t, edge1);
 	v = glm::dot(ray->getDirection(), q) * inv_det;
-	if (v < 0.0f || v > 1.0f)
+	if (v < 0.0f || u + v > 1.0f)
 		return false;
 
 	lambda = glm::dot(edge2, q) * inv_det;
-	if (lambda > EPSILON) {
+	if (lambda > -EPSILON || lambda < EPSILON) {
 		ray->getPointAtLambda(lambda, collisionPoint);
 		return true;
 	}
@@ -82,8 +85,9 @@ bool CollisionDetector::akenineMollerCollisionTest(unsigned int index)
 
 void CollisionDetector::testCollision()
 {
+	collided = false;
 	for (unsigned int i = 0; i < mesh->getNumberOfVertices(); i += 3) {
-		collided = akenineMollerCollisionTest(i);
+		collided = collided || akenineMollerCollisionTest(i);
 	}
 
 	if (collided) {
@@ -94,4 +98,5 @@ void CollisionDetector::testCollision()
 	else {
 		cout << "Nao houve colisao" << endl;
 	}
+	cout << endl;
 }
