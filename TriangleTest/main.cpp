@@ -50,6 +50,8 @@ int main(int argc, char* argv[])
     mesh.addVertex(Vertex(vec3(-1.00f, -0.5f, 1.0f), vec3(0.0f, 1.0f, 0.0f)));
     mesh.addVertex(Vertex(vec3( 0.00f, -0.5f, 1.0f), vec3(0.0f, 0.0f, 1.0f)));
 
+	mesh.addTriangularFace(0, 1, 2);
+
 	//Grid for test
 	Grid grid(5);
 

@@ -25,31 +25,40 @@ void Window::initializeGL()
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     //Loading, compiling and linking shaders.
-	m_program = new QOpenGLShaderProgram();
-    m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ".\\simple.vert");
-    m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ".\\simple.frag");
-    m_program->link();
-    m_program->bind();
-
-	//Creating the VBO
-    m_vertex.create();
-    m_vertex.bind();
-    m_vertex.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-    m_vertex.allocate(mesh->getVertices(), mesh->getNumberOfBytes());
+	shaderProgram = new QOpenGLShaderProgram();
+	shaderProgram->addShaderFromSourceFile(QOpenGLShader::Vertex, ".\\simple.vert");
+	shaderProgram->addShaderFromSourceFile(QOpenGLShader::Fragment, ".\\simple.frag");
+	shaderProgram->link();
+	shaderProgram->bind();
 
 	//Creating the VAO
-    m_object.create();
-    m_object.bind();
+	vertexArrayObject.create();
+	vertexArrayObject.bind();
+
+	//Creating the VBO
+    vertexBuffer.create();
+	vertexBuffer.bind();
+	vertexBuffer.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+	vertexBuffer.allocate(mesh->getVertices(), mesh->getNumberOfBytes());
+
+	//Creating IBO
+	indexBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+	indexBuffer.create();
+	indexBuffer.bind();
+	//indexBuffer.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+	indexBuffer.allocate(mesh->getIndices(),
+		mesh->getNumberOfIndices() * sizeof(unsigned int));
 
 	//Enabling attribute arrays for vertex and color data.
-    m_program->enableAttributeArray(0);
-    m_program->enableAttributeArray(1);
-    m_program->setAttributeBuffer(0, GL_FLOAT, Vertex::positionOffset(), Vertex::PositionTupleSize, Vertex::stride());
-    m_program->setAttributeBuffer(1, GL_FLOAT, Vertex::colorOffset(), Vertex::ColorTupleSize, Vertex::stride());
+	shaderProgram->enableAttributeArray(0);
+	shaderProgram->enableAttributeArray(1);
+	shaderProgram->setAttributeBuffer(0, GL_FLOAT, Vertex::positionOffset(), Vertex::PositionTupleSize, Vertex::stride());
+	shaderProgram->setAttributeBuffer(1, GL_FLOAT, Vertex::colorOffset(), Vertex::ColorTupleSize, Vertex::stride());
 
-    m_object.release();
-    m_vertex.release();
-    m_program->release();
+	vertexArrayObject.release();
+	vertexBuffer.release();
+	//indexBuffer.release();
+	shaderProgram->release();
 
 	//Setting up model, view and projection matrices.
 	mvpSetup();
@@ -72,19 +81,21 @@ void Window::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 	collisionDetector.testCollision();
-    m_program->bind();
-    m_object.bind();
-	m_program->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
-    glDrawArrays(GL_TRIANGLES, 0, mesh->getNumberOfVertices());
-    m_object.release();
-    m_program->release();
+    shaderProgram->bind();
+    vertexArrayObject.bind();
+	shaderProgram->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
+    //glDrawArrays(GL_TRIANGLES, 0, mesh->getNumberOfVertices());
+	glDrawElements(GL_TRIANGLES, mesh->getNumberOfIndices(), GL_UNSIGNED_INT, 0);
+	vertexArrayObject.release();
+	shaderProgram->release();
 }
 
 void Window::teardownGL()
 {
-    m_object.destroy();
-    m_vertex.destroy();
-    delete m_program;
+	vertexArrayObject.destroy();
+    vertexBuffer.destroy();
+	indexBuffer.destroy();
+    delete shaderProgram;
 	delete interator;
 }
 

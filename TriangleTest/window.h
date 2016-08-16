@@ -36,9 +36,10 @@ class Window : public QOpenGLWindow,
         void teardownGL();
 
     private:
-        QOpenGLBuffer m_vertex;
-        QOpenGLVertexArrayObject m_object;
-        QOpenGLShaderProgram* m_program;
+        QOpenGLBuffer vertexBuffer;
+		QOpenGLBuffer indexBuffer;
+        QOpenGLVertexArrayObject vertexArrayObject;
+        QOpenGLShaderProgram* shaderProgram;
         Mesh* mesh;
 		Ray* interator;
 		CollisionDetector collisionDetector;

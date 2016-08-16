@@ -2,7 +2,7 @@
 #include <iostream>
 
 Mesh::Mesh()
-     : numberOfVertices(0), numberOfBytes(0)
+     : numberOfVertices(0), numberOfBytes(0), numberOfIndices(0)
 {
 
 }
@@ -10,6 +10,41 @@ Mesh::Mesh()
 Mesh::~Mesh()
 {
 	//Nothing to delete.
+}
+
+void Mesh::addTriangularFace(unsigned int index1, unsigned int index2,
+	unsigned int index3)
+{
+	if (index1 >= numberOfVertices || index2 >= numberOfVertices ||
+		index3 >= numberOfVertices) {
+		cerr << "Error: cannot add index of vertex that does not exist." << endl;
+		return;
+	}
+
+	indices.push_back(index1);
+	indices.push_back(index2);
+	indices.push_back(index3);
+
+	numberOfIndices += 3;
+}
+
+void Mesh::removeTriangularFace(unsigned int pos)
+{
+	if (pos >= indices.size() - 3) {
+		cerr << "Cannot remove face starting at position " << pos << endl;
+		return;
+	}
+	indices.erase(indices.begin() + pos);
+	indices.erase(indices.begin() + pos + 1);
+	indices.erase(indices.begin() + pos + 2);
+
+	numberOfIndices -= 3;
+}
+
+void Mesh::removeAllIndices()
+{
+	indices.clear();
+	numberOfIndices = 0;
 }
 
 void Mesh::addVertex(const Vertex& v)
@@ -72,4 +107,14 @@ unsigned int Mesh::getNumberOfVertices()
 unsigned int Mesh::getNumberOfBytes()
 {
     return numberOfBytes;
+}
+
+unsigned int Mesh::getNumberOfIndices()
+{
+	return numberOfIndices;
+}
+
+unsigned int* Mesh::getIndices()
+{
+	return &(indices[0]);
 }
