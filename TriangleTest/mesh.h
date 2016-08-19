@@ -1,6 +1,7 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include "CollisionPath.h"
 #include "vertex.h"
 #include <vector>
 
@@ -28,11 +29,14 @@ class Mesh{
         const Vertex& getVertex(unsigned int index);
         Vertex* getVertices();
         void setVertex(unsigned int index, const Vertex& vertex);
+		unsigned int getIndex(unsigned int index);
 		unsigned int* getIndices();
 
         unsigned int getNumberOfVertices();
         unsigned int getNumberOfBytes();
 		unsigned int getNumberOfIndices();
+
+		void cut(CollisionPath& path);
 
     protected:
         unsigned int numberOfVertices;

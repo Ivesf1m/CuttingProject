@@ -16,6 +16,8 @@ public:
 	Ray* getRay();
 	void setRay(Ray* ray);
 
+	bool hasCollided();
+	vec3& getCollisionPoint();
 	void testCollision();
 
 private:

@@ -80,7 +80,6 @@ void Window::resizeGL(int width, int height)
 void Window::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT);
-	collisionDetector.testCollision();
     shaderProgram->bind();
     vertexArrayObject.bind();
 	shaderProgram->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
@@ -154,6 +153,11 @@ void Window::keyPressEvent(QKeyEvent* keyEvent)
 	}
 	vec3 origin(interatorX, interatorY, 0.0);
 	interator->setOrigin(origin);
+	collisionDetector.testCollision();
+	if (collisionDetector.hasCollided())
+		path.addPoint(collisionDetector.getCollisionPoint());
+	else
+		mesh->cut(path);
 	paintGL();
 }
 

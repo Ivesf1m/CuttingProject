@@ -114,7 +114,25 @@ unsigned int Mesh::getNumberOfIndices()
 	return numberOfIndices;
 }
 
+unsigned int Mesh::getIndex(unsigned int index)
+{
+	if (index > indices.size()) {
+		cerr << "Invalid face index" << endl;
+		exit(1);
+	}
+
+	return indices[index];
+}
+
 unsigned int* Mesh::getIndices()
 {
 	return &(indices[0]);
+}
+
+void Mesh::cut(CollisionPath& path)
+{
+	if (path.getNumberOfPoints() == 0)
+		return;
+
+	cout << "Number of collision points: " << path.getNumberOfPoints() << endl;
 }

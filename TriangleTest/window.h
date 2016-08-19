@@ -8,6 +8,7 @@
 #include <QKeyEvent>
 #include "mesh.h"
 #include "CollisionDetector.h"
+#include "CollisionPath.h"
 
 using glm::mat4;
 
@@ -43,6 +44,7 @@ class Window : public QOpenGLWindow,
         Mesh* mesh;
 		Ray* interator;
 		CollisionDetector collisionDetector;
+		CollisionPath path;
 		mat4 mvp;
 
 		//Private functions

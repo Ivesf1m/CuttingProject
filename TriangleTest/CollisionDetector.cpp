@@ -43,9 +43,9 @@ bool CollisionDetector::akenineMollerCollisionTest(unsigned int index)
 	float lambda;
 
 	//Calculating edges
-	vec3 v1 = mesh->getVertex(index).position();
-	vec3 v2 = mesh->getVertex(index + 1).position();
-	vec3 v3 = mesh->getVertex(index + 2).position();
+	vec3 v1 = mesh->getVertex(mesh->getIndex(index)).position();
+	vec3 v2 = mesh->getVertex(mesh->getIndex(index + 1)).position();
+	vec3 v3 = mesh->getVertex(mesh->getIndex(index + 2)).position();
 
 	edge1 = v2 - v1;
 	edge2 = v3 - v1;
@@ -86,7 +86,7 @@ bool CollisionDetector::akenineMollerCollisionTest(unsigned int index)
 void CollisionDetector::testCollision()
 {
 	collided = false;
-	for (unsigned int i = 0; i < mesh->getNumberOfVertices(); i += 3) {
+	for (unsigned int i = 0; i < mesh->getNumberOfIndices(); i += 3) {
 		collided = collided || akenineMollerCollisionTest(i);
 	}
 
@@ -99,4 +99,14 @@ void CollisionDetector::testCollision()
 		cout << "Nao houve colisao" << endl;
 	}
 	cout << endl;
+}
+
+bool CollisionDetector::hasCollided()
+{
+	return collided;
+}
+
+vec3& CollisionDetector::getCollisionPoint()
+{
+	return collisionPoint;
 }

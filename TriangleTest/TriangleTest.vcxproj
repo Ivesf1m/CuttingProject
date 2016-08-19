@@ -139,6 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CollisionDetector.cpp" />
+    <ClCompile Include="CollisionPath.cpp" />
     <ClCompile Include="DeformableMesh.cpp" />
     <ClCompile Include="DeformationNode.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_window.cpp">
@@ -158,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionDetector.h" />
+    <ClInclude Include="CollisionPath.h" />
     <ClInclude Include="DeformableMesh.h" />
     <ClInclude Include="DeformationNode.h" />
     <ClInclude Include="Grid.h" />
