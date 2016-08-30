@@ -18,12 +18,14 @@ public:
 
 	bool hasCollided();
 	vec3& getCollisionPoint();
+	unsigned int getCollisionIndex();
 	void testCollision();
 
 private:
 	Mesh* mesh;
 	Ray* ray;
 	vec3 collisionPoint;
+	unsigned int collisionIndex;
 	bool collided;
 
 	//Implementation of the collision test developed by Akenine and Moller

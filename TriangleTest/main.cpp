@@ -54,6 +54,14 @@ int main(int argc, char* argv[])
 
 	//Grid for test
 	Grid grid(5);
+	CollisionPath testPath;
+	vec3 p1(0.3f, 0.1f, 1.0f);
+	vec3 p2(0.8f, 0.9f, 1.0f);
+	testPath.addPoint(p1);
+	testPath.addPoint(p2);
+	testPath.addIndex(0);
+	testPath.addIndex(3);
+	grid.cut(testPath);
 
     Window window;
     window.setMesh(&grid);

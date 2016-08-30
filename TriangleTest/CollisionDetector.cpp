@@ -77,6 +77,7 @@ bool CollisionDetector::akenineMollerCollisionTest(unsigned int index)
 	lambda = glm::dot(edge2, q) * inv_det;
 	if (lambda > -EPSILON || lambda < EPSILON) {
 		ray->getPointAtLambda(lambda, collisionPoint);
+		collisionIndex = index;
 		return true;
 	}
 
@@ -109,4 +110,9 @@ bool CollisionDetector::hasCollided()
 vec3& CollisionDetector::getCollisionPoint()
 {
 	return collisionPoint;
+}
+
+unsigned int CollisionDetector::getCollisionIndex()
+{
+	return collisionIndex;
 }

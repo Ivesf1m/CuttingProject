@@ -44,6 +44,9 @@ class Mesh{
 		unsigned int numberOfIndices;
         vector<Vertex> vertices;
 		vector<unsigned int> indices;
+
+		void findEdgePoint(unsigned int index1, unsigned int index2,
+			const vec3 colPoint, const vec3& dir, vec3& exitPoint);
 };
 
 #endif // MESH_H
