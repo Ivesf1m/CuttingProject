@@ -89,6 +89,9 @@
     <ClCompile Include="CollisionPath.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="MeshCutter.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mesh.h">
@@ -122,6 +125,9 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="CollisionPath.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshCutter.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>

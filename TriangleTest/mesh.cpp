@@ -210,8 +210,18 @@ void Mesh::cut(CollisionPath& path)
 	vector<vec3>& colPoints = path.getCollisionPoints();
 	vec3 direction;
 	vec3 exitPoint;
+	vector<vec3> exitPoints;
+	vector<unsigned int> internalPoints;
+	bool internalFirst = false;
+
+	//We process the path passed as parameter so we generate a new 
+	//simplified path.
+	//We do this by selecting one internal point for each triangle
+	//and figuring out the exit Point (which, in turn, will be the next
+	//entrance point).
 	CollisionPath newPath;
 	bool dirFound = false;
+	bool otherInternal = false;
 	for (unsigned int i = 0; i < colIndices.size() - 1; ++i) {
 		if (colIndices[i] != colIndices[i + 1]) {
 			if (!dirFound) {
@@ -234,11 +244,70 @@ void Mesh::cut(CollisionPath& path)
 			}
 			findEdgePoint(colIndices[i], colIndices[i + 1], colPoints[i], 
 				direction, exitPoint);
+
+			//If the exit point is one of the collision points
+			//and an internal point has not been found preivously
+			//the exit point is the first one on the list.
+			if (exitPoint != colPoints[i] && !internalFirst)
+				internalFirst = true;
+
+			//If there is only one internal point for this triangle
+			//we need to add it to the vector here.
+			if (!otherInternal)
+				internalPoints.push_back(colIndices[i]);
+				
 			dirFound = false;
+			exitPoints.push_back(exitPoint);
 		}
 		else {
-			direction = glm::normalize(colPoints[i + 1] - colPoints[i]);
-			dirFound = true;
+			if (!dirFound) {
+				direction = glm::normalize(colPoints[i + 1] - colPoints[i]);
+				dirFound = true;
+				if (internalPoints.size() == 0 && exitPoints.size() == 0)
+					internalFirst = true;
+				internalPoints.push_back(colIndices[i]);
+				
+			}
+			otherInternal = true;
 		}
 	}
+
+	size_t size = (internalPoints.size() > exitPoints.size() ?
+		internalPoints.size() : exitPoints.size());
+	for (size_t i = 0; i < size; ++i) {
+		if (internalFirst) {
+			if (i < internalPoints.size()) {
+				newPath.addPoint(colPoints[internalPoints[i]]);
+				newPath.addIndex(internalPoints[i]);
+			}
+
+			if (i < exitPoints.size()) {
+				newPath.addPoint(exitPoints[i]);
+				newPath.addIndex(internalPoints[i]);
+			}
+		}
+		else {
+			//We add the points to the path in a different order.
+			if (i < exitPoints.size()) {
+				newPath.addPoint(exitPoints[i]);
+				newPath.addIndex(internalPoints[i]);
+			}
+
+			if (i < internalPoints.size()) {
+				newPath.addPoint(colPoints[internalPoints[i]]);
+				newPath.addIndex(internalPoints[i]);
+			}
+		}
+	}
+	updateMesh(newPath, internalFirst);
+}
+
+void Mesh::updateMesh(CollisionPath& path, bool internalFirst)
+{
+	MeshCutter cutter(&path, &vertices, &indices, internalFirst);
+	cutter.cut();
+
+	numberOfVertices = static_cast<unsigned int>(vertices.size());
+	numberOfIndices = static_cast<unsigned int>(indices.size());
+	numberOfBytes = numberOfBytes * sizeof(Vertex);
 }

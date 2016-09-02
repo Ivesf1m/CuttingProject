@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
 	mesh.addTriangularFace(0, 1, 2);
 
 	//Grid for test
-	Grid grid(5);
+	Grid grid(1);
 	CollisionPath testPath;
 	vec3 p1(0.3f, 0.1f, 1.0f);
 	vec3 p2(0.8f, 0.9f, 1.0f);

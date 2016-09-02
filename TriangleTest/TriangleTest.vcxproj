@@ -151,6 +151,7 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mesh.cpp" />
+    <ClCompile Include="MeshCutter.cpp" />
     <ClCompile Include="ray.cpp" />
     <ClCompile Include="triangle.cpp" />
     <ClCompile Include="trianglecutter.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="DeformationNode.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="mesh.h" />
+    <ClInclude Include="MeshCutter.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="triangle.h" />
     <ClInclude Include="trianglecutter.h" />

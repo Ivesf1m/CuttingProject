@@ -4,6 +4,7 @@
 #include "CollisionPath.h"
 #include "vertex.h"
 #include <vector>
+#include <MeshCutter.h>
 
 using namespace std;
 
@@ -47,6 +48,7 @@ class Mesh{
 
 		void findEdgePoint(unsigned int index1, unsigned int index2,
 			const vec3 colPoint, const vec3& dir, vec3& exitPoint);
+		void updateMesh(CollisionPath& path, bool internalFirst);
 };
 
 #endif // MESH_H
