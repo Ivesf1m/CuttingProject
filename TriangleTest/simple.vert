@@ -7,7 +7,7 @@ out vec4 vColor;
 
 void main()
 {
-        vec4 aux = vec4(position.x, position.y, position.z, 1.0f);
+        vec4 aux = vec4(position.x - 0.5f, position.y - 0.5f, position.z, 1.0f);
 		gl_Position = aux * mvp;
         vColor = vec4(color, 1.0f);
 }

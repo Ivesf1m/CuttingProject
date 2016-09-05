@@ -45,7 +45,7 @@ void Window::initializeGL()
 	indexBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
 	indexBuffer.create();
 	indexBuffer.bind();
-	//indexBuffer.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+	indexBuffer.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	indexBuffer.allocate(mesh->getIndices(),
 		mesh->getNumberOfIndices() * sizeof(unsigned int));
 
@@ -57,7 +57,7 @@ void Window::initializeGL()
 
 	vertexArrayObject.release();
 	vertexBuffer.release();
-	//indexBuffer.release();
+	indexBuffer.release();
 	shaderProgram->release();
 
 	//Setting up model, view and projection matrices.

@@ -222,8 +222,12 @@ void Mesh::cut(CollisionPath& path)
 	CollisionPath newPath;
 	bool dirFound = false;
 	bool otherInternal = false;
-	for (unsigned int i = 0; i < colIndices.size() - 1; ++i) {
-		if (colIndices[i] != colIndices[i + 1]) {
+	for (unsigned int i = 0; i < colIndices.size(); ++i) {
+		if (i + 1 >= colIndices.size()) {
+			//This is the last point
+			internalPoints.push_back(colIndices[i]);
+		}
+		else if (colIndices[i] != colIndices[i + 1]) {			
 			if (!dirFound) {
 				//We need the normal of the first triangle
 				//Edges os the triangle (v2 - v1) and (v3 - v2)
@@ -277,7 +281,7 @@ void Mesh::cut(CollisionPath& path)
 	for (size_t i = 0; i < size; ++i) {
 		if (internalFirst) {
 			if (i < internalPoints.size()) {
-				newPath.addPoint(colPoints[internalPoints[i]]);
+				newPath.addPoint(colPoints[i]);
 				newPath.addIndex(internalPoints[i]);
 			}
 
@@ -294,7 +298,7 @@ void Mesh::cut(CollisionPath& path)
 			}
 
 			if (i < internalPoints.size()) {
-				newPath.addPoint(colPoints[internalPoints[i]]);
+				newPath.addPoint(colPoints[i]);
 				newPath.addIndex(internalPoints[i]);
 			}
 		}
@@ -309,5 +313,9 @@ void Mesh::updateMesh(CollisionPath& path, bool internalFirst)
 
 	numberOfVertices = static_cast<unsigned int>(vertices.size());
 	numberOfIndices = static_cast<unsigned int>(indices.size());
-	numberOfBytes = numberOfBytes * sizeof(Vertex);
+	numberOfBytes = numberOfVertices * sizeof(Vertex);
+
+	cout << "Number of vertices: " << numberOfVertices << endl;
+	cout << "Number of indices: " << numberOfIndices << endl;
+	cout << "Number of bytes: " << numberOfBytes << endl;
 }
