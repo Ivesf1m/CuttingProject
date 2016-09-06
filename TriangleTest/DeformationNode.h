@@ -12,7 +12,7 @@ public:
 	DeformationNode();
 	~DeformationNode();
 
-	const vector<unsigned int>& getNeighbours();
+	vector<unsigned int>& getNeighbours();
 
 	const vec3& getAcceleration();
 	void setAcceleration(const vec3& accel);
@@ -24,6 +24,7 @@ public:
 	void setPoint(const vec3& point);
 
 	Vertex* getVertex();
+	void setVertex(Vertex* v);
 
 	void update(const vec3& force, float mass, float step, float stiffness);
 

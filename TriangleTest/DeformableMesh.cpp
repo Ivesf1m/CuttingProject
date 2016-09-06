@@ -1,4 +1,5 @@
 #include "DeformableMesh.h"
+#include <algorithm>
 
 using glm::dot;
 
@@ -97,16 +98,53 @@ void DeformableMesh::applyForce(const vec3& force, int vertexIndex)
 	
 }
 
-void DeformableMesh::applyForceAllPoints()
+void DeformableMesh::applyForceToAllPoints()
 {
-	vec3 shift, p, f;
-	//float d;
+	vec3 shift, force, f;
 
 	for (unsigned int i = 0; i < this->numberOfVertices; ++i) {
 		float vdotv = glm::dot(nodes[i].getVelocity(), nodes[i].getVelocity());
 		float adota = glm::dot(nodes[i].getAcceleration(), nodes[i].getAcceleration());
 		if (vdotv > error || adota > error) {
-			//Terminar
+			force = nodes[i].getVertex()->position();
+			force = damping * (nodes[i].getPoint() - force);
+			nodes[i].update(force, mass, step, stiffness);
+			shift = step * nodes[i].getVelocity();
+			vec3 pos = nodes[i].getVertex()->position() + shift;
+			nodes[i].getVertex()->setPosition(pos);
 		}
+		else {
+			nodes[i].getVertex()->setPosition(nodes[i].getPoint());
+		}
+	}
+}
+
+void DeformableMesh::initialize()
+{
+	if (numberOfVertices == 0)
+		return;
+
+	nodes = new DeformationNode[numberOfVertices];
+	for (unsigned int i = 0; i < numberOfVertices; ++i) {
+		nodes[i].setVertex(&vertices[i]);
+		vector<unsigned int>& neighbors = nodes[i].getNeighbours();
+		for (unsigned int j = 0; j < numberOfIndices; j += 3) {			
+			if (indices[j] == i) {
+				neighbors.push_back(indices[j + 1]);
+				neighbors.push_back(indices[j + 2]);
+			}else if (indices[j + 1] == i) {
+				neighbors.push_back(indices[j]);
+				neighbors.push_back(indices[j + 2]);
+			}else if (indices[j + 2] == i) {
+				neighbors.push_back(indices[j]);
+				neighbors.push_back(indices[j + 1]);
+			}
+		}
+
+		//Removing possible duplicates
+		std::sort(neighbors.begin(), neighbors.end());
+		vector<unsigned int>::iterator it;
+		it = std::unique(neighbors.begin(), neighbors.end());
+		neighbors.erase(it, neighbors.end());
 	}
 }

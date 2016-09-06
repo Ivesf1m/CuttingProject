@@ -28,9 +28,8 @@ public:
 	void setStiffness(float stiffness);
 
 	void applyForce(const vec3& force, int vertexIndex);
-	void applyForceAllPoints();
-	void init();
-	void initED();
+	void applyForceToAllPoints();
+	void initialize();
 
 private:
 	float damping;

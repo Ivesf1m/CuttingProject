@@ -12,7 +12,7 @@ DeformationNode::~DeformationNode()
 {
 }
 
-const vector<unsigned int>& DeformationNode::getNeighbours()
+vector<unsigned int>& DeformationNode::getNeighbours()
 {
 	return neighbours;
 }
@@ -50,6 +50,13 @@ void DeformationNode::setPoint(const vec3& point)
 Vertex * DeformationNode::getVertex()
 {
 	return vertex;
+}
+
+void DeformationNode::setVertex(Vertex* v)
+{
+	this->vertex = v;
+	//NEED TO CHECK THIS!!!!
+	this->point = v->position();
 }
 
 void DeformationNode::update(const vec3& force, float mass, float step, float stiffness)
