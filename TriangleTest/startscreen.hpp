@@ -12,6 +12,8 @@ public:
 public slots:
 	void toStartPage();
 	void toOptionsPage();
+	void toCreditsPage();
+	void toInstructionsPage();
 
 private:
 	Ui::startScreen ui;

@@ -40,6 +40,14 @@ public:
     QPushButton *completeProcedureButton;
     QPushButton *cutOnlyButton;
     QPushButton *backToStartFrameButton;
+    QWidget *instructionsPage;
+    QWidget *verticalLayoutWidget_2;
+    QVBoxLayout *verticalLayout_3;
+    QPushButton *instructionsBackButton;
+    QWidget *creditsPage;
+    QWidget *verticalLayoutWidget_3;
+    QVBoxLayout *verticalLayout_4;
+    QPushButton *creditsBackButton;
 
     void setupUi(QWidget *startScreen)
     {
@@ -111,11 +119,43 @@ public:
         verticalLayout_2->addWidget(backToStartFrameButton);
 
         stackedWidget->addWidget(optionsPage);
+        instructionsPage = new QWidget();
+        instructionsPage->setObjectName(QStringLiteral("instructionsPage"));
+        verticalLayoutWidget_2 = new QWidget(instructionsPage);
+        verticalLayoutWidget_2->setObjectName(QStringLiteral("verticalLayoutWidget_2"));
+        verticalLayoutWidget_2->setGeometry(QRect(430, 510, 160, 80));
+        verticalLayout_3 = new QVBoxLayout(verticalLayoutWidget_2);
+        verticalLayout_3->setSpacing(6);
+        verticalLayout_3->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
+        verticalLayout_3->setContentsMargins(0, 0, 0, 0);
+        instructionsBackButton = new QPushButton(verticalLayoutWidget_2);
+        instructionsBackButton->setObjectName(QStringLiteral("instructionsBackButton"));
+
+        verticalLayout_3->addWidget(instructionsBackButton);
+
+        stackedWidget->addWidget(instructionsPage);
+        creditsPage = new QWidget();
+        creditsPage->setObjectName(QStringLiteral("creditsPage"));
+        verticalLayoutWidget_3 = new QWidget(creditsPage);
+        verticalLayoutWidget_3->setObjectName(QStringLiteral("verticalLayoutWidget_3"));
+        verticalLayoutWidget_3->setGeometry(QRect(430, 510, 160, 80));
+        verticalLayout_4 = new QVBoxLayout(verticalLayoutWidget_3);
+        verticalLayout_4->setSpacing(6);
+        verticalLayout_4->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
+        verticalLayout_4->setContentsMargins(0, 0, 0, 0);
+        creditsBackButton = new QPushButton(verticalLayoutWidget_3);
+        creditsBackButton->setObjectName(QStringLiteral("creditsBackButton"));
+
+        verticalLayout_4->addWidget(creditsBackButton);
+
+        stackedWidget->addWidget(creditsPage);
 
         retranslateUi(startScreen);
         QObject::connect(exitButton, SIGNAL(clicked()), startScreen, SLOT(close()));
 
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(startScreen);
@@ -131,6 +171,8 @@ public:
         completeProcedureButton->setText(QApplication::translate("startScreen", "Procedimento completo", 0));
         cutOnlyButton->setText(QApplication::translate("startScreen", "Apenas corte", 0));
         backToStartFrameButton->setText(QApplication::translate("startScreen", "Voltar", 0));
+        instructionsBackButton->setText(QApplication::translate("startScreen", "Voltar", 0));
+        creditsBackButton->setText(QApplication::translate("startScreen", "Voltar", 0));
     } // retranslateUi
 
 };
