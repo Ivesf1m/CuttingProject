@@ -106,6 +106,12 @@
     <ClCompile Include="GeneratedFiles\Release\moc_startscreen.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="Chart.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AssessmentManager.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mesh.h">
@@ -145,6 +151,12 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_startscreen.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AssessmentManager.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>

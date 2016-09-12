@@ -138,6 +138,8 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AssessmentManager.cpp" />
+    <ClCompile Include="Chart.cpp" />
     <ClCompile Include="CollisionDetector.cpp" />
     <ClCompile Include="CollisionPath.cpp" />
     <ClCompile Include="DeformableMesh.cpp" />
@@ -166,6 +168,8 @@
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AssessmentManager.h" />
+    <ClInclude Include="Chart.h" />
     <ClInclude Include="CollisionDetector.h" />
     <ClInclude Include="CollisionPath.h" />
     <ClInclude Include="DeformableMesh.h" />

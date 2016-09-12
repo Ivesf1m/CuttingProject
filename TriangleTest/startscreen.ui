@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>600</height>
+    <height>598</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,12 +18,12 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>601</width>
-     <height>601</height>
+     <width>700</width>
+     <height>902</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>6</number>
    </property>
    <widget class="QWidget" name="startPage">
     <widget class="QFrame" name="startFrame">
@@ -163,6 +163,311 @@
      </layout>
     </widget>
    </widget>
+   <widget class="QWidget" name="chartPage">
+    <widget class="QLabel" name="patientNameLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>101</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Nome do paciente:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="chartNumberLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>121</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Número do prontuário: </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="clinicLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>100</y>
+       <width>101</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Clínica: </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="dateLabel">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>60</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Data:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="doctorLabel">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>100</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Médico: </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="patientHistoryLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>140</y>
+       <width>121</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Histórico do paciente: </string>
+     </property>
+    </widget>
+    <widget class="QTextBrowser" name="patientNameBox">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>10</y>
+       <width>451</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QTextBrowser" name="chartNumberBox">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>50</y>
+       <width>171</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QTextBrowser" name="dateBox">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>50</y>
+       <width>211</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QTextBrowser" name="clinicBox">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>90</y>
+       <width>251</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QTextBrowser" name="doctorBox">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>90</y>
+       <width>201</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QTextBrowser" name="patientHistoryBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>160</y>
+       <width>571</width>
+       <height>321</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="chartPageForwardButton">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>550</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Avançar</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="chartPageBackButton">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>550</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Voltar</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="treatmentDecisionPage">
+    <widget class="QWidget" name="verticalLayoutWidget_4">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>120</y>
+       <width>319</width>
+       <height>441</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <widget class="QPushButton" name="submentalIncisionButton">
+        <property name="text">
+         <string>Seguir para a cirurgia, utilizando incisão submentoniana</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="otherIncisionButton">
+        <property name="text">
+         <string>Seguir para a cirurgia, utilizando outro tipo de incisão</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="noSurgeryButton">
+        <property name="text">
+         <string>O paciente não deve passar por cirurgia no momento</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QTextBrowser" name="textBrowser">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>30</y>
+       <width>531</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="html">
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Dada a condição atual do paciente, qual o melhor curso de tratamento?&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="backToChartButton">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>522</y>
+       <width>75</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Voltar para
+ o prontuário</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="reportPage">
+    <widget class="QTextBrowser" name="textBrowser_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>581</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="html">
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Relatório de desempenho&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="treatmentChoiceLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>70</y>
+       <width>141</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Escolha do tratamento:</string>
+     </property>
+    </widget>
+    <widget class="QTextBrowser" name="treatmentChoiceBox">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>70</y>
+       <width>251</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QWidget" name="verticalLayoutWidget_5">
+     <property name="geometry">
+      <rect>
+       <x>429</x>
+       <y>499</y>
+       <width>171</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
+      <item>
+       <widget class="QPushButton" name="reportPageStartButton">
+        <property name="text">
+         <string>Início</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="reportPageExitButton">
+        <property name="text">
+         <string>Sair</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
@@ -181,6 +486,22 @@
     <hint type="destinationlabel">
      <x>299</x>
      <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>reportPageExitButton</sender>
+   <signal>clicked()</signal>
+   <receiver>startScreen</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>514</x>
+     <y>570</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>298</y>
     </hint>
    </hints>
   </connection>

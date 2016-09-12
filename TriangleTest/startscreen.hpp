@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <QtWidgets\qwidget.h>
 #include "ui_startscreen.h"
+#include "AssessmentManager.h"
 
 class StartScreen : public QWidget {
 	Q_OBJECT
@@ -10,11 +11,19 @@ public:
 	~StartScreen();
 
 public slots:
-	void toStartPage();
-	void toOptionsPage();
+	void noSurgeryAssessment();
+	void toChartPage();
 	void toCreditsPage();
 	void toInstructionsPage();
+	void toOptionsPage();
+	void toReportPage();
+	void toStartPage();
+	void toStartPageFromReport();
+	void toTreatmentDecisionPage();
 
 private:
 	Ui::startScreen ui;
+	Chart* chart;
+	AssessmentManager* manager;
+
 };
