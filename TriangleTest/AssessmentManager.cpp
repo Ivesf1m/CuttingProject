@@ -22,6 +22,26 @@ void AssessmentManager::setChart(const Chart* chart)
 	this->chart = chart;
 }
 
+const string& AssessmentManager::getChosenScalpel()
+{
+	return chosenScalpel;
+}
+
+void AssessmentManager::setChosenScalpel(const string& scalpel)
+{
+	this->chosenScalpel = scalpel;
+}
+
+const string& AssessmentManager::getScalpelChoiceAssessment()
+{
+	return scalpelChoiceAssessment;
+}
+
+void AssessmentManager::setScalpelChoiceAssessment(const string& assessment)
+{
+	this->scalpelChoiceAssessment = assessment;
+}
+
 const string& AssessmentManager::getTreatmentAssessment()
 {
 	return treatmentAssessment;
@@ -45,6 +65,15 @@ void AssessmentManager::setTreatmentType(TreatmentType type)
 void AssessmentManager::assess()
 {
 	assessTreatmentType();
+}
+
+void AssessmentManager::assessScalpelChoice()
+{
+	if (chosenScalpel.compare("15") == 0 ||
+		chosenScalpel.compare("15c") == 0)
+		scalpelChoiceAssessment = "Bisturi escolhido corretamente.";
+	else
+		scalpelChoiceAssessment = "Bisturi escolhido incorretamente.";
 }
 
 void AssessmentManager::assessTreatmentType()

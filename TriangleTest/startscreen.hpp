@@ -11,12 +11,15 @@ public:
 	~StartScreen();
 
 public slots:
+	void otherIncisionAssessment();
 	void noSurgeryAssessment();
+	void scalpelChoiceAssessment();
 	void toChartPage();
 	void toCreditsPage();
 	void toInstructionsPage();
 	void toOptionsPage();
 	void toReportPage();
+	void toScalpelPage();
 	void toStartPage();
 	void toStartPageFromReport();
 	void toTreatmentDecisionPage();

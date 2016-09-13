@@ -1,4 +1,5 @@
 #include "Chart.h"
+#include <chrono>
 #include <ctime>
 #include <random>
 #include <sstream>
@@ -67,12 +68,12 @@ void Chart::setClinic(const string& clinic)
 	this->clinic = clinic;
 }
 
-const string& Chart::getPatientHistory()
+const wstring& Chart::getPatientHistory()
 {
 	return patientHistory;
 }
 
-void Chart::setPatientHistory(const string& patientHistory)
+void Chart::setPatientHistory(const wstring& patientHistory)
 {
 	this->patientHistory = patientHistory;
 }
@@ -81,6 +82,9 @@ void Chart::setup()
 {
 	//Chart number
 	std::default_random_engine engine;
+	auto rseed = std::chrono::high_resolution_clock::now().
+		time_since_epoch().count();
+	engine.seed(static_cast<unsigned int>(rseed));
 	std::uniform_int_distribution<int> dist(10000, 99999);
 	stringstream ss;
 	ss << dist(engine);
@@ -95,4 +99,33 @@ void Chart::setup()
 	stringstream dateStream;
 	dateStream << day << "/" << month << "/" << year;
 	date = dateStream.str();
+
+	//Patient history
+	if (type == ChartType::PATIENT_READY) {
+		patientHistory = wstring(L"O paciente sofreu um acidente de moto, ") +
+			wstring(L"que resultou em lacerações faciais e fratura na região ") +
+			wstring(L"da sínfise mandibular. Os ferimentos superficiais foram ") +
+			wstring(L"tratados na chegada do paciente e se encontram todos em ") +
+			wstring(L"bom estado. O paciente não apresenta histórico de ") + 
+			wstring(L"doenças cardíacas, diabetes ou outras doenças que ") +
+			wstring(L"requerem atenção especial.");
+	}
+	else if (type == ChartType::PATIENT_NOT_READY) {
+		patientHistory = wstring(L"O paciente sofreu um acidente de moto, que") +
+			wstring(L" resultou em graves lacerações faciais e fratura na ") + 
+			wstring(L"região da sínfise mandibular. Foi realizada limpeza e ") + 
+			wstring(L"foi feito curativo nas feridas na face, mas elas ainda ") +
+			wstring(L"se encontram expostas e com risco considerável de ") + 
+			wstring(L"infecção. O paciente não apresenta histórico de doenças ") +
+			wstring(L"cardíacas, diabetes ou outras doenças que requerem ") +
+			wstring(L"atenção especial.");
+	}
+	else if (type == ChartType::SCARRING_PROBLEM) {
+		patientHistory = wstring(L"O paciente sofreu um acidente de moto, ") +
+			wstring(L"que resultou em lacerações faciais e fratura na região ") +
+			wstring(L"da sínfise mandibular. Os ferimentos superficiais foram ") +
+			wstring(L"tratados na chegada do paciente e se encontram todos em ") +
+			wstring(L"bom estado. O paciente é diabético e está com sua taxa ") +
+			wstring(L"de glicemia alterada.");
+	}
 }

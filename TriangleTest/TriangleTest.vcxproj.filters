@@ -159,6 +159,9 @@
     <ClInclude Include="AssessmentManager.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="simple.frag">
@@ -175,5 +178,8 @@
     <CustomBuild Include="startscreen.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TriangleTest.rc" />
   </ItemGroup>
 </Project>

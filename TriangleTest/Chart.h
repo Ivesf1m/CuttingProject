@@ -3,6 +3,7 @@
 #include <string>
 
 using std::string;
+using std::wstring;
 
 //This enum will indicate the possible types of charts that can be created.
 //PATIENT_READY is a chart for patients that are ready for surgery.
@@ -38,8 +39,8 @@ public:
 	const string& getClinic();
 	void setClinic(const string& clinic);
 
-	const string& getPatientHistory();
-	void setPatientHistory(const string& patientHistory);
+	const wstring& getPatientHistory();
+	void setPatientHistory(const wstring& patientHistory);
 
 private:
 	//Function hat generater chart number, date and patientHistory.
@@ -50,6 +51,6 @@ private:
 	string chartNumber;
 	string date;
 	string clinic;
-	string patientHistory;
+	wstring patientHistory;
 };
 

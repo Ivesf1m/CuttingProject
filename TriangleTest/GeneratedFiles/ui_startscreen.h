@@ -14,9 +14,11 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QFrame>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QTextBrowser>
 #include <QtWidgets/QVBoxLayout>
@@ -81,12 +83,28 @@ public:
     QVBoxLayout *verticalLayout_6;
     QPushButton *reportPageStartButton;
     QPushButton *reportPageExitButton;
+    QWidget *scalpelPage;
+    QTextBrowser *textBrowser_3;
+    QFrame *scalpelFrame;
+    QLabel *scalpelLabel;
+    QWidget *horizontalLayoutWidget;
+    QHBoxLayout *horizontalLayout;
+    QRadioButton *scalpel10;
+    QRadioButton *scalpel11;
+    QRadioButton *scalpel12;
+    QRadioButton *scalpel12d;
+    QRadioButton *scalpel15;
+    QRadioButton *scalpel15c;
+    QWidget *horizontalLayoutWidget_2;
+    QHBoxLayout *horizontalLayout_2;
+    QPushButton *scalpelForwardButton;
+    QPushButton *scalpelBackButton;
 
     void setupUi(QWidget *startScreen)
     {
         if (startScreen->objectName().isEmpty())
             startScreen->setObjectName(QStringLiteral("startScreen"));
-        startScreen->resize(600, 598);
+        startScreen->resize(600, 599);
         stackedWidget = new QStackedWidget(startScreen);
         stackedWidget->setObjectName(QStringLiteral("stackedWidget"));
         stackedWidget->setGeometry(QRect(0, 0, 700, 902));
@@ -294,12 +312,82 @@ public:
         verticalLayout_6->addWidget(reportPageExitButton);
 
         stackedWidget->addWidget(reportPage);
+        scalpelPage = new QWidget();
+        scalpelPage->setObjectName(QStringLiteral("scalpelPage"));
+        textBrowser_3 = new QTextBrowser(scalpelPage);
+        textBrowser_3->setObjectName(QStringLiteral("textBrowser_3"));
+        textBrowser_3->setGeometry(QRect(10, 10, 581, 41));
+        scalpelFrame = new QFrame(scalpelPage);
+        scalpelFrame->setObjectName(QStringLiteral("scalpelFrame"));
+        scalpelFrame->setGeometry(QRect(10, 70, 571, 421));
+        scalpelFrame->setFrameShape(QFrame::StyledPanel);
+        scalpelFrame->setFrameShadow(QFrame::Raised);
+        scalpelLabel = new QLabel(scalpelFrame);
+        scalpelLabel->setObjectName(QStringLiteral("scalpelLabel"));
+        scalpelLabel->setGeometry(QRect(6, 2, 561, 421));
+        horizontalLayoutWidget = new QWidget(scalpelPage);
+        horizontalLayoutWidget->setObjectName(QStringLiteral("horizontalLayoutWidget"));
+        horizontalLayoutWidget->setGeometry(QRect(9, 500, 581, 41));
+        horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        scalpel10 = new QRadioButton(horizontalLayoutWidget);
+        scalpel10->setObjectName(QStringLiteral("scalpel10"));
+
+        horizontalLayout->addWidget(scalpel10);
+
+        scalpel11 = new QRadioButton(horizontalLayoutWidget);
+        scalpel11->setObjectName(QStringLiteral("scalpel11"));
+
+        horizontalLayout->addWidget(scalpel11);
+
+        scalpel12 = new QRadioButton(horizontalLayoutWidget);
+        scalpel12->setObjectName(QStringLiteral("scalpel12"));
+
+        horizontalLayout->addWidget(scalpel12);
+
+        scalpel12d = new QRadioButton(horizontalLayoutWidget);
+        scalpel12d->setObjectName(QStringLiteral("scalpel12d"));
+
+        horizontalLayout->addWidget(scalpel12d);
+
+        scalpel15 = new QRadioButton(horizontalLayoutWidget);
+        scalpel15->setObjectName(QStringLiteral("scalpel15"));
+
+        horizontalLayout->addWidget(scalpel15);
+
+        scalpel15c = new QRadioButton(horizontalLayoutWidget);
+        scalpel15c->setObjectName(QStringLiteral("scalpel15c"));
+
+        horizontalLayout->addWidget(scalpel15c);
+
+        horizontalLayoutWidget_2 = new QWidget(scalpelPage);
+        horizontalLayoutWidget_2->setObjectName(QStringLiteral("horizontalLayoutWidget_2"));
+        horizontalLayoutWidget_2->setGeometry(QRect(10, 550, 581, 41));
+        horizontalLayout_2 = new QHBoxLayout(horizontalLayoutWidget_2);
+        horizontalLayout_2->setSpacing(6);
+        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
+        scalpelForwardButton = new QPushButton(horizontalLayoutWidget_2);
+        scalpelForwardButton->setObjectName(QStringLiteral("scalpelForwardButton"));
+
+        horizontalLayout_2->addWidget(scalpelForwardButton);
+
+        scalpelBackButton = new QPushButton(horizontalLayoutWidget_2);
+        scalpelBackButton->setObjectName(QStringLiteral("scalpelBackButton"));
+
+        horizontalLayout_2->addWidget(scalpelBackButton);
+
+        stackedWidget->addWidget(scalpelPage);
 
         retranslateUi(startScreen);
         QObject::connect(exitButton, SIGNAL(clicked()), startScreen, SLOT(close()));
         QObject::connect(reportPageExitButton, SIGNAL(clicked()), startScreen, SLOT(close()));
 
-        stackedWidget->setCurrentIndex(6);
+        stackedWidget->setCurrentIndex(7);
 
 
         QMetaObject::connectSlotsByName(startScreen);
@@ -343,6 +431,20 @@ public:
         treatmentChoiceLabel->setText(QApplication::translate("startScreen", "Escolha do tratamento:", 0));
         reportPageStartButton->setText(QApplication::translate("startScreen", "In\303\255cio", 0));
         reportPageExitButton->setText(QApplication::translate("startScreen", "Sair", 0));
+        textBrowser_3->setHtml(QApplication::translate("startScreen", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">Selecione a l\303\242mina apropriada para a cirurgia</span></p></body></html>", 0));
+        scalpelLabel->setText(QString());
+        scalpel10->setText(QApplication::translate("startScreen", "10", 0));
+        scalpel11->setText(QApplication::translate("startScreen", "11", 0));
+        scalpel12->setText(QApplication::translate("startScreen", "12", 0));
+        scalpel12d->setText(QApplication::translate("startScreen", "12D", 0));
+        scalpel15->setText(QApplication::translate("startScreen", "15", 0));
+        scalpel15c->setText(QApplication::translate("startScreen", "15C", 0));
+        scalpelForwardButton->setText(QApplication::translate("startScreen", "Avan\303\247ar", 0));
+        scalpelBackButton->setText(QApplication::translate("startScreen", "Voltar", 0));
     } // retranslateUi
 
 };
