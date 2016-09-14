@@ -12,6 +12,16 @@ AssessmentManager::~AssessmentManager()
 {
 }
 
+const string& AssessmentManager::getAntissepticChoiceAssessment()
+{
+	return antissepticChoiceAssessment;
+}
+
+void AssessmentManager::setAntissepticChoiceAssessment(const string& assessment)
+{
+	this->antissepticChoiceAssessment = assessment;
+}
+
 const Chart* AssessmentManager::getChart()
 {
 	return chart;
@@ -20,6 +30,16 @@ const Chart* AssessmentManager::getChart()
 void AssessmentManager::setChart(const Chart* chart)
 {
 	this->chart = chart;
+}
+
+const string& AssessmentManager::getChosenAntisseptic()
+{
+	return chosenAntisseptic;
+}
+
+void AssessmentManager::setChosenAntisseptic(const string& antisseptic)
+{
+	this->chosenAntisseptic = antisseptic;
 }
 
 const string& AssessmentManager::getChosenScalpel()
@@ -65,6 +85,15 @@ void AssessmentManager::setTreatmentType(TreatmentType type)
 void AssessmentManager::assess()
 {
 	assessTreatmentType();
+}
+
+void AssessmentManager::assessAntissepticChoice()
+{
+	if (chosenAntisseptic.compare("pvpi") == 0 ||
+		chosenAntisseptic.compare("clorexidina") == 0)
+		antissepticChoiceAssessment = "Antissepctico escolhido corretamente.";
+	else
+		antissepticChoiceAssessment = "Antissepctico escolhido incorretamente.";
 }
 
 void AssessmentManager::assessScalpelChoice()

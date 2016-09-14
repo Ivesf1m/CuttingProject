@@ -12,6 +12,7 @@
 #define TREATMENT_DECISION_PAGE 5
 #define REPORT_PAGE 6
 #define SCALPEL_PAGE 7
+#define ANTISSEPTICS_PAGE 8
 
 StartScreen::StartScreen(QWidget * parent) 
 	: QWidget(parent), chart(NULL), manager(NULL)
@@ -53,11 +54,38 @@ StartScreen::StartScreen(QWidget * parent)
 		SLOT(toTreatmentDecisionPage()));
 	connect(ui.scalpelForwardButton, SIGNAL(clicked()), this,
 		SLOT(scalpelChoiceAssessment()));
+	//connect(ui.scalpelForwardButton, SIGNAL(clicked()), this,
+		//SLOT(toAntissepticsPage()));
+	connect(ui.antissepticsBackButton, SIGNAL(clicked()), this,
+		SLOT(toScalpelPage()));
+	connect(ui.antissepticsForwardButton, SIGNAL(clicked()), this,
+		SLOT(antissepticChoiceAssessment()));
 }
 
 StartScreen::~StartScreen() {
 	delete chart;
 	delete manager;
+}
+
+void StartScreen::antissepticChoiceAssessment()
+{
+	if (!manager)
+		return;
+
+	if (ui.alcohol70Button->isChecked())
+		manager->setChosenAntisseptic("alcool70");
+	else if (ui.alcohol96Button->isChecked())
+		manager->setChosenAntisseptic("alcool96");
+	else if (ui.clorhexidineButton->isChecked())
+		manager->setChosenAntisseptic("clorexidina");
+	else if (ui.pvpiButton->isChecked())
+		manager->setChosenAntisseptic("pvpi");
+	else {
+		QMessageBox::information(this, "Error!", QString::
+			fromWCharArray(
+			L"Uma das opções de antissépticos deve ser selecionada!"));
+	}
+
 }
 
 void StartScreen::otherIncisionAssessment()
@@ -94,29 +122,46 @@ void StartScreen::noSurgeryAssessment()
 
 void StartScreen::scalpelChoiceAssessment()
 {
-	if (!manager)
-		return;
-
-	string chosenScalpel;
-	if (ui.scalpel10->isChecked())
-		chosenScalpel = "10";
-	else if (ui.scalpel11->isChecked())
-		chosenScalpel = "11";
-	else if (ui.scalpel12->isChecked())
-		chosenScalpel = "12";
-	else if (ui.scalpel12d->isChecked())
-		chosenScalpel = "12d";
-	else if (ui.scalpel15->isChecked())
-		chosenScalpel = "15";
-	else if (ui.scalpel15c->isChecked())
-		chosenScalpel = "15c";
-	else {
-		QMessageBox msgBox;
-		msgBox.setWindowTitle("Error!");
-		msgBox.setText(QString::fromWCharArray(
-			L"Uma das opções de bisturis deve ser selecionada!"));
-		msgBox.show();
+	if (manager) {
+		delete manager;
+		manager = NULL;
 	}
+
+	manager = new AssessmentManager();
+	manager->setChart(chart);
+	manager->setTreatmentType(TreatmentType::SUBMENTAL_INCISION);
+
+	if (ui.scalpel10->isChecked())
+		manager->setChosenScalpel("10");
+	else if (ui.scalpel11->isChecked())
+		manager->setChosenScalpel("11");
+	else if (ui.scalpel12->isChecked())
+		manager->setChosenScalpel("12");
+	else if (ui.scalpel12d->isChecked())
+		manager->setChosenScalpel("12d");
+	else if (ui.scalpel15->isChecked())
+		manager->setChosenScalpel("15");
+	else if (ui.scalpel15c->isChecked())
+		manager->setChosenScalpel("15c");
+	else {
+		QMessageBox::information(this, "Error!", QString::
+			fromWCharArray(L"Uma das opções de bisturis deve ser selecionada!"));
+		return;
+	}
+	toAntissepticsPage();
+}
+
+void StartScreen::toAntissepticsPage()
+{
+	ui.stackedWidget->setCurrentIndex(ANTISSEPTICS_PAGE);
+	ui.alcohol70Label->setPixmap(QPixmap("alcool70.jpg")
+		.scaledToWidth(ui.alcohol70Frame->width()));
+	ui.alcohol96Label->setPixmap(QPixmap("alcool96.jpg").
+		scaledToWidth(ui.alcohol96Frame->width()));
+	ui.clorhexidineLabel->setPixmap(QPixmap("clorhexidina.jpg").
+		scaledToWidth(ui.clorhexidineFrame->width()));
+	ui.pvpiLabel->setPixmap(QPixmap("pvpi.jpg").
+		scaledToWidth(ui.pvpiFrame->width()));
 }
 
 void StartScreen::toChartPage()
@@ -148,8 +193,6 @@ void StartScreen::toChartPage()
 			chart->getChartNumber()));
 		ui.patientHistoryBox->setText(QString::fromStdWString(
 			chart->getPatientHistory()));
-		//ui.patientHistoryBox->setText(QApplication::translate(
-			//"startScreen", chart->getPatientHistory().c_str(), 0));
 	}
 }
 

@@ -99,6 +99,28 @@ public:
     QHBoxLayout *horizontalLayout_2;
     QPushButton *scalpelForwardButton;
     QPushButton *scalpelBackButton;
+    QWidget *antissepticPage;
+    QTextBrowser *textBrowser_4;
+    QWidget *horizontalLayoutWidget_3;
+    QHBoxLayout *horizontalLayout_3;
+    QFrame *alcohol96Frame;
+    QLabel *alcohol96Label;
+    QFrame *pvpiFrame;
+    QLabel *pvpiLabel;
+    QFrame *clorhexidineFrame;
+    QLabel *clorhexidineLabel;
+    QFrame *alcohol70Frame;
+    QLabel *alcohol70Label;
+    QWidget *horizontalLayoutWidget_4;
+    QHBoxLayout *horizontalLayout_4;
+    QRadioButton *alcohol96Button;
+    QRadioButton *pvpiButton;
+    QRadioButton *clorhexidineButton;
+    QRadioButton *alcohol70Button;
+    QWidget *horizontalLayoutWidget_5;
+    QHBoxLayout *horizontalLayout_5;
+    QPushButton *antissepticsForwardButton;
+    QPushButton *antissepticsBackButton;
 
     void setupUi(QWidget *startScreen)
     {
@@ -382,12 +404,117 @@ public:
         horizontalLayout_2->addWidget(scalpelBackButton);
 
         stackedWidget->addWidget(scalpelPage);
+        antissepticPage = new QWidget();
+        antissepticPage->setObjectName(QStringLiteral("antissepticPage"));
+        textBrowser_4 = new QTextBrowser(antissepticPage);
+        textBrowser_4->setObjectName(QStringLiteral("textBrowser_4"));
+        textBrowser_4->setGeometry(QRect(10, 10, 581, 41));
+        horizontalLayoutWidget_3 = new QWidget(antissepticPage);
+        horizontalLayoutWidget_3->setObjectName(QStringLiteral("horizontalLayoutWidget_3"));
+        horizontalLayoutWidget_3->setGeometry(QRect(10, 60, 581, 421));
+        horizontalLayout_3 = new QHBoxLayout(horizontalLayoutWidget_3);
+        horizontalLayout_3->setSpacing(6);
+        horizontalLayout_3->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
+        alcohol96Frame = new QFrame(horizontalLayoutWidget_3);
+        alcohol96Frame->setObjectName(QStringLiteral("alcohol96Frame"));
+        alcohol96Frame->setFrameShape(QFrame::StyledPanel);
+        alcohol96Frame->setFrameShadow(QFrame::Raised);
+        alcohol96Label = new QLabel(alcohol96Frame);
+        alcohol96Label->setObjectName(QStringLiteral("alcohol96Label"));
+        alcohol96Label->setGeometry(QRect(6, 2, 131, 411));
+
+        horizontalLayout_3->addWidget(alcohol96Frame);
+
+        pvpiFrame = new QFrame(horizontalLayoutWidget_3);
+        pvpiFrame->setObjectName(QStringLiteral("pvpiFrame"));
+        pvpiFrame->setFrameShape(QFrame::StyledPanel);
+        pvpiFrame->setFrameShadow(QFrame::Raised);
+        pvpiLabel = new QLabel(pvpiFrame);
+        pvpiLabel->setObjectName(QStringLiteral("pvpiLabel"));
+        pvpiLabel->setGeometry(QRect(6, 2, 131, 411));
+
+        horizontalLayout_3->addWidget(pvpiFrame);
+
+        clorhexidineFrame = new QFrame(horizontalLayoutWidget_3);
+        clorhexidineFrame->setObjectName(QStringLiteral("clorhexidineFrame"));
+        clorhexidineFrame->setFrameShape(QFrame::StyledPanel);
+        clorhexidineFrame->setFrameShadow(QFrame::Raised);
+        clorhexidineLabel = new QLabel(clorhexidineFrame);
+        clorhexidineLabel->setObjectName(QStringLiteral("clorhexidineLabel"));
+        clorhexidineLabel->setGeometry(QRect(6, 2, 131, 411));
+
+        horizontalLayout_3->addWidget(clorhexidineFrame);
+
+        alcohol70Frame = new QFrame(horizontalLayoutWidget_3);
+        alcohol70Frame->setObjectName(QStringLiteral("alcohol70Frame"));
+        alcohol70Frame->setFrameShape(QFrame::StyledPanel);
+        alcohol70Frame->setFrameShadow(QFrame::Raised);
+        alcohol70Label = new QLabel(alcohol70Frame);
+        alcohol70Label->setObjectName(QStringLiteral("alcohol70Label"));
+        alcohol70Label->setGeometry(QRect(6, 2, 131, 411));
+
+        horizontalLayout_3->addWidget(alcohol70Frame);
+
+        horizontalLayoutWidget_4 = new QWidget(antissepticPage);
+        horizontalLayoutWidget_4->setObjectName(QStringLiteral("horizontalLayoutWidget_4"));
+        horizontalLayoutWidget_4->setGeometry(QRect(10, 490, 581, 41));
+        horizontalLayout_4 = new QHBoxLayout(horizontalLayoutWidget_4);
+        horizontalLayout_4->setSpacing(6);
+        horizontalLayout_4->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
+        horizontalLayout_4->setContentsMargins(0, 0, 0, 0);
+        alcohol96Button = new QRadioButton(horizontalLayoutWidget_4);
+        alcohol96Button->setObjectName(QStringLiteral("alcohol96Button"));
+
+        horizontalLayout_4->addWidget(alcohol96Button);
+
+        pvpiButton = new QRadioButton(horizontalLayoutWidget_4);
+        pvpiButton->setObjectName(QStringLiteral("pvpiButton"));
+
+        horizontalLayout_4->addWidget(pvpiButton);
+
+        clorhexidineButton = new QRadioButton(horizontalLayoutWidget_4);
+        clorhexidineButton->setObjectName(QStringLiteral("clorhexidineButton"));
+
+        horizontalLayout_4->addWidget(clorhexidineButton);
+
+        alcohol70Button = new QRadioButton(horizontalLayoutWidget_4);
+        alcohol70Button->setObjectName(QStringLiteral("alcohol70Button"));
+
+        horizontalLayout_4->addWidget(alcohol70Button);
+
+        horizontalLayoutWidget_5 = new QWidget(antissepticPage);
+        horizontalLayoutWidget_5->setObjectName(QStringLiteral("horizontalLayoutWidget_5"));
+        horizontalLayoutWidget_5->setGeometry(QRect(10, 540, 581, 41));
+        horizontalLayout_5 = new QHBoxLayout(horizontalLayoutWidget_5);
+        horizontalLayout_5->setSpacing(6);
+        horizontalLayout_5->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
+        horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
+        antissepticsForwardButton = new QPushButton(horizontalLayoutWidget_5);
+        antissepticsForwardButton->setObjectName(QStringLiteral("antissepticsForwardButton"));
+
+        horizontalLayout_5->addWidget(antissepticsForwardButton);
+
+        antissepticsBackButton = new QPushButton(horizontalLayoutWidget_5);
+        antissepticsBackButton->setObjectName(QStringLiteral("antissepticsBackButton"));
+
+        horizontalLayout_5->addWidget(antissepticsBackButton);
+
+        stackedWidget->addWidget(antissepticPage);
+        textBrowser_4->raise();
+        horizontalLayoutWidget_3->raise();
+        alcohol70Frame->raise();
+        horizontalLayoutWidget_4->raise();
+        horizontalLayoutWidget_5->raise();
 
         retranslateUi(startScreen);
         QObject::connect(exitButton, SIGNAL(clicked()), startScreen, SLOT(close()));
         QObject::connect(reportPageExitButton, SIGNAL(clicked()), startScreen, SLOT(close()));
 
-        stackedWidget->setCurrentIndex(7);
+        stackedWidget->setCurrentIndex(8);
 
 
         QMetaObject::connectSlotsByName(startScreen);
@@ -445,6 +572,21 @@ public:
         scalpel15c->setText(QApplication::translate("startScreen", "15C", 0));
         scalpelForwardButton->setText(QApplication::translate("startScreen", "Avan\303\247ar", 0));
         scalpelBackButton->setText(QApplication::translate("startScreen", "Voltar", 0));
+        textBrowser_4->setHtml(QApplication::translate("startScreen", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">Selecione o antiss\303\251ptico a ser utilizado na cirurgia</span></p></body></html>", 0));
+        alcohol96Label->setText(QString());
+        pvpiLabel->setText(QString());
+        clorhexidineLabel->setText(QString());
+        alcohol70Label->setText(QString());
+        alcohol96Button->setText(QApplication::translate("startScreen", "\303\201lcool 96", 0));
+        pvpiButton->setText(QApplication::translate("startScreen", "PVPI", 0));
+        clorhexidineButton->setText(QApplication::translate("startScreen", "Clorexidina", 0));
+        alcohol70Button->setText(QApplication::translate("startScreen", "\303\201lcool 70", 0));
+        antissepticsForwardButton->setText(QApplication::translate("startScreen", "Avan\303\247ar", 0));
+        antissepticsBackButton->setText(QApplication::translate("startScreen", "Voltar", 0));
     } // retranslateUi
 
 };

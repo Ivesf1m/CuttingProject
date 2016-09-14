@@ -11,9 +11,11 @@ public:
 	~StartScreen();
 
 public slots:
+	void antissepticChoiceAssessment();
 	void otherIncisionAssessment();
 	void noSurgeryAssessment();
 	void scalpelChoiceAssessment();
+	void toAntissepticsPage();
 	void toChartPage();
 	void toCreditsPage();
 	void toInstructionsPage();
