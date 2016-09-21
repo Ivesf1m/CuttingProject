@@ -112,6 +112,21 @@
     <ClCompile Include="AssessmentManager.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="Kernel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="SVM.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="SVMNode.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="SVMCache.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SMOSolver.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mesh.h">
@@ -160,6 +175,21 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Kernel.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SVM.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SVMNode.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SVMCache.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SMOSolver.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>

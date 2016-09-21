@@ -157,11 +157,16 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Kernel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="MeshCutter.cpp" />
     <ClCompile Include="ray.cpp" />
+    <ClCompile Include="SMOSolver.cpp" />
     <ClCompile Include="startscreen.cpp" />
+    <ClCompile Include="SVM.cpp" />
+    <ClCompile Include="SVMCache.cpp" />
+    <ClCompile Include="SVMNode.cpp" />
     <ClCompile Include="triangle.cpp" />
     <ClCompile Include="trianglecutter.cpp" />
     <ClCompile Include="vertex.cpp" />
@@ -176,6 +181,7 @@
     <ClInclude Include="DeformationNode.h" />
     <ClInclude Include="GeneratedFiles\ui_startscreen.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="Kernel.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="MeshCutter.h" />
     <ClInclude Include="ray.h" />
@@ -190,6 +196,10 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_UITOOLS_LIB -DQT_WIDGETS_LIB  "-I." "-IC:\glm\glm" "-IC:\Qt\5.7\msvc2015_64\include" "-IC:\Qt\5.7\msvc2015_64\include\QtGui" "-IC:\Qt\5.7\msvc2015_64\include\QtANGLE" "-IC:\Qt\5.7\msvc2015_64\include\QtCore" "-I.\release" "-IC:\Qt\5.7\msvc2015_64\mkspecs\win32-msvc2015" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtUiTools" "-I$(QTDIR)\include\QtWidgets"</Command>
     </CustomBuild>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SMOSolver.h" />
+    <ClInclude Include="SVM.h" />
+    <ClInclude Include="SVMCache.h" />
+    <ClInclude Include="SVMNode.h" />
     <ClInclude Include="triangle.h" />
     <ClInclude Include="trianglecutter.h" />
     <ClInclude Include="vertex.h" />
