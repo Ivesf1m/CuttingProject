@@ -8,8 +8,12 @@ using std::vector;
 class SMOSolver
 {
 public:
-	SMOSolver();
+	SMOSolver(int numberOfElements, const Kernel* kernel, const 
+		vector<double>& p, const vector<char>& signs, const vector<double>&
+		alpha, double cp, double cn, double stopCondition);
 	~SMOSolver();
+
+	void solve(bool shrinking);
 
 protected:
 	//Solution variables
@@ -25,13 +29,13 @@ protected:
 	};
 
 	int activeSize;
-	vector<char> y;
+	vector<char> signs;
 	vector<double> gradient;
 	vector<SolverStatus> alphaStatus;
 	vector<double> alpha;
 	const Kernel* kernel;
 	vector<double> kernelD;
-	double eps;
+	double stopCondition;
 	double cp; //positive regularization parameter
 	double cn; //negative regularization parameter
 	vector<double> p;

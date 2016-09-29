@@ -98,7 +98,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;C:\glm\glm;C:\Qt\5.7\msvc2015_64\include;C:\Qt\5.7\msvc2015_64\include\QtGui;C:\Qt\5.7\msvc2015_64\include\QtANGLE;C:\Qt\5.7\msvc2015_64\include\QtCore;debug;C:\Qt\5.7\msvc2015_64\mkspecs\win32-msvc2015;.\GeneratedFiles;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtUiTools;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\OpenHaptics\Developer\3.4.0\utilities\include;C:\OpenHaptics\Developer\3.4.0\include;.;C:\glm\glm;C:\Qt\5.7\msvc2015_64\include;C:\Qt\5.7\msvc2015_64\include\QtGui;C:\Qt\5.7\msvc2015_64\include\QtANGLE;C:\Qt\5.7\msvc2015_64\include\QtCore;debug;C:\Qt\5.7\msvc2015_64\mkspecs\win32-msvc2015;.\GeneratedFiles;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtUiTools;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -117,8 +117,8 @@
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Cored.lib;Qt5Guid.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5UiToolsd.lib;Qt5Widgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;C:\Qt\5.7\msvc2015_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Cored.lib;Qt5Guid.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5UiToolsd.lib;Qt5Widgetsd.lib;hd.lib;hl.lib;hdu.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\OpenHaptics\Developer\3.4.0\utilities\lib\x64\Release;C:\OpenHaptics\Developer\3.4.0\lib\x64\Release;$(QTDIR)\lib;C:\Qt\5.7\msvc2015_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -157,6 +157,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="HapticInterface.cpp" />
     <ClCompile Include="Kernel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mesh.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="DeformationNode.h" />
     <ClInclude Include="GeneratedFiles\ui_startscreen.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="HapticInterface.h" />
     <ClInclude Include="Kernel.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="MeshCutter.h" />
@@ -189,7 +191,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing startscreen.hpp...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DWIN64 -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_UITOOLS_LIB -DQT_WIDGETS_LIB  "-I." "-IC:\glm\glm" "-IC:\Qt\5.7\msvc2015_64\include" "-IC:\Qt\5.7\msvc2015_64\include\QtGui" "-IC:\Qt\5.7\msvc2015_64\include\QtANGLE" "-IC:\Qt\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-IC:\Qt\5.7\msvc2015_64\mkspecs\win32-msvc2015" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtUiTools" "-I$(QTDIR)\include\QtWidgets"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DWIN64 -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_UITOOLS_LIB -DQT_WIDGETS_LIB  "-IC:\OpenHaptics\Developer\3.4.0\utilities\include" "-IC:\OpenHaptics\Developer\3.4.0\include" "-I." "-IC:\glm\glm" "-IC:\Qt\5.7\msvc2015_64\include" "-IC:\Qt\5.7\msvc2015_64\include\QtGui" "-IC:\Qt\5.7\msvc2015_64\include\QtANGLE" "-IC:\Qt\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-IC:\Qt\5.7\msvc2015_64\mkspecs\win32-msvc2015" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtUiTools" "-I$(QTDIR)\include\QtWidgets"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing startscreen.hpp...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -206,7 +208,7 @@
     <CustomBuild Include="window.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB -DQT_UITOOLS_LIB -DQT_WIDGETS_LIB  "-I." "-IC:\glm\glm" "-IC:\Qt\5.7\msvc2015_64\include" "-IC:\Qt\5.7\msvc2015_64\include\QtGui" "-IC:\Qt\5.7\msvc2015_64\include\QtANGLE" "-IC:\Qt\5.7\msvc2015_64\include\QtCore" "-I.\release" "-IC:\Qt\5.7\msvc2015_64\mkspecs\win32-msvc2015" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtUiTools" "-I$(QTDIR)\include\QtWidgets"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing window.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DWIN64 -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_UITOOLS_LIB -DQT_WIDGETS_LIB  "-I." "-IC:\glm\glm" "-IC:\Qt\5.7\msvc2015_64\include" "-IC:\Qt\5.7\msvc2015_64\include\QtGui" "-IC:\Qt\5.7\msvc2015_64\include\QtANGLE" "-IC:\Qt\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-IC:\Qt\5.7\msvc2015_64\mkspecs\win32-msvc2015" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtUiTools" "-I$(QTDIR)\include\QtWidgets"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DWIN64 -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB -DQT_UITOOLS_LIB -DQT_WIDGETS_LIB  "-IC:\OpenHaptics\Developer\3.4.0\utilities\include" "-IC:\OpenHaptics\Developer\3.4.0\include" "-I." "-IC:\glm\glm" "-IC:\Qt\5.7\msvc2015_64\include" "-IC:\Qt\5.7\msvc2015_64\include\QtGui" "-IC:\Qt\5.7\msvc2015_64\include\QtANGLE" "-IC:\Qt\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-IC:\Qt\5.7\msvc2015_64\mkspecs\win32-msvc2015" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtUiTools" "-I$(QTDIR)\include\QtWidgets"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing window.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>

@@ -127,6 +127,9 @@
     <ClCompile Include="SMOSolver.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="HapticInterface.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mesh.h">
@@ -190,6 +193,9 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="SMOSolver.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HapticInterface.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
