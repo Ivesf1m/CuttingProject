@@ -6,9 +6,11 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include <QKeyEvent>
+#include <qtimer.h>
 #include "mesh.h"
 #include "CollisionDetector.h"
 #include "CollisionPath.h"
+#include "HapticInterface.h"
 
 using glm::mat4;
 
@@ -35,17 +37,20 @@ class Window : public QOpenGLWindow,
 
     protected slots:
         void teardownGL();
+		void updateHapticInfo();
 
     private:
         QOpenGLBuffer vertexBuffer;
 		QOpenGLBuffer indexBuffer;
         QOpenGLVertexArrayObject vertexArrayObject;
         QOpenGLShaderProgram* shaderProgram;
+		QTimer* timer; //timer for haptic tasks
         Mesh* mesh;
 		Ray* interator;
 		CollisionDetector collisionDetector;
 		CollisionPath path;
 		mat4 mvp;
+		HapticInterface haptic;
 
 		//Private functions
 

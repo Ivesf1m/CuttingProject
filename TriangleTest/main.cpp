@@ -7,11 +7,12 @@
 
 int main(int argc, char* argv[])
 {
-    /*QGuiApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
     QSurfaceFormat format;
     format.setRenderableType(QSurfaceFormat::OpenGL);
     format.setProfile(QSurfaceFormat::CoreProfile);
     format.setVersion(3, 3);
+	format.setDepthBufferSize(24);
 
     //Initializing mesh
 	Mesh mesh;
@@ -23,7 +24,7 @@ int main(int argc, char* argv[])
 
 	//Grid for test
 	Grid grid(1);
-	CollisionPath testPath;
+	/*CollisionPath testPath;
 	vec3 p1(0.3f, 0.1f, 1.0f);
 	vec3 p2(0.8f, 0.9f, 1.0f);
 	testPath.addPoint(p1);
@@ -32,14 +33,14 @@ int main(int argc, char* argv[])
 	testPath.addIndex(3);
 	grid.cut(testPath);*/
 
-	QApplication app(argc, argv);
+	/*QApplication app(argc, argv);
 	StartScreen sscreen;
-	sscreen.show();
+	sscreen.show();*/
 
-    /*Window window;
+    Window window;
     window.setMesh(&grid);
     window.setFormat(format);
     window.resize(QSize(800, 600));
-    window.show();*/
+    window.show();
 	return app.exec();
 }

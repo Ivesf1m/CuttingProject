@@ -121,9 +121,6 @@
     <ClCompile Include="SVMNode.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="SVMCache.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="SMOSolver.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
@@ -187,9 +184,6 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="SVMNode.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SVMCache.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="SMOSolver.h">

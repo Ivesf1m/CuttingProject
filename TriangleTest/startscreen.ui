@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>5</number>
    </property>
    <widget class="QWidget" name="startPage">
     <widget class="QFrame" name="startFrame">
@@ -305,8 +305,8 @@
     <widget class="QPushButton" name="chartPageForwardButton">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>550</y>
+       <x>480</x>
+       <y>540</y>
        <width>75</width>
        <height>23</height>
       </rect>
@@ -318,8 +318,8 @@
     <widget class="QPushButton" name="chartPageBackButton">
      <property name="geometry">
       <rect>
-       <x>450</x>
-       <y>550</y>
+       <x>40</x>
+       <y>540</y>
        <width>75</width>
        <height>23</height>
       </rect>
@@ -348,16 +348,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="otherIncisionButton">
-        <property name="text">
-         <string>Seguir para a cirurgia, utilizando outro tipo de incisão</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="noSurgeryButton">
         <property name="text">
-         <string>O paciente não deve passar por cirurgia no momento</string>
+         <string>Outro plano de tratamento deve ser utilizado</string>
         </property>
        </widget>
       </item>
@@ -580,16 +573,16 @@ p, li { white-space: pre-wrap; }
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QPushButton" name="scalpelForwardButton">
+       <widget class="QPushButton" name="scalpelBackButton">
         <property name="text">
-         <string>Avançar</string>
+         <string>Voltar</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="scalpelBackButton">
+       <widget class="QPushButton" name="scalpelForwardButton">
         <property name="text">
-         <string>Voltar</string>
+         <string>Avançar</string>
         </property>
        </widget>
       </item>
@@ -769,26 +762,21 @@ p, li { white-space: pre-wrap; }
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
-       <widget class="QPushButton" name="antissepticsForwardButton">
-        <property name="text">
-         <string>Avançar</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="antissepticsBackButton">
         <property name="text">
          <string>Voltar</string>
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="antissepticsForwardButton">
+        <property name="text">
+         <string>Avançar</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
-    <zorder>textBrowser_4</zorder>
-    <zorder>horizontalLayoutWidget_3</zorder>
-    <zorder>alcohol70Frame</zorder>
-    <zorder>horizontalLayoutWidget_4</zorder>
-    <zorder>horizontalLayoutWidget_5</zorder>
    </widget>
   </widget>
  </widget>

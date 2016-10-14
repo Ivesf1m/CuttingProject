@@ -91,7 +91,7 @@ void CollisionDetector::testCollision()
 		collided = collided || akenineMollerCollisionTest(i);
 	}
 
-	if (collided) {
+	/*if (collided) {
 		cout << "Houve colisao!" << endl;
 		cout << "Ponto de colisao: " << collisionPoint.x << "\t";
 		cout << collisionPoint.y << "\t" << collisionPoint.z << endl;
@@ -99,7 +99,7 @@ void CollisionDetector::testCollision()
 	else {
 		cout << "Nao houve colisao" << endl;
 	}
-	cout << endl;
+	cout << endl;*/
 }
 
 bool CollisionDetector::hasCollided()

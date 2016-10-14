@@ -1,5 +1,6 @@
 #include "HapticInterface.h"
 #include <iostream>
+#include <GL\GL.h>
 
 using std::cerr;
 using std::cout;
@@ -9,6 +10,7 @@ typedef struct {
 	HDint flag;
 	HDdouble data[3];
 } UpdateStructure;
+
 
 HapticInterface::HapticInterface()
 	: device(HD_INVALID_HANDLE), context(0), enabled(false),
@@ -84,12 +86,22 @@ HHD HapticInterface::getDevice()
 	return device;
 }
 
-void HapticInterface::getDevicePosition(vec3& position)
+vec3& HapticInterface::getDevicePosition()
 {
-	HLdouble aux[3];
+	HLdouble aux[4];
 	hlGetDoublev(HL_DEVICE_POSITION, aux);
+	aux[3] = 1.0;
+	vec4 wpos;
+
+	for (int i = 0; i < 4; ++i)
+		wpos[i] = static_cast<float>(aux[i]);
+
+	wpos = wpos * workspaceMatrix;
+
 	for (int i = 0; i < 3; ++i)
-		position[i] = static_cast<float>(aux[i]);
+		position[i] = wpos[i];
+
+	return position;
 }
 
 void HapticInterface::getDeviceRotation(vec3& rotation)
@@ -102,20 +114,24 @@ void HapticInterface::getDeviceRotation(vec3& rotation)
 
 void HapticInterface::getForceIntensity(vec3& force)
 {
-	updateState(0);
-	force = this->force;
+	updateState(0, force);
+	this->force = force;
 }
 
 void HapticInterface::getLastProxyPosition(vec3& lastPosition)
 {
-	updateState(5);
-	lastPosition = this->position;
+	updateState(5, lastPosition);
+}
+
+vec3& HapticInterface::getPosition()
+{
+	return position;
 }
 
 void HapticInterface::getProxyPosition(vec3& position)
 {
-	updateState(1);
-	position = this->position;
+	updateState(1, position);
+	this->position = position;
 }
 
 double HapticInterface::getScaleFactor()
@@ -146,8 +162,11 @@ void HapticInterface::initializeHL()
 
 	context = hlCreateContext(device);
 	hlMakeCurrent(context);
-	hlTouchableFace(HL_FRONT);
-	hlEnable(HL_HAPTIC_CAMERA_VIEW);
+	hlTouchableFace(HL_FRONT_AND_BACK);
+	hdEnable(HD_FORCE_OUTPUT);
+	hdStartScheduler();
+	//contextCreated = true;
+	//hlEnable(HL_HAPTIC_CAMERA_VIEW);
 }
 
 bool HapticInterface::isEnabled()
@@ -176,31 +195,39 @@ void HapticInterface::setAnchorPosition(const vec3& anchor)
 	this->anchor = anchor;
 }
 
-/*HDCallbackCode HDCALLBACK HapticInterface::setForce(void* userData)
+void HapticInterface::setForce(const vec3& force)
 {
-	HDdouble faux[3];
-	float anchorStiffness = 0.1f;
-	hdBeginFrame(device);
-	hdGetDoublev(HD_CURRENT_POSITION, faux);
-
+	UpdateStructure us;
+	us.flag = HD_CURRENT_FORCE;
 	for (int i = 0; i < 3; ++i)
-		force[i] = static_cast<float>(faux[i]);
+		us.data[i] = force[i];
 
-	force = position - anchor;
-	force = force * anchorStiffness;
+	hdScheduleSynchronous(setForce, &us, HD_MAX_SCHEDULER_PRIORITY);
+}
 
-	for (int i = 0; i < 3; ++i)
-		faux[i] = force[i];
+HDCallbackCode HDCALLBACK HapticInterface::setForce(void* userData)
+{
+	UpdateStructure* us = static_cast<UpdateStructure*>(userData);
 
-	hdSetDoublev(HD_CURRENT_FORCE, faux);
-	hdEndFrame(device);
+	hdSetDoublev(HD_CURRENT_FORCE, us->data);
 	return HD_CALLBACK_DONE;
-}*/
+}
+
+void HapticInterface::setModelviewMatrix(const mat4& modelview)
+{
+	this->modelview = modelview;
+}
+
+void HapticInterface::setProjectionMatrix(const mat4& projection)
+{
+	this->projection = projection;
+}
 
 void HapticInterface::terminateHL()
 {
 	hlMakeCurrent(NULL);
 	hlDeleteContext(context);
+	hdStopScheduler();
 	hdDisableDevice(device);
 	device = HD_INVALID_HANDLE;	
 }
@@ -214,38 +241,42 @@ HDCallbackCode HDCALLBACK HapticInterface::updateCalibration(void* userData)
 	return HD_CALLBACK_DONE;
 }
 
-void HapticInterface::updateHapticWorkspace(const mat4& modelview, 
-	const mat4& projection, const vec4& viewport)
+void HapticInterface::updateHapticWorkspace()
 {
-	double mv[16], p[16];
+	double mv[4][4], p[4][4];
 	HDdouble wMatrix[16];
 	int vp[4];
 
+	glGetIntegerv(GL_VIEWPORT, vp);
+
 	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; i < 4; ++j) {
-			mv[i] = modelview[i][j];
-			p[i] = projection[i][j];
+		for (int j = 0; j < 4; ++j) {
+			mv[i][j] = modelview[i][j];
+			p[i][j] = projection[i][j];
 		}
-		vp[i] = static_cast<int>(viewport[i]);
 	}
 
-	hlWorkspace(-80, -80, -80, 80, 80, 80);
+	hlWorkspace(-1, -1, -1, 1, 1, 1);
 	hlMatrixMode(HL_TOUCHWORKSPACE);
-	hduMapWorkspaceModel(mv, p, wMatrix);
+	hduMapWorkspaceModel(&(mv[0][0]), &(p[0][0]), wMatrix);
 	scaleFactor = cursorPixelSize *
-		hduScreenToWorkspaceScale(mv, p, vp, wMatrix);
+		hduScreenToWorkspaceScale(&(mv[0][0]), &(p[0][0]), vp, wMatrix);
 
 	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; i < 4; ++j) {
+		for (int j = 0; j < 4; ++j) {
 			workspaceMatrix[i][j] = static_cast<float>(wMatrix[4 * i + j]);
 		}
 	}
 }
 
-void HapticInterface::updateState(int flag)
+void HapticInterface::updateState(int flag, vec3& data)
 {
 	updateFlag = flag;
 	UpdateStructure us;
 	us.flag = updateFlag;
+
 	hdScheduleSynchronous(stateCallback, &us, HD_MIN_SCHEDULER_PRIORITY);
+
+	for (int i = 0; i < 3; ++i)
+		data[i] = static_cast<float>(us.data[i]);
 }

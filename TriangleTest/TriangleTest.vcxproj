@@ -118,7 +118,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Cored.lib;Qt5Guid.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5UiToolsd.lib;Qt5Widgetsd.lib;hd.lib;hl.lib;hdu.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\OpenHaptics\Developer\3.4.0\utilities\lib\x64\Release;C:\OpenHaptics\Developer\3.4.0\lib\x64\Release;$(QTDIR)\lib;C:\Qt\5.7\msvc2015_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\OpenHaptics\Developer\3.4.0\utilities\lib\x64\Debug;C:\OpenHaptics\Developer\3.4.0\lib\x64\Release;$(QTDIR)\lib;C:\Qt\5.7\msvc2015_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -166,7 +166,6 @@
     <ClCompile Include="SMOSolver.cpp" />
     <ClCompile Include="startscreen.cpp" />
     <ClCompile Include="SVM.cpp" />
-    <ClCompile Include="SVMCache.cpp" />
     <ClCompile Include="SVMNode.cpp" />
     <ClCompile Include="triangle.cpp" />
     <ClCompile Include="trianglecutter.cpp" />
@@ -200,7 +199,6 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="SMOSolver.h" />
     <ClInclude Include="SVM.h" />
-    <ClInclude Include="SVMCache.h" />
     <ClInclude Include="SVMNode.h" />
     <ClInclude Include="triangle.h" />
     <ClInclude Include="trianglecutter.h" />

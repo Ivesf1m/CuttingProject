@@ -42,10 +42,6 @@ StartScreen::StartScreen(QWidget * parent)
 		SLOT(toReportPage()));
 	connect(ui.noSurgeryButton, SIGNAL(clicked()), this,
 		SLOT(noSurgeryAssessment()));
-	connect(ui.otherIncisionButton, SIGNAL(clicked()), this,
-		SLOT(toReportPage()));
-	connect(ui.otherIncisionButton, SIGNAL(clicked()), this,
-		SLOT(otherIncisionAssessment()));
 	connect(ui.reportPageStartButton, SIGNAL(clicked()), this,
 		SLOT(toStartPageFromReport()));
 	connect(ui.submentalIncisionButton, SIGNAL(clicked()), this,

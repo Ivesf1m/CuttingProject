@@ -71,7 +71,6 @@ public:
     QWidget *verticalLayoutWidget_4;
     QVBoxLayout *verticalLayout_5;
     QPushButton *submentalIncisionButton;
-    QPushButton *otherIncisionButton;
     QPushButton *noSurgeryButton;
     QTextBrowser *textBrowser;
     QPushButton *backToChartButton;
@@ -97,8 +96,8 @@ public:
     QRadioButton *scalpel15c;
     QWidget *horizontalLayoutWidget_2;
     QHBoxLayout *horizontalLayout_2;
-    QPushButton *scalpelForwardButton;
     QPushButton *scalpelBackButton;
+    QPushButton *scalpelForwardButton;
     QWidget *antissepticPage;
     QTextBrowser *textBrowser_4;
     QWidget *horizontalLayoutWidget_3;
@@ -119,8 +118,8 @@ public:
     QRadioButton *alcohol70Button;
     QWidget *horizontalLayoutWidget_5;
     QHBoxLayout *horizontalLayout_5;
-    QPushButton *antissepticsForwardButton;
     QPushButton *antissepticsBackButton;
+    QPushButton *antissepticsForwardButton;
 
     void setupUi(QWidget *startScreen)
     {
@@ -264,10 +263,10 @@ public:
         patientHistoryBox->setGeometry(QRect(10, 160, 571, 321));
         chartPageForwardButton = new QPushButton(chartPage);
         chartPageForwardButton->setObjectName(QStringLiteral("chartPageForwardButton"));
-        chartPageForwardButton->setGeometry(QRect(60, 550, 75, 23));
+        chartPageForwardButton->setGeometry(QRect(480, 540, 75, 23));
         chartPageBackButton = new QPushButton(chartPage);
         chartPageBackButton->setObjectName(QStringLiteral("chartPageBackButton"));
-        chartPageBackButton->setGeometry(QRect(450, 550, 75, 23));
+        chartPageBackButton->setGeometry(QRect(40, 540, 75, 23));
         stackedWidget->addWidget(chartPage);
         treatmentDecisionPage = new QWidget();
         treatmentDecisionPage->setObjectName(QStringLiteral("treatmentDecisionPage"));
@@ -283,11 +282,6 @@ public:
         submentalIncisionButton->setObjectName(QStringLiteral("submentalIncisionButton"));
 
         verticalLayout_5->addWidget(submentalIncisionButton);
-
-        otherIncisionButton = new QPushButton(verticalLayoutWidget_4);
-        otherIncisionButton->setObjectName(QStringLiteral("otherIncisionButton"));
-
-        verticalLayout_5->addWidget(otherIncisionButton);
 
         noSurgeryButton = new QPushButton(verticalLayoutWidget_4);
         noSurgeryButton->setObjectName(QStringLiteral("noSurgeryButton"));
@@ -393,15 +387,15 @@ public:
         horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
-        scalpelForwardButton = new QPushButton(horizontalLayoutWidget_2);
-        scalpelForwardButton->setObjectName(QStringLiteral("scalpelForwardButton"));
-
-        horizontalLayout_2->addWidget(scalpelForwardButton);
-
         scalpelBackButton = new QPushButton(horizontalLayoutWidget_2);
         scalpelBackButton->setObjectName(QStringLiteral("scalpelBackButton"));
 
         horizontalLayout_2->addWidget(scalpelBackButton);
+
+        scalpelForwardButton = new QPushButton(horizontalLayoutWidget_2);
+        scalpelForwardButton->setObjectName(QStringLiteral("scalpelForwardButton"));
+
+        horizontalLayout_2->addWidget(scalpelForwardButton);
 
         stackedWidget->addWidget(scalpelPage);
         antissepticPage = new QWidget();
@@ -493,28 +487,23 @@ public:
         horizontalLayout_5->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
         horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
-        antissepticsForwardButton = new QPushButton(horizontalLayoutWidget_5);
-        antissepticsForwardButton->setObjectName(QStringLiteral("antissepticsForwardButton"));
-
-        horizontalLayout_5->addWidget(antissepticsForwardButton);
-
         antissepticsBackButton = new QPushButton(horizontalLayoutWidget_5);
         antissepticsBackButton->setObjectName(QStringLiteral("antissepticsBackButton"));
 
         horizontalLayout_5->addWidget(antissepticsBackButton);
 
+        antissepticsForwardButton = new QPushButton(horizontalLayoutWidget_5);
+        antissepticsForwardButton->setObjectName(QStringLiteral("antissepticsForwardButton"));
+
+        horizontalLayout_5->addWidget(antissepticsForwardButton);
+
         stackedWidget->addWidget(antissepticPage);
-        textBrowser_4->raise();
-        horizontalLayoutWidget_3->raise();
-        alcohol70Frame->raise();
-        horizontalLayoutWidget_4->raise();
-        horizontalLayoutWidget_5->raise();
 
         retranslateUi(startScreen);
         QObject::connect(exitButton, SIGNAL(clicked()), startScreen, SLOT(close()));
         QObject::connect(reportPageExitButton, SIGNAL(clicked()), startScreen, SLOT(close()));
 
-        stackedWidget->setCurrentIndex(8);
+        stackedWidget->setCurrentIndex(5);
 
 
         QMetaObject::connectSlotsByName(startScreen);
@@ -541,8 +530,7 @@ public:
         chartPageForwardButton->setText(QApplication::translate("startScreen", "Avan\303\247ar", 0));
         chartPageBackButton->setText(QApplication::translate("startScreen", "Voltar", 0));
         submentalIncisionButton->setText(QApplication::translate("startScreen", "Seguir para a cirurgia, utilizando incis\303\243o submentoniana", 0));
-        otherIncisionButton->setText(QApplication::translate("startScreen", "Seguir para a cirurgia, utilizando outro tipo de incis\303\243o", 0));
-        noSurgeryButton->setText(QApplication::translate("startScreen", "O paciente n\303\243o deve passar por cirurgia no momento", 0));
+        noSurgeryButton->setText(QApplication::translate("startScreen", "Outro plano de tratamento deve ser utilizado", 0));
         textBrowser->setHtml(QApplication::translate("startScreen", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -570,8 +558,8 @@ public:
         scalpel12d->setText(QApplication::translate("startScreen", "12D", 0));
         scalpel15->setText(QApplication::translate("startScreen", "15", 0));
         scalpel15c->setText(QApplication::translate("startScreen", "15C", 0));
-        scalpelForwardButton->setText(QApplication::translate("startScreen", "Avan\303\247ar", 0));
         scalpelBackButton->setText(QApplication::translate("startScreen", "Voltar", 0));
+        scalpelForwardButton->setText(QApplication::translate("startScreen", "Avan\303\247ar", 0));
         textBrowser_4->setHtml(QApplication::translate("startScreen", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -585,8 +573,8 @@ public:
         pvpiButton->setText(QApplication::translate("startScreen", "PVPI", 0));
         clorhexidineButton->setText(QApplication::translate("startScreen", "Clorexidina", 0));
         alcohol70Button->setText(QApplication::translate("startScreen", "\303\201lcool 70", 0));
-        antissepticsForwardButton->setText(QApplication::translate("startScreen", "Avan\303\247ar", 0));
         antissepticsBackButton->setText(QApplication::translate("startScreen", "Voltar", 0));
+        antissepticsForwardButton->setText(QApplication::translate("startScreen", "Avan\303\247ar", 0));
     } // retranslateUi
 
 };

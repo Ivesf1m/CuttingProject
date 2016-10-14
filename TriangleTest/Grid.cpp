@@ -37,7 +37,7 @@ void Grid::createGrid()
 		cerr << "Error: grid dimension cannot be 0 or negative." << endl;
 		exit(1);
 	}
-	float z = 1.0f;	
+	float z = 0.0f;	
 
 	vector<vec3> vertexVector;
 
