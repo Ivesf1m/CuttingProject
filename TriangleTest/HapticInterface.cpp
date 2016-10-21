@@ -1,6 +1,7 @@
 #include "HapticInterface.h"
 #include <iostream>
 #include <GL\GL.h>
+#include <HDU\hduError.h>
 
 using std::cerr;
 using std::cout;
@@ -10,7 +11,6 @@ typedef struct {
 	HDint flag;
 	HDdouble data[3];
 } UpdateStructure;
-
 
 HapticInterface::HapticInterface()
 	: device(HD_INVALID_HANDLE), context(0), enabled(false),
@@ -88,6 +88,7 @@ HHD HapticInterface::getDevice()
 
 vec3& HapticInterface::getDevicePosition()
 {
+	
 	HLdouble aux[4];
 	hlGetDoublev(HL_DEVICE_POSITION, aux);
 	aux[3] = 1.0;
@@ -112,26 +113,9 @@ void HapticInterface::getDeviceRotation(vec3& rotation)
 		rotation[i] = static_cast<float>(aux[i]);
 }
 
-void HapticInterface::getForceIntensity(vec3& force)
-{
-	updateState(0, force);
-	this->force = force;
-}
-
-void HapticInterface::getLastProxyPosition(vec3& lastPosition)
-{
-	updateState(5, lastPosition);
-}
-
 vec3& HapticInterface::getPosition()
 {
 	return position;
-}
-
-void HapticInterface::getProxyPosition(vec3& position)
-{
-	updateState(1, position);
-	this->position = position;
 }
 
 double HapticInterface::getScaleFactor()
@@ -164,9 +148,6 @@ void HapticInterface::initializeHL()
 	hlMakeCurrent(context);
 	hlTouchableFace(HL_FRONT_AND_BACK);
 	hdEnable(HD_FORCE_OUTPUT);
-	hdStartScheduler();
-	//contextCreated = true;
-	//hlEnable(HL_HAPTIC_CAMERA_VIEW);
 }
 
 bool HapticInterface::isEnabled()
@@ -174,20 +155,53 @@ bool HapticInterface::isEnabled()
 	return (device != HD_INVALID_HANDLE);
 }
 
+HDCallbackCode HDCALLBACK HapticInterface::mainHapticCallback(void* data)
+{
+	HapticInterface* hapticData = (HapticInterface*)data;
+
+	hdBeginFrame(hapticData->getDevice());
+
+	HDdouble position[4];
+	hdGetDoublev(HD_CURRENT_POSITION, position);
+	position[3] = 1.0;
+
+	vec4 wpos;
+	for (int i = 0; i < 4; ++i)
+		wpos[i] = static_cast<float>(position[i]);
+
+	wpos = wpos * hapticData->workspaceMatrix;
+
+	hapticData->position = vec3(wpos[0], wpos[1], wpos[2]);
+	hapticData->interator->setOrigin(hapticData->position);
+	hapticData->colDetector->testCollision();
+
+	HDdouble force[3];
+	force[0] = force[1] = 0.0;
+	force[2] = 0.0;
+	if (hapticData->colDetector->hasCollided()) {
+		force[2] = 1.0;		
+	}
+	else {
+		//cout << " nao colidiu" << endl;
+	}
+
+	hdSetDoublev(HD_CURRENT_FORCE, force);
+
+	hdEndFrame(hapticData->getDevice());
+
+	HDErrorInfo error;
+	if (HD_DEVICE_ERROR(error = hdGetError())) {
+		hduPrintError(stderr, &error, "Erro no callback haptico");
+		if (hduIsSchedulerError(&error))
+			return HD_CALLBACK_DONE;
+	}
+
+	return HD_CALLBACK_CONTINUE;
+}
+
 void HapticInterface::showDeviceInformation()
 {
 	cout << "Dispositivo: " << hdGetString(HD_DEVICE_MODEL_TYPE) << endl;
-}
-
-HDCallbackCode HDCALLBACK HapticInterface::stateCallback(void* userData)
-{
-	UpdateStructure* us = static_cast<UpdateStructure*>(userData);
-	if (us->flag == 0) 
-		hdGetDoublev(HD_CURRENT_FORCE, us->data);
-	else if (us->flag == 1)
-		hdGetDoublev(HD_CURRENT_POSITION, us->data);
-
-	return HD_CALLBACK_DONE;
 }
 
 void HapticInterface::setAnchorPosition(const vec3& anchor)
@@ -195,20 +209,38 @@ void HapticInterface::setAnchorPosition(const vec3& anchor)
 	this->anchor = anchor;
 }
 
+void HapticInterface::setCollisionDetector(CollisionDetector* detector)
+{
+	this->colDetector = detector;
+}
+
+void HapticInterface::setInterator(Ray* interator)
+{
+	this->interator = interator;
+}
+
 void HapticInterface::setForce(const vec3& force)
 {
+	hdBeginFrame(device);
+	
 	UpdateStructure us;
 	us.flag = HD_CURRENT_FORCE;
 	for (int i = 0; i < 3; ++i)
 		us.data[i] = force[i];
 
 	hdScheduleSynchronous(setForce, &us, HD_MAX_SCHEDULER_PRIORITY);
+
+	hdEndFrame(device);
+
+	HDErrorInfo error;
+	if (HD_DEVICE_ERROR(error = hdGetError())) {
+		cerr << "Erro no callback da forca. Codigo: " << error.errorCode << endl;		
+	}
 }
 
 HDCallbackCode HDCALLBACK HapticInterface::setForce(void* userData)
 {
 	UpdateStructure* us = static_cast<UpdateStructure*>(userData);
-
 	hdSetDoublev(HD_CURRENT_FORCE, us->data);
 	return HD_CALLBACK_DONE;
 }
@@ -267,16 +299,4 @@ void HapticInterface::updateHapticWorkspace()
 			workspaceMatrix[i][j] = static_cast<float>(wMatrix[4 * i + j]);
 		}
 	}
-}
-
-void HapticInterface::updateState(int flag, vec3& data)
-{
-	updateFlag = flag;
-	UpdateStructure us;
-	us.flag = updateFlag;
-
-	hdScheduleSynchronous(stateCallback, &us, HD_MIN_SCHEDULER_PRIORITY);
-
-	for (int i = 0; i < 3; ++i)
-		data[i] = static_cast<float>(us.data[i]);
 }

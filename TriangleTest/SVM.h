@@ -12,13 +12,15 @@ class SVM
 public:
 	SVM(int numberOfClasses = 0, double cacheSize = 0,
 		double stopCondition = 0, bool shrinking = false,
-		bool probability = false, double regParameters = 0.0,
-		int numberOfWeights = 0, Kernel* kernel = NULL);
+		double regParameter = 0.0, int numberOfWeights = 0,
+		Kernel* kernel = NULL);
 	~SVM();
 
-	virtual void crossValidate(int numberOfFolds) = 0;
-	void solve(int numberOfElements, double* values, SupportVector* nodes,
-		SMOSolver& solver);
+	void crossValidate(int numberOfElements, double* values, SupportVector* nodes,
+		int numberOfFolds, vector<double>& output);
+	double predict(int numberOfElements, SupportVector& sv);
+	void solve(int numberOfElements, double* values, double& cp, double& cn,
+		vector<double>& alpha, double& rho);
 	void train(int numberOfElements, double* values, SupportVector* nodes);
 
 	//Getters and Setters
@@ -34,9 +36,6 @@ public:
 	double getStopCondition();
 	void setStopCondition(double condition);
 
-	bool isProbability();
-	void setProbability(bool probability);
-
 	bool isShrinking();
 	void setShrinking(bool shrinking);
 
@@ -48,9 +47,13 @@ public:
 
 private:
 	vector<SupportVector> supportVectors;
-	Kernel* kernel;
+	vector< vector<double> > supportVectorCoefs;
+	vector<double> rho;
+	vector<int> trainingSetIndices;
 	int numberOfClasses;
 	vector<int> classLabels;
+	vector<int> svPerClass;
+	Kernel* kernel;
 	double cacheSize;
 	int numberOfWeights;
 	vector<int> weightLabels;
@@ -58,13 +61,13 @@ private:
 	double regularizationParameter;
 	double stopCondition;
 	bool shrinking;
-	bool probability;
 
-	void groupClasses(int numberOfElements, double* values, SupportVector*
-		nodes, vector<int>& startVector, vector<int>& classCount, 
-		vector<int>& originalIndices);
-	void train(int numberOfElements, double* values, SupportVector* nodes,
-		SMOSolver& solver);
+	void groupClasses(int numberOfElements, double* values, vector<int>&
+		startVector, vector<int>& classCount, vector<int>& originalIndices);
+	double predictValues(int numberOfElements, SupportVector& sv, 
+		vector<double>& predictedValues);
+	void train(int numberOfElements, double* values, double cp, double cn,
+		vector<double>& alphas, double& rho);
 
 };
 

@@ -13,7 +13,7 @@ float Window::interatorY = 0.0f;
 Window::Window()
 	: mesh(NULL), interator(NULL), collisionDetector(NULL, NULL)
 {
-	timer = new QTimer(this);
+
 }
 
 void Window::initializeGL()
@@ -73,8 +73,11 @@ void Window::initializeGL()
 	//Initializaing haptic device
 	haptic.initializeHL();
 	haptic.updateHapticWorkspace();
-	connect(timer, SIGNAL(timeout()), this, SLOT(updateHapticInfo()));
-	timer->start(1);
+	haptic.setInterator(interator);
+	haptic.setCollisionDetector(&collisionDetector);
+	handle = hdScheduleAsynchronous(HapticInterface::mainHapticCallback,
+		&haptic, HD_MAX_SCHEDULER_PRIORITY);
+	hdStartScheduler();
 }
 
 void Window::resizeGL(int width, int height)
@@ -96,17 +99,13 @@ void Window::paintGL()
 
 void Window::teardownGL()
 {
-
-	cout << "entrou no teardown" << endl;
 	vertexArrayObject.destroy();
     vertexBuffer.destroy();
 	indexBuffer.destroy();
-	//haptic.terminateThread();
 	haptic.terminateHL();
-	delete timer;
+	hdUnschedule(handle);
     delete shaderProgram;
 	delete interator;
-	cout << "saiu do teardown" << endl;
 }
 
 void Window::setMesh(Mesh* mesh)
@@ -195,34 +194,4 @@ void Window::printVersionInformation()
     }
 
     qDebug() << qPrintable(glType) << qPrintable(glVersion) << "(" << qPrintable(glProfile) << ")";
-}
-
-void Window::updateHapticInfo()
-{
-	hlBeginFrame();
-
-	vec3 position;
-	position = haptic.getDevicePosition();
-	//cout << position[0] << "\t" << position[1] <<
-		//"\t" << position[2] << endl;
-
-	interator->setOrigin(position);
-	collisionDetector.testCollision();
-	if (collisionDetector.hasCollided()) {
-		haptic.setForce(vec3(0, 0, -1));
-		vec3 force;
-		haptic.getForceIntensity(force);
-		vec3 collisionPoint = collisionDetector.getCollisionPoint();
-		//cout << "Forca: " << force[0] << "\t" << force[1] <<
-			//"\t" << force[2] << endl;
-	}
-	else {
-		haptic.setForce(vec3(1, 1, 1));
-	}
-
-	hlEndFrame();
-
-	cout << "passei aqui" << endl;
-
-	//paintGL();
 }

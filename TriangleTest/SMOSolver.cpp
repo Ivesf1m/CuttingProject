@@ -4,18 +4,20 @@
 #include <utility>
 
 SMOSolver::SMOSolver(int numberOfElements, Kernel* kernel, const
-	vector<double>& p, const vector<char>& signs, const vector<double>&
-	alpha, double cp, double cn, double stopCondition)
+	vector<double>& p, const vector<char>& signs, 
+	double cp, double cn, double stopCondition)
 	: numberOfElements(numberOfElements), kernel(kernel), p(p),
-	signs(signs), alpha(alpha), cp(cp), cn(cn), stopCondition(stopCondition),
+	signs(signs), cp(cp), cn(cn), stopCondition(stopCondition),
 	expand(false)
 {
+	alpha.reserve(numberOfElements);
 	alphaStatus.reserve(numberOfElements);
 	activeSet.reserve(numberOfElements);
 	gradient.reserve(numberOfElements);
 	freeGradient.reserve(numberOfElements);
 	activeSize = numberOfElements;
 	for (int i = 0; i < numberOfElements; ++i) {
+		alpha[i] = 0.0;
 		updateAlphaStatus(i);
 		activeSet[i] = i;
 		gradient[i] = p[i];
@@ -95,6 +97,11 @@ double SMOSolver::getRegularizationParameter(int index)
 	return cn;
 }
 
+double SMOSolver::getRho()
+{
+	return rho;
+}
+
 bool SMOSolver::isFree(int index)
 {
 	return (alphaStatus[index] == SolverStatus::FREE);
@@ -143,7 +150,7 @@ void SMOSolver::reconstructGradient()
 				vector<float> column;
 				kernel->getColumn(numberOfElements, i, column);
 				for (int j = activeSize; j < numberOfElements; ++j)
-					gradient[j] = alpha[i] * column[j];
+					gradient[j] += alpha[i] * column[j];
 			}
 	}
 
@@ -352,12 +359,14 @@ void SMOSolver::solve(bool shrinking)
 				alpha[index2] = -difference;
 			}
 
-			if ((difference > (index1RegPar - index2RegPar)) &&
+			double cdiff = index1RegPar - index2RegPar;
+
+			if ((difference > cdiff) &&
 				(alpha[index1] > index1RegPar)) {
 				alpha[index1] = index1RegPar;
 				alpha[index2] = index1RegPar - difference;
 			}
-			else if ((difference <= (index1RegPar - index2RegPar)) &&
+			else if ((difference <= cdiff) &&
 				(alpha[index2] > index2RegPar)) {
 				alpha[index1] = index2RegPar + difference;
 				alpha[index2] = index2RegPar;

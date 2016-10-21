@@ -6,6 +6,9 @@
 #include <HL/hl.h>
 #include <HDU/hdu.h>
 
+#include "CollisionDetector.h"
+#include "ray.h"
+
 using glm::vec3;
 using glm::vec4;
 using glm::mat4;
@@ -19,13 +22,12 @@ public:
 	HHD getDevice();
 	vec3& getDevicePosition();
 	void getDeviceRotation(vec3& rotation);
-	void getForceIntensity(vec3& force);
-	void getLastProxyPosition(vec3& lastPosition);
 	vec3& getPosition();
-	void getProxyPosition(vec3& position);
 	double getScaleFactor();
 
 	void setAnchorPosition(const vec3& anchor);
+	void setCollisionDetector(CollisionDetector* detector);
+	void setInterator(Ray* interator);
 	void setForce(const vec3& force);
 
 	//Matrices
@@ -38,7 +40,9 @@ public:
 	void showDeviceInformation();
 	void terminateHL();
 	void updateHapticWorkspace();
-	void updateState(int flag, vec3& data);
+
+	//Main callback
+	static HDCallbackCode HDCALLBACK mainHapticCallback(void* data);
 
 private:
 	HHD device;
@@ -57,6 +61,10 @@ private:
 	bool contextCreated;
 	bool endThread;
 	int updateFlag;
+
+	//Variables for the main haptic loop
+	CollisionDetector* colDetector; //reference to the current collision detector
+	Ray* interator; //reference to the current interator
 
 	//Calibration variables
 	bool calibrated;
@@ -80,8 +88,6 @@ private:
 	void HLCALLBACK checkCalibration(HLenum event, HLuint obj, HLenum thread,
 		HLcache* cache, void* userData);
 	static HDCallbackCode HDCALLBACK setForce(void* userData);
-	static HDCallbackCode HDCALLBACK stateCallback(void* userData);
-	//static HDCallbackCode HDCALLBACK setForce(void* userData);
 	static HDCallbackCode HDCALLBACK updateCalibration(void* userData);
 };
 

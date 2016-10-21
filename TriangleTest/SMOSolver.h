@@ -9,8 +9,7 @@ class SMOSolver
 {
 public:
 	SMOSolver(int numberOfElements, Kernel* kernel, const vector<double>& p,
-		const vector<char>& signs, const vector<double>&
-		alpha, double cp, double cn, double stopCondition);
+		const vector<char>& signs, double cp, double cn, double stopCondition = 1e-12);
 	~SMOSolver();
 
 	void solve(bool shrinking);
@@ -20,6 +19,7 @@ public:
 
 	double getNegativeUpperBound();
 	double getPositiveUpperBound();
+	double getRho();
 
 protected:
 	//Solution variables
