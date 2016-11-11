@@ -304,6 +304,10 @@ void Mesh::cut(CollisionPath& path)
 		}
 	}
 	updateMesh(newPath, internalFirst);
+
+	//Clearing the path
+	path.removeAllIndices();
+	path.removeAllPoints();
 }
 
 void Mesh::updateMesh(CollisionPath& path, bool internalFirst)

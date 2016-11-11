@@ -10,8 +10,9 @@
 float Window::interatorX = 0.0f;
 float Window::interatorY = 0.0f;
 
-Window::Window()
-	: mesh(NULL), interator(NULL), collisionDetector(NULL, NULL)
+Window::Window(bool enableHaptics)
+	: mesh(NULL), interator(NULL), collisionDetector(NULL, NULL),
+	  hapticsEnabled(enableHaptics)
 {
 
 }
@@ -71,13 +72,15 @@ void Window::initializeGL()
 	collisionDetector.setRay(interator);
 
 	//Initializaing haptic device
-	haptic.initializeHL();
-	haptic.updateHapticWorkspace();
-	haptic.setInterator(interator);
-	haptic.setCollisionDetector(&collisionDetector);
-	handle = hdScheduleAsynchronous(HapticInterface::mainHapticCallback,
-		&haptic, HD_MAX_SCHEDULER_PRIORITY);
-	hdStartScheduler();
+	if (hapticsEnabled) {
+		haptic.initializeHL();
+		haptic.updateHapticWorkspace();
+		haptic.setInterator(interator);
+		haptic.setCollisionDetector(&collisionDetector);
+		handle = hdScheduleAsynchronous(HapticInterface::mainHapticCallback,
+			&haptic, HD_MAX_SCHEDULER_PRIORITY);
+		hdStartScheduler();
+	}
 }
 
 void Window::resizeGL(int width, int height)
@@ -102,8 +105,12 @@ void Window::teardownGL()
 	vertexArrayObject.destroy();
     vertexBuffer.destroy();
 	indexBuffer.destroy();
-	haptic.terminateHL();
-	hdUnschedule(handle);
+
+	if (hapticsEnabled) {
+		haptic.terminateHL();
+		hdUnschedule(handle);
+	}
+
     delete shaderProgram;
 	delete interator;
 }
@@ -142,8 +149,10 @@ void Window::mvpSetup()
 
 	mvp = projection * view * model;
 
-	haptic.setModelviewMatrix(view * model);
-	haptic.setProjectionMatrix(projection);
+	if (hapticsEnabled) {
+		haptic.setModelviewMatrix(view * model);
+		haptic.setProjectionMatrix(projection);
+	}
 }
 
 void Window::keyPressEvent(QKeyEvent* keyEvent)

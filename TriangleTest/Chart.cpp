@@ -105,27 +105,32 @@ void Chart::setup()
 		patientHistory = wstring(L"O paciente sofreu um acidente de moto, ") +
 			wstring(L"que resultou em lacerações faciais e fratura na região ") +
 			wstring(L"da sínfise mandibular. Os ferimentos superficiais foram ") +
-			wstring(L"tratados na chegada do paciente e se encontram todos em ") +
-			wstring(L"bom estado. O paciente não apresenta histórico de ") + 
-			wstring(L"doenças cardíacas, diabetes ou outras doenças que ") +
+			wstring(L"tratados na chegada do paciente ao local de atendimento, ") +
+			wstring(L"se encontram todos em bom estado e com aspecto dentro do") +
+			wstring(L"padrão esperado para este tipo de lesão. ") +
+			wstring(L"O paciente não apresenta histórico de ") + 
+			wstring(L"doenças cardíacas, diabetes ou outros agravos que ") +
 			wstring(L"requerem atenção especial.");
 	}
 	else if (type == ChartType::PATIENT_NOT_READY) {
 		patientHistory = wstring(L"O paciente sofreu um acidente de moto, que") +
 			wstring(L" resultou em graves lacerações faciais e fratura na ") + 
-			wstring(L"região da sínfise mandibular. Foi realizada limpeza e ") + 
-			wstring(L"foi feito curativo nas feridas na face, mas elas ainda ") +
+			wstring(L"região da sínfise mandibular. Foi realizada assepsia no local ") + 
+			wstring(L"e, em seguida, feitos curativos nas feridas localizadas ") + 
+			wstring(L"na face. No entanto, as feridas ainda ") +
 			wstring(L"se encontram expostas e com risco considerável de ") + 
 			wstring(L"infecção. O paciente não apresenta histórico de doenças ") +
-			wstring(L"cardíacas, diabetes ou outras doenças que requerem ") +
+			wstring(L"cardíacas, diabetes ou outros agravos que requerem ") +
 			wstring(L"atenção especial.");
 	}
 	else if (type == ChartType::SCARRING_PROBLEM) {
 		patientHistory = wstring(L"O paciente sofreu um acidente de moto, ") +
 			wstring(L"que resultou em lacerações faciais e fratura na região ") +
 			wstring(L"da sínfise mandibular. Os ferimentos superficiais foram ") +
-			wstring(L"tratados na chegada do paciente e se encontram todos em ") +
-			wstring(L"bom estado. O paciente é diabético e está com sua taxa ") +
+			wstring(L"tratados na chegada do paciente ao local de atendimento ") +
+			wstring(L"e se encontram todos em bom estado e com aspecto dentro") +
+			wstring(L"do padrão esperado para este tipo de lesão. ") +
+			wstring(L"O paciente é diabético e está com sua taxa ") +
 			wstring(L"de glicemia alterada.");
 	}
 }

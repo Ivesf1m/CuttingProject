@@ -179,10 +179,12 @@ HDCallbackCode HDCALLBACK HapticInterface::mainHapticCallback(void* data)
 	force[0] = force[1] = 0.0;
 	force[2] = 0.0;
 	if (hapticData->colDetector->hasCollided()) {
-		force[2] = 1.0;		
+		force[2] = 1.0;
+		hapticData->colPath->addPoint(hapticData->colDetector->
+			getCollisionPoint());
 	}
 	else {
-		//cout << " nao colidiu" << endl;
+		hapticData->mesh->cut(*(hapticData->colPath));
 	}
 
 	hdSetDoublev(HD_CURRENT_FORCE, force);

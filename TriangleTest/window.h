@@ -21,7 +21,7 @@ class Window : public QOpenGLWindow,
     Q_OBJECT;
 
     public:
-		Window();
+		Window(bool enableHaptics = false);
 		
 		void initializeGL();
         void resizeGL(int width, int height);
@@ -49,6 +49,7 @@ class Window : public QOpenGLWindow,
 		mat4 mvp;
 		HapticInterface haptic;
 		HDSchedulerHandle handle;
+		bool hapticsEnabled;
 
 		//Private functions
 

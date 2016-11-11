@@ -7,6 +7,8 @@
 #include <HDU/hdu.h>
 
 #include "CollisionDetector.h"
+#include "CollisionPath.h"
+#include "mesh.h"
 #include "ray.h"
 
 using glm::vec3;
@@ -64,6 +66,8 @@ private:
 
 	//Variables for the main haptic loop
 	CollisionDetector* colDetector; //reference to the current collision detector
+	CollisionPath* colPath;
+	Mesh* mesh;
 	Ray* interator; //reference to the current interator
 
 	//Calibration variables

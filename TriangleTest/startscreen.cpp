@@ -173,9 +173,9 @@ void StartScreen::toChartPage()
 		std::uniform_int_distribution<int> dist(1, 10);
 		int number = dist(engine);
 		std::cout << number << std::endl;
-		if (number <= 5)
+		if (number < 8)
 			ctype = ChartType::PATIENT_READY;
-		else if (number > 5 && number < 7)
+		else if (number == 8)
 			ctype = ChartType::PATIENT_NOT_READY;
 		else
 			ctype = ChartType::SCARRING_PROBLEM;
