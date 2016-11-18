@@ -12,7 +12,7 @@ float Window::interatorY = 0.0f;
 
 Window::Window(bool enableHaptics)
 	: mesh(NULL), interator(NULL), collisionDetector(NULL, NULL),
-	  hapticsEnabled(enableHaptics)
+	  hapticsEnabled(enableHaptics), interatorMesh(NULL)
 {
 
 }
@@ -36,13 +36,13 @@ void Window::initializeGL()
 	vertexArrayObject.create();
 	vertexArrayObject.bind();
 
-	//Creating the VBO
+	//Creating the VBO for the mesh
     vertexBuffer.create();
 	vertexBuffer.bind();
 	vertexBuffer.setUsagePattern(QOpenGLBuffer::DynamicDraw);
 	vertexBuffer.allocate(mesh->getVertices(), mesh->getNumberOfBytes());
 
-	//Creating IBO
+	//Creating IBO for the mesh
 	indexBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
 	indexBuffer.create();
 	indexBuffer.bind();
@@ -50,11 +50,36 @@ void Window::initializeGL()
 	indexBuffer.allocate(mesh->getIndices(),
 		mesh->getNumberOfIndices() * sizeof(unsigned int));
 
-	//Enabling attribute arrays for vertex and color data.
+	//Creating the interator VAO
+	/*interatorVAO.create();
+	interatorVAO.bind();
+	
+	//Creating the VBO for the interator
+	interatorVertexBuffer.create();
+	interatorVertexBuffer.bind();
+	interatorVertexBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
+	interatorVertexBuffer.allocate(interatorMesh->getVertices(),
+		interatorMesh->getNumberOfBytes());
+
+	//Creating the IBO for the interator
+	interatorIndexBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+	interatorIndexBuffer.create();
+	interatorIndexBuffer.bind();
+	interatorIndexBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
+	interatorIndexBuffer.allocate(interatorMesh->getIndices(),
+		interatorMesh->getNumberOfIndices() * sizeof(unsigned int));
+
+	interatorVertexBuffer.release();
+	interatorIndexBuffer.release();
+	interatorVAO.release();*/
+
+	//Enabling attribute arrays for vertex, normal and color data.
 	shaderProgram->enableAttributeArray(0);
 	shaderProgram->enableAttributeArray(1);
+	shaderProgram->enableAttributeArray(2);
 	shaderProgram->setAttributeBuffer(0, GL_FLOAT, Vertex::positionOffset(), Vertex::PositionTupleSize, Vertex::stride());
 	shaderProgram->setAttributeBuffer(1, GL_FLOAT, Vertex::colorOffset(), Vertex::ColorTupleSize, Vertex::stride());
+	shaderProgram->setAttributeBuffer(2, GL_FLOAT, Vertex::normalOffset(), Vertex::NormalTupleSize, Vertex::stride());
 
 	vertexArrayObject.release();
 	vertexBuffer.release();
@@ -77,6 +102,7 @@ void Window::initializeGL()
 		haptic.updateHapticWorkspace();
 		haptic.setInterator(interator);
 		haptic.setCollisionDetector(&collisionDetector);
+		haptic.setCollisionPath(&path);
 		handle = hdScheduleAsynchronous(HapticInterface::mainHapticCallback,
 			&haptic, HD_MAX_SCHEDULER_PRIORITY);
 		hdStartScheduler();
@@ -92,11 +118,20 @@ void Window::resizeGL(int width, int height)
 void Window::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    shaderProgram->bind();
-    vertexArrayObject.bind();
+    shaderProgram->bind();    
+
+	//Drawing the mesh
+	vertexArrayObject.bind();
 	shaderProgram->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
 	glDrawElements(GL_TRIANGLES, mesh->getNumberOfIndices(), GL_UNSIGNED_INT, 0);
 	vertexArrayObject.release();
+
+	//Drawing the interator
+	/*interatorVAO.bind();
+	shaderProgram->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
+	glDrawElements(GL_TRIANGLES, interatorMesh->getNumberOfIndices(), GL_UNSIGNED_INT, 0);
+	interatorVAO.release();*/
+
 	shaderProgram->release();
 }
 
@@ -120,6 +155,11 @@ void Window::setMesh(Mesh* mesh)
     this->mesh = mesh;
 }
 
+void Window::setInterator(Mesh* interator)
+{
+	this->interatorMesh = interator;
+}
+
 void printMatrix(mat4& m)
 {
 	for (int i = 0; i < 4; ++i) {
@@ -135,7 +175,7 @@ void Window::mvpSetup()
 {
 	//Setting up MVP matrix
 	mat4 model = mat4(1.0f);
-	//model = glm::scale(model, vec3(0.1, 0.1f, 1.0f));
+	model = glm::scale(model, vec3(0.5, 0.5f, 0.5f));
 	//model = glm::translate(model, vec3(-1.0f, -1.0f, 0.0f));
 
 	mat4 view;

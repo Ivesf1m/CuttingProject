@@ -15,12 +15,12 @@ int main(int argc, char* argv[])
 	format.setDepthBufferSize(24);
 
     //Initializing mesh
-	Mesh mesh;
+	/*Mesh mesh;
     mesh.addVertex(Vertex(vec3(-0.50f,  0.5f, 1.0f), vec3(1.0f, 0.0f, 0.0f)));
     mesh.addVertex(Vertex(vec3(-1.00f, -0.5f, 1.0f), vec3(0.0f, 1.0f, 0.0f)));
     mesh.addVertex(Vertex(vec3( 0.00f, -0.5f, 1.0f), vec3(0.0f, 0.0f, 1.0f)));
 
-	mesh.addTriangularFace(0, 1, 2);
+	mesh.addTriangularFace(0, 1, 2);*/
 
 	//Grid for test
 	Grid grid(1);
@@ -33,12 +33,20 @@ int main(int argc, char* argv[])
 	testPath.addIndex(3);
 	grid.cut(testPath);*/
 
+	//Loading mesh from file
+	Mesh mesh;
+	mesh.loadFromObjFile(string("esfera.obj"));
+
+	//Mesh interatorMesh;
+	//interatorMesh.loadFromObjFile(string("pointy.obj"));
+
 	/*QApplication app(argc, argv);
 	StartScreen sscreen;
 	sscreen.show();*/
 
-    Window window;
+    Window window(true);
     window.setMesh(&grid);
+	//window.setInterator(&interatorMesh);
     window.setFormat(format);
     window.resize(QSize(800, 600));
     window.show();

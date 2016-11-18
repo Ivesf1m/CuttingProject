@@ -19,6 +19,9 @@ class Mesh{
         void removeVertex(unsigned int vertexIndex);
         void removeAllVertices();
 
+		void loadFromObjFile(string& fileName);
+		void printMeshInfo();
+
 		void addTriangularFace(unsigned int index1, unsigned int index2,
 			unsigned int index3);
 
@@ -45,7 +48,11 @@ class Mesh{
 		unsigned int numberOfIndices;
         vector<Vertex> vertices;
 		vector<unsigned int> indices;
+		vector< vector<unsigned int> > neighbors;
 
+		void calculateVertexNormals(vector<vec3>& faceNormals,
+			vector< vector<int> >& sharedNormals);
+		void removeNeighborDuplicates();
 		void findEdgePoint(unsigned int index1, unsigned int index2,
 			const vec3 colPoint, const vec3& dir, vec3& exitPoint);
 		void updateMesh(CollisionPath& path, bool internalFirst);

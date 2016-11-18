@@ -1,6 +1,7 @@
 #include "CollisionDetector.h"
 
 #define EPSILON 1e-5
+#define LAMBDA_TOLERANCE 0.3f
 
 CollisionDetector::CollisionDetector(Mesh* mesh, Ray* ray)
 	: mesh(mesh), ray(ray), collided(false)
@@ -75,7 +76,7 @@ bool CollisionDetector::akenineMollerCollisionTest(unsigned int index)
 		return false;
 
 	lambda = glm::dot(edge2, q) * inv_det;
-	if (lambda > -EPSILON || lambda < EPSILON) {
+	if (lambda > -LAMBDA_TOLERANCE && lambda < LAMBDA_TOLERANCE) {
 		ray->getPointAtLambda(lambda, collisionPoint);
 		collisionIndex = index;
 		return true;

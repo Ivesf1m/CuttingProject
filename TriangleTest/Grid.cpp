@@ -16,6 +16,7 @@ void Grid::checkVector(vector<vec3>& vMap, vec3 vertex,
 	unsigned int& index)
 {
 	static vec3 defaultColor(1.0f, 0.0f, 0.0f);
+	static vec3 defaultNormal(0.0f, 0.0f, 1.0f);
 	bool aux = false;
 	for (unsigned int i = 0; i < vMap.size(); ++i) {
 		if (vMap[i] == vertex) {
@@ -26,7 +27,10 @@ void Grid::checkVector(vector<vec3>& vMap, vec3 vertex,
 
 	if (!aux) {
 		vMap.push_back(vertex);
-		addVertex(Vertex(vertex, defaultColor));
+		Vertex v(vertex);
+		v.setColor(defaultColor);
+		v.setNormal(defaultNormal);
+		addVertex(v);
 		index = static_cast<unsigned int>(vMap.size()) - 1;
 	}
 }

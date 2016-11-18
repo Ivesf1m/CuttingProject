@@ -176,15 +176,21 @@ HDCallbackCode HDCALLBACK HapticInterface::mainHapticCallback(void* data)
 	hapticData->colDetector->testCollision();
 
 	HDdouble force[3];
-	force[0] = force[1] = 0.0;
-	force[2] = 0.0;
+	force[0] = force[1] = force[2] = 0.0;
 	if (hapticData->colDetector->hasCollided()) {
 		force[2] = 1.0;
+		cout << "position: " << hapticData->position[0] << "\t" << hapticData->position[1]
+			<< "\t" << hapticData->position[2] << endl;
+		vec3 colPoint = hapticData->colDetector->getCollisionPoint();
+		cout << "colPoint: " << colPoint[0] << "\t" << colPoint[1] << "\t" << colPoint[2] << endl << endl;
 		hapticData->colPath->addPoint(hapticData->colDetector->
 			getCollisionPoint());
+		hapticData->colPath->addIndex(hapticData->colDetector->
+			getCollisionIndex());
 	}
 	else {
-		hapticData->mesh->cut(*(hapticData->colPath));
+		if(hapticData->colPath->getCollisionPoints().size() != 0)
+			hapticData->mesh->cut(*(hapticData->colPath));
 	}
 
 	hdSetDoublev(HD_CURRENT_FORCE, force);
@@ -214,6 +220,11 @@ void HapticInterface::setAnchorPosition(const vec3& anchor)
 void HapticInterface::setCollisionDetector(CollisionDetector* detector)
 {
 	this->colDetector = detector;
+}
+
+void HapticInterface::setCollisionPath(CollisionPath* path)
+{
+	this->colPath = path;
 }
 
 void HapticInterface::setInterator(Ray* interator)

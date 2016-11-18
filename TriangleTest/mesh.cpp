@@ -1,5 +1,10 @@
 #include "mesh.h"
 #include <iostream>
+#include <fstream>
+#include <sstream>
+
+using std::ifstream;
+using std::stringstream;
 
 Mesh::Mesh()
      : numberOfVertices(0), numberOfBytes(0), numberOfIndices(0)
@@ -74,6 +79,92 @@ void Mesh::removeAllVertices()
     vertices.clear();
     numberOfBytes = 0;
     numberOfVertices = 0;
+}
+
+void Mesh::loadFromObjFile(string& fileName)
+{
+	ifstream stream(fileName);
+	if (!stream.good()) {
+		cerr << "Falha no carregamento do modelo " << fileName << endl;
+		exit(1);
+	}
+
+	bool normalFound = false;
+
+	vector<vec3> faceNormals;
+	vector< vector<int> > sharedNormals;
+	static vec3 defaultColor(1.0f, 0.0f, 0.0f);
+
+	while (!stream.eof()) {
+		//first word of each line
+		// v for vertices
+		// vn for face normals - we need to calculate vertex normals
+		// f for faces
+		string identifier;
+		stream >> identifier;
+		if (identifier.compare("v") == 0) {
+			vec3 coords;
+			stream >> coords.x >> coords.y >> coords.z;
+			Vertex newVertex(coords);
+			//We're setting red as the default color.
+			newVertex.setColor(defaultColor);
+			addVertex(newVertex);			
+
+			//Every vertex need a list of neighbors and will have shared normals
+			sharedNormals.push_back(vector<int>());
+			neighbors.push_back(vector<unsigned int>());
+		}
+		else if (identifier.compare("vn") == 0) {
+			normalFound = true;
+			vec3 normal;
+			stream >> normal.x >> normal.y >> normal.z;
+			faceNormals.push_back(normal);
+		}
+		else if (identifier.compare("f") == 0) {
+			//If the file has normals, we are going to read tuples
+			//with format 0//0. Else there will be only the vertex
+			//index.
+			int index1, index2, index3;
+			if (normalFound) {
+				int n1, n2, n3; //normals
+				char slash;
+				stream >> index1 >> slash >> slash >> n1;
+				stream >> index2 >> slash >> slash >> n2;
+				stream >> index3 >> slash >> slash >> n3;
+				addTriangularFace(--index1, --index2, --index3);
+
+				//We're using these to calculate vertex normals later.
+				sharedNormals[index1].push_back(--n1);
+				sharedNormals[index2].push_back(--n2);
+				sharedNormals[index3].push_back(--n3);
+			}
+			else {
+				stream >> index1 >> index2 >> index3;
+				addTriangularFace(--index1, --index2, --index3);
+			}
+
+			//Neighbors
+			neighbors[index1].push_back(index2);
+			neighbors[index1].push_back(index3);
+			neighbors[index2].push_back(index1);
+			neighbors[index2].push_back(index3);
+			neighbors[index3].push_back(index1);
+			neighbors[index3].push_back(index2);
+
+		}
+		else {
+			char line[256];
+			stream.getline(line, 256);
+		}
+	}
+
+	//Calculate vertex normals
+	calculateVertexNormals(faceNormals, sharedNormals);
+
+	//Remove duplicated from neighbor vectors.
+	removeNeighborDuplicates();
+
+	//printMeshInfo();
 }
 
 const Vertex& Mesh::getVertex(unsigned int index)
@@ -322,4 +413,63 @@ void Mesh::updateMesh(CollisionPath& path, bool internalFirst)
 	cout << "Number of vertices: " << numberOfVertices << endl;
 	cout << "Number of indices: " << numberOfIndices << endl;
 	cout << "Number of bytes: " << numberOfBytes << endl;
+}
+
+//Average face normals shared by a vertex to find its own normal.
+void Mesh::calculateVertexNormals(vector<vec3>& faceNormals,
+	vector< vector<int> >& sharedNormals)
+{
+	for (unsigned int i = 0; i < sharedNormals.size(); ++i) {
+		double xsum = 0.0, ysum = 0.0, zsum = 0.0;
+		for (unsigned int j = 0; j < sharedNormals[i].size(); ++j) {
+			xsum += faceNormals[sharedNormals[i][j]].x;
+			ysum += faceNormals[sharedNormals[i][j]].y;
+			zsum += faceNormals[sharedNormals[i][j]].z;
+		}
+
+		xsum /= sharedNormals[i].size();
+		ysum /= sharedNormals[i].size();
+		zsum /= sharedNormals[i].size();
+
+		vec3 normal(xsum, ysum, zsum);
+		normal = glm::normalize(normal);
+		vertices[i].setNormal(normal);
+	}
+}
+
+//Helper function to check if a number is in a vector
+bool contains(vector<unsigned int> list, unsigned int number)
+{
+	for (auto element : list) {
+		if (element == number)
+			return true;
+	}
+	return false;
+}
+
+void Mesh::removeNeighborDuplicates()
+{
+	for (auto neighborList : neighbors) {
+		vector<unsigned int> uniqueList;
+		for (auto neighborIndex : neighborList) {
+			if (!contains(uniqueList, neighborIndex))
+				uniqueList.push_back(neighborIndex);
+		}
+		neighborList = uniqueList;
+	}
+}
+
+void Mesh::printMeshInfo()
+{
+	cout << "Vertices: " << endl;
+	for (auto vertex : vertices) {
+		vertex.printInfo();
+		cout << endl;
+	}
+
+	cout << "Faces: " << endl;
+	for (unsigned int i = 0; i < indices.size(); i += 3) {
+		cout << indices[i] << "\t" << indices[i + 1] << "\t" <<
+			indices[i + 2] << endl;
+	}
 }

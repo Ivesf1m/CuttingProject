@@ -28,6 +28,7 @@ class Window : public QOpenGLWindow,
         void paintGL();
 
         void setMesh(Mesh* mesh);
+		void setInterator(Mesh* interator);
 
 		//Static variables
 		//Interator translations
@@ -40,9 +41,13 @@ class Window : public QOpenGLWindow,
     private:
         QOpenGLBuffer vertexBuffer;
 		QOpenGLBuffer indexBuffer;
+		QOpenGLBuffer interatorVertexBuffer;
+		QOpenGLBuffer interatorIndexBuffer;
         QOpenGLVertexArrayObject vertexArrayObject;
+		QOpenGLVertexArrayObject interatorVAO;
         QOpenGLShaderProgram* shaderProgram;
         Mesh* mesh;
+		Mesh* interatorMesh;
 		Ray* interator;
 		CollisionDetector collisionDetector;
 		CollisionPath path;

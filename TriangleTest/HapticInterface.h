@@ -29,6 +29,7 @@ public:
 
 	void setAnchorPosition(const vec3& anchor);
 	void setCollisionDetector(CollisionDetector* detector);
+	void setCollisionPath(CollisionPath* path);
 	void setInterator(Ray* interator);
 	void setForce(const vec3& force);
 
