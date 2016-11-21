@@ -32,6 +32,8 @@ class Mesh{
 
         const Vertex& getVertex(unsigned int index);
         Vertex* getVertices();
+		vector<Vertex>& getVertexVector();
+		vector<unsigned int>& getIndexVector();
         void setVertex(unsigned int index, const Vertex& vertex);
 		unsigned int getIndex(unsigned int index);
 		unsigned int* getIndices();
@@ -50,8 +52,6 @@ class Mesh{
 		vector<unsigned int> indices;
 		vector< vector<unsigned int> > neighbors;
 
-		void calculateVertexNormals(vector<vec3>& faceNormals,
-			vector< vector<int> >& sharedNormals);
 		void removeNeighborDuplicates();
 		void findEdgePoint(unsigned int index1, unsigned int index2,
 			const vec3 colPoint, const vec3& dir, vec3& exitPoint);

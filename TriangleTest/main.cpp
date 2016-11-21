@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 	mesh.addTriangularFace(0, 1, 2);*/
 
 	//Grid for test
-	Grid grid(1);
+	//Grid grid(1);
 	/*CollisionPath testPath;
 	vec3 p1(0.3f, 0.1f, 1.0f);
 	vec3 p2(0.8f, 0.9f, 1.0f);
@@ -37,16 +37,16 @@ int main(int argc, char* argv[])
 	Mesh mesh;
 	mesh.loadFromObjFile(string("esfera.obj"));
 
-	//Mesh interatorMesh;
-	//interatorMesh.loadFromObjFile(string("pointy.obj"));
+	Mesh interatorMesh;
+	interatorMesh.loadFromObjFile(string("pointy.obj"));
 
 	/*QApplication app(argc, argv);
 	StartScreen sscreen;
 	sscreen.show();*/
 
-    Window window(true);
-    window.setMesh(&grid);
-	//window.setInterator(&interatorMesh);
+    Window window(false);
+    window.setMesh(&mesh);
+	window.setInterator(&interatorMesh);
     window.setFormat(format);
     window.resize(QSize(800, 600));
     window.show();

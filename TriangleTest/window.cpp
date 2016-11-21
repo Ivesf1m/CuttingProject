@@ -36,42 +36,43 @@ void Window::initializeGL()
 	vertexArrayObject.create();
 	vertexArrayObject.bind();
 
+	//We now need to combine the data of out mesh and our interator mesh
+	vector<Vertex> combinedVertexBuffer;
+	combinedVertexBuffer.reserve(mesh->getVertexVector().size() +
+		interatorMesh->getVertexVector().size());
+	combinedVertexBuffer.insert(combinedVertexBuffer.end(), mesh->
+		getVertexVector().begin(), mesh->getVertexVector().end());
+	combinedVertexBuffer.insert(combinedVertexBuffer.end(), interatorMesh->
+		getVertexVector().begin(), interatorMesh->getVertexVector().end());
+
+
+	//Index buffer
+	vector<unsigned int> combinedIndexBuffer;
+	combinedIndexBuffer.reserve(mesh->getIndexVector().size() + interatorMesh->
+		getIndexVector().size());
+	combinedIndexBuffer.insert(combinedIndexBuffer.end(), mesh->
+		getIndexVector().begin(), mesh->getIndexVector().end());
+
+	unsigned int vertexVectorSize = static_cast<unsigned int>(mesh->
+		getVertexVector().size());
+	for (auto index : interatorMesh->getIndexVector()) {
+		combinedIndexBuffer.push_back(index + vertexVectorSize);
+	}
+
 	//Creating the VBO for the mesh
     vertexBuffer.create();
 	vertexBuffer.bind();
 	vertexBuffer.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-	vertexBuffer.allocate(mesh->getVertices(), mesh->getNumberOfBytes());
+	vertexBuffer.allocate(combinedVertexBuffer.data(), 
+		static_cast<int>(combinedVertexBuffer.size() * sizeof(Vertex)));
 
 	//Creating IBO for the mesh
 	indexBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
 	indexBuffer.create();
 	indexBuffer.bind();
 	indexBuffer.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-	indexBuffer.allocate(mesh->getIndices(),
-		mesh->getNumberOfIndices() * sizeof(unsigned int));
-
-	//Creating the interator VAO
-	/*interatorVAO.create();
-	interatorVAO.bind();
-	
-	//Creating the VBO for the interator
-	interatorVertexBuffer.create();
-	interatorVertexBuffer.bind();
-	interatorVertexBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
-	interatorVertexBuffer.allocate(interatorMesh->getVertices(),
-		interatorMesh->getNumberOfBytes());
-
-	//Creating the IBO for the interator
-	interatorIndexBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
-	interatorIndexBuffer.create();
-	interatorIndexBuffer.bind();
-	interatorIndexBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
-	interatorIndexBuffer.allocate(interatorMesh->getIndices(),
-		interatorMesh->getNumberOfIndices() * sizeof(unsigned int));
-
-	interatorVertexBuffer.release();
-	interatorIndexBuffer.release();
-	interatorVAO.release();*/
+	indexBuffer.allocate(combinedIndexBuffer.data(),
+		static_cast<int>(combinedIndexBuffer.size() * sizeof(unsigned int)));
 
 	//Enabling attribute arrays for vertex, normal and color data.
 	shaderProgram->enableAttributeArray(0);
@@ -122,16 +123,20 @@ void Window::paintGL()
 
 	//Drawing the mesh
 	vertexArrayObject.bind();
+	shaderProgram->setUniformValue("translateFactor", 0.0f, 0.0f, 0.0f);
 	shaderProgram->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
-	glDrawElements(GL_TRIANGLES, mesh->getNumberOfIndices(), GL_UNSIGNED_INT, 0);
-	vertexArrayObject.release();
+	glDrawElements(GL_TRIANGLES, mesh->getNumberOfIndices(), GL_UNSIGNED_INT, 
+		0);
+	
 
 	//Drawing the interator
-	/*interatorVAO.bind();
+	unsigned int indexOffset = mesh->getNumberOfIndices() * sizeof(unsigned int);
+	shaderProgram->setUniformValue("translateFactor", 1.0f, 1.0f, 0.0f);
 	shaderProgram->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
-	glDrawElements(GL_TRIANGLES, interatorMesh->getNumberOfIndices(), GL_UNSIGNED_INT, 0);
-	interatorVAO.release();*/
+	glDrawElements(GL_TRIANGLES, interatorMesh->getNumberOfIndices(), 
+		GL_UNSIGNED_INT, reinterpret_cast<void*>(indexOffset));
 
+	vertexArrayObject.release();
 	shaderProgram->release();
 }
 

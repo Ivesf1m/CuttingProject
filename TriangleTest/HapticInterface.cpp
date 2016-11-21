@@ -178,7 +178,7 @@ HDCallbackCode HDCALLBACK HapticInterface::mainHapticCallback(void* data)
 	HDdouble force[3];
 	force[0] = force[1] = force[2] = 0.0;
 	if (hapticData->colDetector->hasCollided()) {
-		force[2] = 1.0;
+		//force[2] = 1.0;
 		cout << "position: " << hapticData->position[0] << "\t" << hapticData->position[1]
 			<< "\t" << hapticData->position[2] << endl;
 		vec3 colPoint = hapticData->colDetector->getCollisionPoint();

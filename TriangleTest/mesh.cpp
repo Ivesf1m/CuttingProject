@@ -91,9 +91,8 @@ void Mesh::loadFromObjFile(string& fileName)
 
 	bool normalFound = false;
 
-	vector<vec3> faceNormals;
-	vector< vector<int> > sharedNormals;
 	static vec3 defaultColor(1.0f, 0.0f, 0.0f);
+	vector<vec3> normals;
 
 	while (!stream.eof()) {
 		//first word of each line
@@ -110,15 +109,16 @@ void Mesh::loadFromObjFile(string& fileName)
 			newVertex.setColor(defaultColor);
 			addVertex(newVertex);			
 
-			//Every vertex need a list of neighbors and will have shared normals
-			sharedNormals.push_back(vector<int>());
+			//Every vertex needs a list of neighbors
 			neighbors.push_back(vector<unsigned int>());
 		}
 		else if (identifier.compare("vn") == 0) {
+			//This assumes the the obj file was created using smooth
+			//options to generate vertex normals in Blender.
 			normalFound = true;
 			vec3 normal;
 			stream >> normal.x >> normal.y >> normal.z;
-			faceNormals.push_back(normal);
+			normals.push_back(normal);
 		}
 		else if (identifier.compare("f") == 0) {
 			//If the file has normals, we are going to read tuples
@@ -131,12 +131,17 @@ void Mesh::loadFromObjFile(string& fileName)
 				stream >> index1 >> slash >> slash >> n1;
 				stream >> index2 >> slash >> slash >> n2;
 				stream >> index3 >> slash >> slash >> n3;
+				//Indices start at 1, but we stored from 0, so we need to
+				//decrement.
 				addTriangularFace(--index1, --index2, --index3);
 
-				//We're using these to calculate vertex normals later.
-				sharedNormals[index1].push_back(--n1);
-				sharedNormals[index2].push_back(--n2);
-				sharedNormals[index3].push_back(--n3);
+				--n1;
+				--n2;
+				--n3;
+
+				vertices[index1].setNormal(normals[n1]);
+				vertices[index2].setNormal(normals[n2]);
+				vertices[index3].setNormal(normals[n3]);
 			}
 			else {
 				stream >> index1 >> index2 >> index3;
@@ -158,9 +163,6 @@ void Mesh::loadFromObjFile(string& fileName)
 		}
 	}
 
-	//Calculate vertex normals
-	calculateVertexNormals(faceNormals, sharedNormals);
-
 	//Remove duplicated from neighbor vectors.
 	removeNeighborDuplicates();
 
@@ -179,6 +181,16 @@ const Vertex& Mesh::getVertex(unsigned int index)
 Vertex* Mesh::getVertices()
 {
     return &(vertices[0]);
+}
+
+vector<Vertex>& Mesh::getVertexVector()
+{
+	return vertices;
+}
+
+vector<unsigned int>& Mesh::getIndexVector()
+{
+	return indices;
 }
 
 void Mesh::setVertex(unsigned int index, const Vertex& vertex)
@@ -413,28 +425,6 @@ void Mesh::updateMesh(CollisionPath& path, bool internalFirst)
 	cout << "Number of vertices: " << numberOfVertices << endl;
 	cout << "Number of indices: " << numberOfIndices << endl;
 	cout << "Number of bytes: " << numberOfBytes << endl;
-}
-
-//Average face normals shared by a vertex to find its own normal.
-void Mesh::calculateVertexNormals(vector<vec3>& faceNormals,
-	vector< vector<int> >& sharedNormals)
-{
-	for (unsigned int i = 0; i < sharedNormals.size(); ++i) {
-		double xsum = 0.0, ysum = 0.0, zsum = 0.0;
-		for (unsigned int j = 0; j < sharedNormals[i].size(); ++j) {
-			xsum += faceNormals[sharedNormals[i][j]].x;
-			ysum += faceNormals[sharedNormals[i][j]].y;
-			zsum += faceNormals[sharedNormals[i][j]].z;
-		}
-
-		xsum /= sharedNormals[i].size();
-		ysum /= sharedNormals[i].size();
-		zsum /= sharedNormals[i].size();
-
-		vec3 normal(xsum, ysum, zsum);
-		normal = glm::normalize(normal);
-		vertices[i].setNormal(normal);
-	}
 }
 
 //Helper function to check if a number is in a vector

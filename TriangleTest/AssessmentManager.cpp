@@ -12,6 +12,16 @@ AssessmentManager::~AssessmentManager()
 {
 }
 
+float AssessmentManager::getAcceptableRadius()
+{
+	return acceptableRadius;
+}
+
+void AssessmentManager::setAcceptableRadius(float acceptableRadius)
+{
+	this->acceptableRadius = acceptableRadius;
+}
+
 const string& AssessmentManager::getAntissepticChoiceAssessment()
 {
 	return antissepticChoiceAssessment;
@@ -52,6 +62,46 @@ void AssessmentManager::setChosenScalpel(const string& scalpel)
 	this->chosenScalpel = scalpel;
 }
 
+const string& AssessmentManager::getEndPointAssessment()
+{
+	return endPointAssessment;
+}
+
+void AssessmentManager::setEndPointAssessment(const string& assessment)
+{
+	this->endPointAssessment = assessment;
+}
+
+const vec3& AssessmentManager::getIdealEndPoint()
+{
+	return idealEndPoint;
+}
+
+void AssessmentManager::setIdealEndPoint(const vec3& endPoint)
+{
+	this->idealEndPoint = endPoint;
+}
+
+const vec3& AssessmentManager::getIdealStartPoint()
+{
+	return idealStartPoint;
+}
+
+void AssessmentManager::setIdealStartPoint(const vec3& startPoint)
+{
+	this->idealStartPoint = startPoint;
+}
+
+float AssessmentManager::getOptimalRadius()
+{
+	return optimalRadius;
+}
+
+void AssessmentManager::setOptimalRadius(float optimalRadius)
+{
+	this->optimalRadius = optimalRadius;
+}
+
 const string& AssessmentManager::getScalpelChoiceAssessment()
 {
 	return scalpelChoiceAssessment;
@@ -60,6 +110,16 @@ const string& AssessmentManager::getScalpelChoiceAssessment()
 void AssessmentManager::setScalpelChoiceAssessment(const string& assessment)
 {
 	this->scalpelChoiceAssessment = assessment;
+}
+
+const string& AssessmentManager::getStartPointAssessment()
+{
+	return startPointAssessment;
+}
+
+void AssessmentManager::setStartPointAssessment(const string& assessment)
+{
+	this->startPointAssessment = assessment;
 }
 
 const string& AssessmentManager::getTreatmentAssessment()
@@ -96,6 +156,17 @@ void AssessmentManager::assessAntissepticChoice()
 		antissepticChoiceAssessment = "Antissepctico escolhido incorretamente.";
 }
 
+void AssessmentManager::assessEndPoint(const vec3& endPoint)
+{
+	float distance = glm::distance(idealEndPoint, endPoint);
+	if (distance <= optimalRadius)
+		endPointAssessment = "O corte terminou em local correto.";
+	else if (distance > optimalRadius && distance <= acceptableRadius)
+		endPointAssessment = "O corte terminou em local aceitavel.";
+	else
+		endPointAssessment = "O corte terminou em local incorreto.";
+}
+
 void AssessmentManager::assessScalpelChoice()
 {
 	if (chosenScalpel.compare("15") == 0 ||
@@ -103,6 +174,17 @@ void AssessmentManager::assessScalpelChoice()
 		scalpelChoiceAssessment = "Bisturi escolhido corretamente.";
 	else
 		scalpelChoiceAssessment = "Bisturi escolhido incorretamente.";
+}
+
+void AssessmentManager::assessStartPoint(const vec3& startPoint)
+{
+	float distance = glm::distance(idealStartPoint, startPoint);
+	if (distance <= optimalRadius)
+		startPointAssessment = "O corte foi iniciado em local correto.";
+	else if (distance > optimalRadius && distance <= acceptableRadius)
+		startPointAssessment = "O corte foi iniciado em local aceitavel.";
+	else
+		startPointAssessment = "O corte foi iniciado em local incorreto.";
 }
 
 void AssessmentManager::assessTreatmentType()
