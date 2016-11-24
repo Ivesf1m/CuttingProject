@@ -1,9 +1,12 @@
 #pragma once
 
 #include "Chart.h"
+#include "CollisionPath.h"
 #include <glm.hpp>
+#include <vector>
 
 using glm::vec3;
+using std::vector;
 
 enum TreatmentType {
 	SUBMENTAL_INCISION,
@@ -34,6 +37,9 @@ public:
 	const string& getChosenScalpel();
 	void setChosenScalpel(const string& scalpel);
 
+	const string& getDepthAssessment();
+	void setDepthAssessment(const string& assessment);
+
 	const string& getEndPointAssessment();
 	void setEndPointAssessment(const string& assessment);
 
@@ -43,6 +49,15 @@ public:
 	const vec3& getIdealStartPoint();
 	void setIdealStartPoint(const vec3& startPoint);
 
+	float getMaximumAcceptedDepth();
+	void setMaximumAcceptedDepth(float maximumDepth);
+
+	long getMaximumElapsedTime();
+	void setMaximumElapsedTime(long maximumTime);
+
+	long getMinimumElapsedTime();
+	void setMinimumElapsedTime(long minimumTime);
+
 	float getOptimalRadius();
 	void setOptimalRadius(float optimalRadius);
 
@@ -51,6 +66,12 @@ public:
 
 	const string& getStartPointAssessment();
 	void setStartPointAssessment(const string& assessment);
+
+	const string& getTimeAssessment();
+	void setTimeAssessment(const string& assessment);
+
+	const string& getTrajectoryAssessment();
+	void setStringAssessment(const string& assessment);
 
 	const string& getTreatmentAssessment();
 	void setTreatmentAssessment(const string& treatmentAssessment);
@@ -72,18 +93,27 @@ private:
 	string antissepticChoiceAssessment;
 	string startPointAssessment;
 	string endPointAssessment;
+	string depthAssessment;
+	string trajectoryAssessment;
+	string timeAssessment;
 
 	//Surgical traits
 	vec3 idealStartPoint;
 	vec3 idealEndPoint;
 	float optimalRadius;
 	float acceptableRadius;
+	float maximumAcceptedDepth;
+	long minimumElapsedTime;
+	long maximumElapsedTime;
 
 	//Helper functions
 	void assessAntissepticChoice();
+	void assessDepth(vector<float> depths);
 	void assessEndPoint(const vec3& endPoint);
 	void assessScalpelChoice();
 	void assessStartPoint(const vec3& startPoint);
+	void assessTime(long elapsedTime);
+	void asssesTrajectory(CollisionPath& path);
 	void assessTreatmentType();
 };
 

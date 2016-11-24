@@ -1,6 +1,7 @@
 #include "AssessmentManager.h"
+#include <cmath>
 
-
+#define PI 3.14159265
 
 AssessmentManager::AssessmentManager()
 	: chart(NULL)
@@ -62,6 +63,16 @@ void AssessmentManager::setChosenScalpel(const string& scalpel)
 	this->chosenScalpel = scalpel;
 }
 
+const string& AssessmentManager::getDepthAssessment()
+{
+	return depthAssessment;
+}
+
+void AssessmentManager::setDepthAssessment(const string& assessment)
+{
+	this->depthAssessment = assessment;
+}
+
 const string& AssessmentManager::getEndPointAssessment()
 {
 	return endPointAssessment;
@@ -92,6 +103,36 @@ void AssessmentManager::setIdealStartPoint(const vec3& startPoint)
 	this->idealStartPoint = startPoint;
 }
 
+float AssessmentManager::getMaximumAcceptedDepth()
+{
+	return maximumAcceptedDepth;
+}
+
+void AssessmentManager::setMaximumAcceptedDepth(float maximumDepth)
+{
+	this->maximumAcceptedDepth = fabs(maximumDepth);
+}
+
+long AssessmentManager::getMaximumElapsedTime()
+{
+	return maximumElapsedTime;
+}
+
+void AssessmentManager::setMaximumElapsedTime(long maximumTime)
+{
+	this->maximumElapsedTime = maximumTime;
+}
+
+long AssessmentManager::getMinimumElapsedTime()
+{
+	return minimumElapsedTime;
+}
+
+void AssessmentManager::setMinimumElapsedTime(long minimumTime)
+{
+	this->minimumElapsedTime = minimumTime;
+}
+
 float AssessmentManager::getOptimalRadius()
 {
 	return optimalRadius;
@@ -120,6 +161,26 @@ const string& AssessmentManager::getStartPointAssessment()
 void AssessmentManager::setStartPointAssessment(const string& assessment)
 {
 	this->startPointAssessment = assessment;
+}
+
+const string& AssessmentManager::getTimeAssessment()
+{
+	return timeAssessment;
+}
+
+void AssessmentManager::setTimeAssessment(const string& assessment)
+{
+	this->timeAssessment = assessment;
+}
+
+const string& AssessmentManager::getTrajectoryAssessment()
+{
+	return trajectoryAssessment;
+}
+
+void AssessmentManager::setStringAssessment(const string& assessment)
+{
+	this->trajectoryAssessment = assessment;
 }
 
 const string& AssessmentManager::getTreatmentAssessment()
@@ -156,6 +217,20 @@ void AssessmentManager::assessAntissepticChoice()
 		antissepticChoiceAssessment = "Antissepctico escolhido incorretamente.";
 }
 
+void AssessmentManager::assessDepth(vector<float> depths)
+{
+	bool badDepth = false;
+	for (float d : depths) {
+		if (d > maximumAcceptedDepth)
+			badDepth = true;
+	}
+
+	if (badDepth)
+		depthAssessment = "O corte excedeu a profundidade máxima adequada.";
+	else
+		depthAssessment = "O corte foi feito com profundidade adequada.";
+}
+
 void AssessmentManager::assessEndPoint(const vec3& endPoint)
 {
 	float distance = glm::distance(idealEndPoint, endPoint);
@@ -185,6 +260,42 @@ void AssessmentManager::assessStartPoint(const vec3& startPoint)
 		startPointAssessment = "O corte foi iniciado em local aceitavel.";
 	else
 		startPointAssessment = "O corte foi iniciado em local incorreto.";
+}
+
+void AssessmentManager::assessTime(long elapsedTime)
+{
+	if (elapsedTime < minimumElapsedTime)
+		timeAssessment = "O corte foi realizado muito rapidamente.";
+	else if (elapsedTime > maximumElapsedTime)
+		timeAssessment = "O corte foi realizado muito lentamente.";
+	else
+		timeAssessment = "O corte foi realizado em tempo adequado.";
+}
+
+void AssessmentManager::asssesTrajectory(CollisionPath& path)
+{
+	vector<vec3>& points = path.getCollisionPoints();
+	bool goodDirection = true;
+	if (points.size() > 2) {
+		vec3 firstVector = glm::normalize(points[1] - points[0]);
+		for (unsigned int i = 1; i < points.size() - 1; ++i) {
+			vec3 secondVector = glm::normalize(points[i + 1] - points[i]);
+			float cosine = glm::dot(firstVector, secondVector);
+			if (cosine < std::cos(PI / 6.0f))
+				goodDirection = false;
+		}
+	}
+
+	if (goodDirection) {
+		trajectoryAssessment = string("O corte foi realizado sem desvios ") +
+			string("significativos em sua trajetoria.");
+	}
+	else {
+		trajectoryAssessment = string("Houve desvio(s) significativos ") +
+			string("na trajetória do corte.");
+	}
+
+	//A PARTE DA SVM ENTRA AQUI.
 }
 
 void AssessmentManager::assessTreatmentType()
