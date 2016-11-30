@@ -2,6 +2,7 @@
 #include <iostream>
 #include <GL\GL.h>
 #include <HDU\hduError.h>
+#include <gtc\type_ptr.hpp>
 
 using std::cerr;
 using std::cout;
@@ -15,7 +16,7 @@ typedef struct {
 HapticInterface::HapticInterface()
 	: device(HD_INVALID_HANDLE), context(0), enabled(false),
 	cursorPixelSize(20), stiffness(1.0f), damping(0.0f),
-	staticFriction(0.0f), dynamicFriction(0.0f), pop(1.0f)
+	staticFriction(0.0f), dynamicFriction(0.0f), popthroughValue(1.0f)
 {
 	anchor[0] = anchor[1] = anchor[2] = 0.0f;
 }
@@ -105,6 +106,62 @@ vec3& HapticInterface::getDevicePosition()
 	return position;
 }
 
+HLuint HapticInterface::getShapeID()
+{
+	return shapeID;
+}
+
+float HapticInterface::getDamping()
+{
+	return damping;
+}
+
+void HapticInterface::setDamping(float damping)
+{
+	this->damping = damping;
+}
+
+float HapticInterface::getDynamicFriction()
+{
+	return dynamicFriction;
+}
+
+void HapticInterface::setDynamicFriction(float dynamicFriction)
+{
+	this->dynamicFriction = dynamicFriction;
+}
+
+float HapticInterface::getPopthroughValue()
+{
+	return popthroughValue;
+}
+
+void HapticInterface::setPopthroughValue(float popthroughValue)
+{
+	this->popthroughValue = popthroughValue;
+}
+
+float HapticInterface::getStaticFriction()
+{
+	return staticFriction;
+}
+
+void HapticInterface::setStaticFriction(float staticFriction)
+{
+	this->staticFriction = staticFriction;
+}
+
+float HapticInterface::getStiffness()
+{
+	return stiffness;
+}
+
+void HapticInterface::setStiffness(float stiffness)
+{
+	this->stiffness = stiffness;
+}
+
+
 void HapticInterface::getDeviceRotation(vec3& rotation)
 {
 	HLdouble aux[3];
@@ -148,6 +205,8 @@ void HapticInterface::initializeHL()
 	hlMakeCurrent(context);
 	hlTouchableFace(HL_FRONT_AND_BACK);
 	hdEnable(HD_FORCE_OUTPUT);
+
+	shapeID = hlGenShapes(1);
 }
 
 bool HapticInterface::isEnabled()
@@ -178,19 +237,20 @@ HDCallbackCode HDCALLBACK HapticInterface::mainHapticCallback(void* data)
 	HDdouble force[3];
 	force[0] = force[1] = force[2] = 0.0;
 	if (hapticData->colDetector->hasCollided()) {
-		//force[2] = 1.0;
-		cout << "position: " << hapticData->position[0] << "\t" << hapticData->position[1]
-			<< "\t" << hapticData->position[2] << endl;
-		vec3 colPoint = hapticData->colDetector->getCollisionPoint();
-		cout << "colPoint: " << colPoint[0] << "\t" << colPoint[1] << "\t" << colPoint[2] << endl << endl;
+		force[2] = 1.0;
+		//cout << "position: " << hapticData->position[0] << "\t" << hapticData->position[1]
+		//	<< "\t" << hapticData->position[2] << endl;
+		//vec3 colPoint = hapticData->colDetector->getCollisionPoint();
+		//cout << "colPoint: " << colPoint[0] << "\t" << colPoint[1] << "\t" << colPoint[2] << endl << endl;
 		hapticData->colPath->addPoint(hapticData->colDetector->
 			getCollisionPoint());
 		hapticData->colPath->addIndex(hapticData->colDetector->
 			getCollisionIndex());
 	}
 	else {
-		if(hapticData->colPath->getCollisionPoints().size() != 0)
+		if (hapticData->colPath->getCollisionPoints().size() != 0) {
 			hapticData->mesh->cut(*(hapticData->colPath));
+		}
 	}
 
 	hdSetDoublev(HD_CURRENT_FORCE, force);
@@ -232,6 +292,21 @@ void HapticInterface::setInterator(Ray* interator)
 	this->interator = interator;
 }
 
+void HapticInterface::setMesh(Mesh* mesh)
+{
+	this->mesh = mesh;
+}
+
+void HapticInterface::setShaderProgram(QOpenGLShaderProgram* program)
+{
+	this->shaderProgram = program;
+}
+
+void HapticInterface::setVAO(QOpenGLVertexArrayObject* vao)
+{
+	this->vao = vao;
+}
+
 void HapticInterface::setForce(const vec3& force)
 {
 	hdBeginFrame(device);
@@ -270,6 +345,7 @@ void HapticInterface::setProjectionMatrix(const mat4& projection)
 
 void HapticInterface::terminateHL()
 {
+	hlDeleteShapes(shapeID, 1);
 	hlMakeCurrent(NULL);
 	hlDeleteContext(context);
 	hdStopScheduler();

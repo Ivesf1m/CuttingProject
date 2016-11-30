@@ -37,6 +37,14 @@ public:
 	const string& getChosenScalpel();
 	void setChosenScalpel(const string& scalpel);
 
+	void addAntissepticChoice(const string& choice);
+	const vector<string>& getCorrectAntissepticChoices();
+	void setCorrectAntissepticChoices(const vector<string>& choices);
+
+	void addScalpelChoice(const string& choice);
+	const vector<string>& getCorrectScalpelChoices();
+	void setCorrectScalpelChoices(const vector<string>& choices);
+
 	const string& getDepthAssessment();
 	void setDepthAssessment(const string& assessment);
 
@@ -89,8 +97,10 @@ private:
 	string treatmentAssessment;
 	string chosenScalpel;
 	string scalpelChoiceAssessment;
+	vector<string> correctScalpelChoices;
 	string chosenAntisseptic;
 	string antissepticChoiceAssessment;
+	vector<string> correctAntissepticChoices;
 	string startPointAssessment;
 	string endPointAssessment;
 	string depthAssessment;

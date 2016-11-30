@@ -63,6 +63,36 @@ void AssessmentManager::setChosenScalpel(const string& scalpel)
 	this->chosenScalpel = scalpel;
 }
 
+void AssessmentManager::addAntissepticChoice(const string& choice)
+{
+	correctAntissepticChoices.push_back(choice);
+}
+
+const vector<string>& AssessmentManager::getCorrectAntissepticChoices()
+{
+	return correctAntissepticChoices;
+}
+
+void AssessmentManager::setCorrectAntissepticChoices(const vector<string>& choices)
+{
+	this->correctAntissepticChoices = choices;
+}
+
+void AssessmentManager::addScalpelChoice(const string& choice)
+{
+	correctScalpelChoices.push_back(choice);
+}
+
+const vector<string>& AssessmentManager::getCorrectScalpelChoices()
+{
+	return correctScalpelChoices;
+}
+
+void AssessmentManager::setCorrectScalpelChoices(const vector<string>& choices)
+{
+	this->correctScalpelChoices = choices;
+}
+
 const string& AssessmentManager::getDepthAssessment()
 {
 	return depthAssessment;
@@ -210,11 +240,13 @@ void AssessmentManager::assess()
 
 void AssessmentManager::assessAntissepticChoice()
 {
-	if (chosenAntisseptic.compare("pvpi") == 0 ||
-		chosenAntisseptic.compare("clorexidina") == 0)
-		antissepticChoiceAssessment = "Antissepctico escolhido corretamente.";
-	else
-		antissepticChoiceAssessment = "Antissepctico escolhido incorretamente.";
+	for (auto antisseptic : correctAntissepticChoices) {
+		if (chosenAntisseptic.compare(antisseptic) == 0) {
+			antissepticChoiceAssessment = "Antissepctico escolhido corretamente.";
+			return;
+		}
+	}
+	antissepticChoiceAssessment = "Antissepctico escolhido incorretamente.";		
 }
 
 void AssessmentManager::assessDepth(vector<float> depths)
@@ -244,11 +276,13 @@ void AssessmentManager::assessEndPoint(const vec3& endPoint)
 
 void AssessmentManager::assessScalpelChoice()
 {
-	if (chosenScalpel.compare("15") == 0 ||
-		chosenScalpel.compare("15c") == 0)
-		scalpelChoiceAssessment = "Bisturi escolhido corretamente.";
-	else
-		scalpelChoiceAssessment = "Bisturi escolhido incorretamente.";
+	for (auto scalpel : correctScalpelChoices) {
+		if (chosenAntisseptic.compare(scalpel) == 0) {
+			scalpelChoiceAssessment = "Bisturi escolhido corretamente.";
+			return;
+		}
+	}
+	scalpelChoiceAssessment = "Bisturi escolhido incorretamente.";
 }
 
 void AssessmentManager::assessStartPoint(const vec3& startPoint)

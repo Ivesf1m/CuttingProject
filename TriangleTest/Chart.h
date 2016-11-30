@@ -43,7 +43,7 @@ public:
 	void setPatientHistory(const wstring& patientHistory);
 
 private:
-	//Function hat generater chart number, date and patientHistory.
+	//Function that generates chart number, date and patientHistory.
 	void setup();
 
 	ChartType type;

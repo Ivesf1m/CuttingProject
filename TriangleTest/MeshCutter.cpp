@@ -407,7 +407,7 @@ bool MeshCutter::getPointsEdge(const vec3& point, unsigned int triIndex,
 	unsigned int& edgeIndex1, unsigned int& edgeIndex2, unsigned int& oppositeIndex)
 {
 	//We will be using vector calculus to solve this problem.
-	//If the point is on one edge, to cross product of the and
+	//If the point is on one edge, the cross product of the edge and
 	//a vector from one of the edge's vertices to the point
 	//will be zero.
 	//Get triangle vertices
@@ -456,6 +456,7 @@ bool MeshCutter::getPointsEdge(const vec3& point, unsigned int triIndex,
 	
 	//None of the 3 edges was a match, so there is an error.
 	std::cerr << "O ponto de entrada ou de saida do corte nao esta contido em nenhuma das arestas." << std::endl;
+	std::cerr << point.x << "\t" << point.y << "\t" << point.z << endl;
 	return false;
 }
 

@@ -41,10 +41,7 @@ class Window : public QOpenGLWindow,
     private:
         QOpenGLBuffer vertexBuffer;
 		QOpenGLBuffer indexBuffer;
-		QOpenGLBuffer interatorVertexBuffer;
-		QOpenGLBuffer interatorIndexBuffer;
         QOpenGLVertexArrayObject vertexArrayObject;
-		QOpenGLVertexArrayObject interatorVAO;
         QOpenGLShaderProgram* shaderProgram;
         Mesh* mesh;
 		Mesh* interatorMesh;
@@ -59,6 +56,7 @@ class Window : public QOpenGLWindow,
 		//Private functions
 
 		//Setup for the model-view-projection matrix.
+		void hapticRendering();
 		void mvpSetup();
         void printVersionInformation();
 		void keyPressEvent(QKeyEvent* keyEvent);

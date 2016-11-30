@@ -173,7 +173,7 @@ const Vertex& Mesh::getVertex(unsigned int index)
 {
     if(index >= vertices.size()){
         cerr << "Invalid vertex index" << endl;
-        exit(1);
+        //exit(1);
     }
     return vertices[index];
 }
@@ -196,7 +196,7 @@ vector<unsigned int>& Mesh::getIndexVector()
 void Mesh::setVertex(unsigned int index, const Vertex& vertex)
 {
     if(index >= vertices.size()){
-        cerr << "Invalid vertex index" << endl;
+        //cerr << "Invalid vertex index" << endl;
         exit(1);
     }
     vertices[index] = vertex;
@@ -260,6 +260,7 @@ void Mesh::findEdgePoint(unsigned int index1, unsigned int index2,
 		else shared2 = t1i3;
 	}
 	else if (t1i1 == t2i3) {
+		shared1 = t1i1;
 		if (t1i2 == t2i2 || t1i2 == t2i1)
 			shared2 = t1i2;
 		else shared2 = t1i3;
@@ -284,7 +285,7 @@ void Mesh::findEdgePoint(unsigned int index1, unsigned int index2,
 	//Right side and d1d2 should be parallel and different
 	//to the zero factor. They should differ by a lambda factor
 	//and that's the solution of the equation.
-	float lambda;
+	float lambda = 0.0f;
 	if (d1d2.x != 0)
 		lambda = rightSide.x / d1d2.x;
 	else if(d1d2.y != 0)
@@ -295,8 +296,6 @@ void Mesh::findEdgePoint(unsigned int index1, unsigned int index2,
 	//If no lambda satisfied the 0 condition, the exitPoint will be
 	//one of the vertices of the triangle.
 	exitPoint = vertices[shared1].position() + lambda * d1;
-	
-
 }
 
 void Mesh::cut(CollisionPath& path)
@@ -330,7 +329,7 @@ void Mesh::cut(CollisionPath& path)
 			//This is the last point
 			internalPoints.push_back(colIndices[i]);
 		}
-		else if (colIndices[i] != colIndices[i + 1]) {			
+		else if (colIndices[i] != colIndices[i + 1]) {	
 			if (!dirFound) {
 				//We need the normal of the first triangle
 				//Edges os the triangle (v2 - v1) and (v3 - v2)
@@ -406,6 +405,14 @@ void Mesh::cut(CollisionPath& path)
 			}
 		}
 	}
+
+	cout << "Novo path: " << endl;
+	cout << "Numero de pontos: " << newPath.getCollisionPoints().size() << endl;
+	for (unsigned int i = 0; i < newPath.getCollisionPoints().size(); ++i) {
+		vec3 point = newPath.getCollisionPoints().at(i);
+		cout << point.x << "\t" << point.y << "\t" << point.z << endl;
+	}
+
 	updateMesh(newPath, internalFirst);
 
 	//Clearing the path

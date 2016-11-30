@@ -97,13 +97,16 @@ void Window::initializeGL()
 	collisionDetector.setMesh(mesh);
 	collisionDetector.setRay(interator);
 
-	//Initializaing haptic device
+	//Initializing haptic device
 	if (hapticsEnabled) {
 		haptic.initializeHL();
 		haptic.updateHapticWorkspace();
 		haptic.setInterator(interator);
 		haptic.setCollisionDetector(&collisionDetector);
 		haptic.setCollisionPath(&path);
+		haptic.setMesh(mesh);
+		haptic.setShaderProgram(shaderProgram);
+		haptic.setVAO(&vertexArrayObject);
 		handle = hdScheduleAsynchronous(HapticInterface::mainHapticCallback,
 			&haptic, HD_MAX_SCHEDULER_PRIORITY);
 		hdStartScheduler();
@@ -123,18 +126,26 @@ void Window::paintGL()
 
 	//Drawing the mesh
 	vertexArrayObject.bind();
-	shaderProgram->setUniformValue("translateFactor", 0.0f, 0.0f, 0.0f);
+	shaderProgram->setUniformValue("translateFactor", -0.5f, -0.5f, 0.0f);
 	shaderProgram->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
 	glDrawElements(GL_TRIANGLES, mesh->getNumberOfIndices(), GL_UNSIGNED_INT, 
 		0);
 	
 
 	//Drawing the interator
-	unsigned int indexOffset = mesh->getNumberOfIndices() * sizeof(unsigned int);
-	shaderProgram->setUniformValue("translateFactor", 1.0f, 1.0f, 0.0f);
+	/* unsigned int indexOffset = mesh->getNumberOfIndices() * sizeof(unsigned int);
+	vec3 interatorTrans = haptic.getPosition();
+	cout << "Interator trans: " << interatorX << "\t" <<
+		interatorY << endl;
+	//shaderProgram->setUniformValue("translateFactor", interatorTrans.x,
+	//	interatorTrans.y, interatorTrans.z);
+	shaderProgram->setUniformValue("translateFactor", interatorX, interatorY, 0.0f);
 	shaderProgram->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
 	glDrawElements(GL_TRIANGLES, interatorMesh->getNumberOfIndices(), 
 		GL_UNSIGNED_INT, reinterpret_cast<void*>(indexOffset));
+
+	//Haptic Rendering
+	hapticRendering();*/
 
 	vertexArrayObject.release();
 	shaderProgram->release();
@@ -180,7 +191,7 @@ void Window::mvpSetup()
 {
 	//Setting up MVP matrix
 	mat4 model = mat4(1.0f);
-	model = glm::scale(model, vec3(0.5, 0.5f, 0.5f));
+	//model = glm::scale(model, vec3(0.5, 0.5f, 0.5f));
 	//model = glm::translate(model, vec3(-1.0f, -1.0f, 0.0f));
 
 	mat4 view;
@@ -226,6 +237,29 @@ void Window::keyPressEvent(QKeyEvent* keyEvent)
 	else
 		mesh->cut(path);*/
 	paintGL();
+}
+
+void Window::hapticRendering()
+{
+	hlBeginFrame();
+
+	hlMaterialf(HL_FRONT_AND_BACK, HL_STIFFNESS, haptic.getStiffness());
+	hlMaterialf(HL_FRONT_AND_BACK, HL_DAMPING, haptic.getDamping());
+	hlMaterialf(HL_FRONT_AND_BACK, HL_STATIC_FRICTION, haptic.getStaticFriction());
+	hlMaterialf(HL_FRONT_AND_BACK, HL_DYNAMIC_FRICTION, haptic.getDynamicFriction());
+	hlMaterialf(HL_FRONT_AND_BACK, HL_POPTHROUGH, haptic.getPopthroughValue());
+
+	hlBeginShape(HL_SHAPE_FEEDBACK_BUFFER, haptic.getShapeID());
+	//vertexArrayObject.bind();
+	shaderProgram->setUniformValue("translateFactor", 0.0f, 0.0f, 0.0f);
+	shaderProgram->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
+	glDrawElements(GL_TRIANGLES, mesh->getNumberOfIndices(), GL_UNSIGNED_INT,
+		0);
+	//vertexArrayObject.release();
+	//shaderProgram->release();
+	hlEndShape();
+
+	hlEndFrame();
 }
 
 void Window::printVersionInformation()

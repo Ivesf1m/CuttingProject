@@ -20,6 +20,11 @@ StartScreen::StartScreen(QWidget * parent)
 	ui.setupUi(this);
 	ui.stackedWidget->setCurrentIndex(START_PAGE);
 
+	manager->addAntissepticChoice("clorexidina");
+	manager->addAntissepticChoice("pvpi");
+	manager->addScalpelChoice("15");
+	manager->addScalpelChoice("15C");
+
 	connect(ui.startButton, SIGNAL(clicked()), this, SLOT(toOptionsPage()));
 	connect(ui.backToStartFrameButton, SIGNAL(clicked()), this,
 		SLOT(toStartPage()));
