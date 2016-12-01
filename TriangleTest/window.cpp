@@ -126,7 +126,7 @@ void Window::paintGL()
 
 	//Drawing the mesh
 	vertexArrayObject.bind();
-	shaderProgram->setUniformValue("translateFactor", -0.5f, -0.5f, 0.0f);
+	shaderProgram->setUniformValue("translateFactor", -1.0f, -1.0f, 0.0f);
 	shaderProgram->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
 	glDrawElements(GL_TRIANGLES, mesh->getNumberOfIndices(), GL_UNSIGNED_INT, 
 		0);

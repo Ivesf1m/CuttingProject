@@ -76,13 +76,15 @@ bool CollisionDetector::akenineMollerCollisionTest(unsigned int index)
 		return false;
 
 	lambda = glm::dot(edge2, q) * inv_det;
-	if (/*lambda > -LAMBDA_TOLERANCE && lambda < LAMBDA_TOLERANCE*/ lambda < 0.0f) {
-		ray->getPointAtLambda(lambda, collisionPoint);
-		collisionIndex = index;
-		return true;
-	}
+	//if (/*lambda > -LAMBDA_TOLERANCE && lambda < LAMBDA_TOLERANCE*/ lambda < 0.0f) {
+	//	ray->getPointAtLambda(lambda, collisionPoint);
+	//	collisionIndex = index;
+	//	return true;
+	//}
 
-	return false;
+	ray->getPointAtLambda(lambda, collisionPoint);
+	collisionIndex = index;
+	return true;
 }
 
 void CollisionDetector::testCollision()

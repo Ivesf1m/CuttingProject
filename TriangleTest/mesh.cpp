@@ -2,9 +2,11 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <map>
 
 using std::ifstream;
 using std::stringstream;
+using std::map;
 
 Mesh::Mesh()
      : numberOfVertices(0), numberOfBytes(0), numberOfIndices(0)
@@ -278,6 +280,8 @@ void Mesh::findEdgePoint(unsigned int index1, unsigned int index2,
 	//lambda1 * (d1 x d2) = (O2 - O1) x d2
 	vec3 d1 = glm::normalize(vertices[shared2].position() - 
 		vertices[shared1].position());
+	vec3 v1 = vertices[shared1].position();
+	vec3 v2 = vertices[shared2].position();
 	vec3 d1d2 = glm::cross(d1, dir);
 	vec3 rightSide = colPoint - vertices[shared1].position();
 	rightSide = glm::cross(rightSide , dir);
@@ -321,8 +325,91 @@ void Mesh::cut(CollisionPath& path)
 	//We do this by selecting one internal point for each triangle
 	//and figuring out the exit Point (which, in turn, will be the next
 	//entrance point).
+	vector< vector<vec3> > internalPointsPerIndex;
+	internalPointsPerIndex.reserve(indices.size());
+	for (unsigned int i = 0; i < indices.size(); ++i)
+		internalPointsPerIndex.push_back(vector<vec3>());
+
+	//Grouping internal points from the same triangles.
+	vector<unsigned int> indexOrder;
+	indexOrder.push_back(colIndices[0]);
+	unsigned int currentIndex = colIndices[0];
+	for (unsigned int i = 0; i < colIndices.size(); ++i) {
+		internalPointsPerIndex[colIndices[i]].push_back(colPoints[i]);
+		if (currentIndex != colIndices[i]) {
+			currentIndex = colIndices[i];
+			indexOrder.push_back(currentIndex);
+		}
+	}
+
+	cout << "Index Order" << endl;
+	for (int i = 0; i < indexOrder.size(); ++i) {
+		cout << indexOrder[i] << endl;
+	}
+
+	cout << "Internal Points per Index" << endl;
+	for (int i = 0; i < internalPointsPerIndex.size(); ++i) {
+		cout << internalPointsPerIndex[i].size() << endl;		
+	}
+
+	//Calculating medians (the new unique internal points for each triangle)
+	map<unsigned int, vec3> medianList;
+	for (unsigned int i = 0; i < internalPointsPerIndex.size(); ++i) {
+		vec3 median;
+		size_t vecSize = internalPointsPerIndex[i].size();
+		if (vecSize > 0) {
+			if (vecSize % 2)
+				median = internalPointsPerIndex[i][vecSize / 2];
+			else
+				median = (internalPointsPerIndex[i][vecSize / 2] + 
+				internalPointsPerIndex[i][vecSize / 2 - 1]) / 2.0f;
+			medianList[i] = median;
+		}
+	}
+
+	cout << "Medians" << endl;
+	for (auto median : medianList) {
+		vec3 v = median.second;
+		cout << "Indice " << median.first << ": " << v.x << "\t" << v.y << "\t" << v.z << endl;
+	}
+	
 	CollisionPath newPath;
-	bool dirFound = false;
+	for (unsigned int i = 0; i < indexOrder.size(); ++i) {
+		newPath.addIndex(indexOrder[i]);
+		newPath.addPoint(medianList[indexOrder[i]]);
+		
+		if (i + 1 < indexOrder.size()) {
+			//We need to find an exit point
+
+			//Calculating the direction of the cut
+			//Edges of the triangle (v2 - v1) and (v3 - v2)
+			vec3 e1 = vertices[indices[indexOrder[i] + 1]].position()
+				- vertices[indices[indexOrder[i]]].position();
+			vec3 e2 = vertices[indices[indexOrder[i] + 2]].position()
+				- vertices[indices[indexOrder[i] + 1]].position();
+			//Normalized normal vector
+			vec3 normal = glm::normalize(glm::cross(e1, e2));
+			//Vector from the first collisionPoint to the second
+			vec3 aux = medianList[indexOrder[i+1]] - medianList[indexOrder[i]];
+			//Now we project this vector onto the first triangle
+			//and use it as the direction of the cut.
+			//We don't need to divide the dot product by the length
+			//of the normal, because it is normalized.
+			direction = aux - (glm::dot(aux, normal) * normal);
+			direction = glm::normalize(direction);
+
+			findEdgePoint(indexOrder[i], indexOrder[i + 1], medianList[indexOrder[i]],
+				direction, exitPoint);
+
+			newPath.addIndex(indexOrder[i]);
+			newPath.addPoint(exitPoint);
+		}
+	}
+
+	internalFirst = true;
+
+
+	/*bool dirFound = false;
 	bool otherInternal = false;
 	for (unsigned int i = 0; i < colIndices.size(); ++i) {
 		if (i + 1 >= colIndices.size()) {
@@ -332,7 +419,7 @@ void Mesh::cut(CollisionPath& path)
 		else if (colIndices[i] != colIndices[i + 1]) {	
 			if (!dirFound) {
 				//We need the normal of the first triangle
-				//Edges os the triangle (v2 - v1) and (v3 - v2)
+				//Edges of the triangle (v2 - v1) and (v3 - v2)
 				vec3 e1 = vertices[indices[colIndices[i] + 1]].position()
 					- vertices[indices[colIndices[i]]].position();
 				vec3 e2 = vertices[indices[colIndices[i] + 2]].position()
@@ -343,7 +430,7 @@ void Mesh::cut(CollisionPath& path)
 				vec3 aux = colPoints[i + 1] - colPoints[i];
 				//Now we project this vector onto the first triangle
 				//and use it as the direction of the cut.
-				//We don't need to divide te dot product by the length
+				//We don't need to divide the dot product by the length
 				//of the normal, because it is normalized.
 				direction = aux - (glm::dot(aux, normal) * normal);
 				direction = glm::normalize(direction);
@@ -404,7 +491,7 @@ void Mesh::cut(CollisionPath& path)
 				newPath.addIndex(internalPoints[i]);
 			}
 		}
-	}
+	}*/
 
 	cout << "Novo path: " << endl;
 	cout << "Numero de pontos: " << newPath.getCollisionPoints().size() << endl;

@@ -1,10 +1,13 @@
 #include "MeshCutter.h"
+#include <algorithm>
 #include <iostream>
+#include <utility>
 
 #define EPSILON 1e-5
 
 using std::endl;
 using std::cout;
+using std::pair;
 
 MeshCutter::MeshCutter(CollisionPath * path, vector<Vertex>* vertices,
 	vector<unsigned int>* indices, bool internalFirst)
@@ -100,15 +103,12 @@ void MeshCutter::cutDifferentEdges(const vec3& entrance, const vec3& internal,
 	Vertex v3 = vertices->at(opposite1);
 
 	//Get triangle vertices (by exit parameters)
-	Vertex v4 = vertices->at(edge1);
-	Vertex v5 = vertices->at(edge2);
+	Vertex v4 = vertices->at(edge3);
+	Vertex v5 = vertices->at(edge4);
 	Vertex v6 = vertices->at(opposite1);
 
-	//We now create the vertex for the internal point.
-	Vertex internalPoint(internal, v1.color());
-
-	//Creating intermediate points. We need 4, 2 for entrance,
-	//2 for exit.
+	//Creating intermediate points. We need 6, 2 for entrance,
+	//2 for exit and 2 internally.
 	//For the entrance:
 	vec3 intermediate1, intermediate2;
 	vec3 entranceEdge = v2.position() - v1.position();
@@ -125,34 +125,60 @@ void MeshCutter::cutDifferentEdges(const vec3& entrance, const vec3& internal,
 	intermediate3 = exit - (length / 50.0f) * exitEdge;
 	intermediate4 = exit + (length / 50.0f) * exitEdge;
 
+	//Internal points
+	vec3 intermediate5, intermediate6;
+	//We need the normal vector
+	vec3 n = glm::normalize(glm::cross(v2.position() - v1.position(),
+		v3.position() - v2.position()));
+	vec3 dir = glm::normalize(internal - entrance);
+	vec3 openingDirection = glm::cross(dir, n);
+	//Reusing the previous length.
+	intermediate5 = internal - (length / 50.0f) * openingDirection;
+	intermediate6 = internal + (length / 50.0f) * openingDirection;
+
 	//Adding all the new points.
 	Vertex new1(intermediate1, v1.color());
 	Vertex new2(intermediate2, v2.color());
 	Vertex new3(intermediate3, v3.color());
 	Vertex new4(intermediate4, v4.color());
+	Vertex new5(intermediate5, v5.color());
+	Vertex new6(intermediate6, v6.color());
 
-	unsigned int internalIndex, new1Index, new2Index;
-	vertices->push_back(internalPoint);
-	internalIndex = static_cast<unsigned int>(vertices->size() - 1);
+	unsigned int new1Index, new2Index, new3Index, new4Index, new5Index, new6Index;
 	vertices->push_back(new1);
-	new1Index = internalIndex + 1;
+	new1Index = static_cast<unsigned int>(vertices->size() - 1);
 	vertices->push_back(new2);
 	new2Index = new1Index + 1;
+	//The new exit vertices are the currentIntermediates
 	vertices->push_back(new3);
-	currentIntermediate1 = new2Index + 1;
+	currentIntermediate1 = new3Index = new2Index + 1;
 	vertices->push_back(new4);
-	currentIntermediate2 = currentIntermediate1 + 1;
+	currentIntermediate2 = new4Index = new3Index + 1;
+	vertices->push_back(new5);
+	new5Index = new4Index + 1;
+	vertices->push_back(new6);
+	new6Index = new5Index + 1;
+
+	cout << intermediate1.x << "\t" << intermediate1.y << "\t" << intermediate1.z << endl;
+	cout << intermediate2.x << "\t" << intermediate2.y << "\t" << intermediate2.z << endl;
+	cout << intermediate3.x << "\t" << intermediate3.y << "\t" << intermediate3.z << endl;
+	cout << intermediate4.x << "\t" << intermediate4.y << "\t" << intermediate4.z << endl;
+	cout << intermediate5.x << "\t" << intermediate5.y << "\t" << intermediate5.z << endl;
+	cout << intermediate6.x << "\t" << intermediate6.y << "\t" << intermediate6.z << endl;
 
 	//Now we need to check which vertex from each of the new pairs
 	//is closer to the shared vertex.
 	vec3 shared = vertices->at(sharedIndex).position();
 
-	float d1, d2, d3, d4;
+	float d1, d2, d3, d4, d5, d6;
 	unsigned int closerPair1, furtherPair1, closerPair2, furtherPair2;
+	unsigned int closerPair3, furtherPair3;
 	d1 = glm::distance(intermediate1, shared);
 	d2 = glm::distance(intermediate2, shared);
 	d3 = glm::distance(intermediate3, shared);
 	d4 = glm::distance(intermediate4, shared);
+	d5 = glm::distance(intermediate5, shared);
+	d6 = glm::distance(intermediate6, shared);
 
 	//Pair 1
 	if (d1 < d2) {
@@ -166,38 +192,48 @@ void MeshCutter::cutDifferentEdges(const vec3& entrance, const vec3& internal,
 
 	//Pair 2
 	if (d3 < d4) {
-		closerPair2 = currentIntermediate1;
-		furtherPair2 = currentIntermediate2;
+		closerPair2 = new3Index;
+		furtherPair2 = new4Index;
 	}
 	else {
-		closerPair2 = currentIntermediate2;
-		furtherPair2 = currentIntermediate1;
+		closerPair2 = new4Index;
+		furtherPair2 = new3Index;
+	}
+
+	//Pair 3
+	if (d5 < d5) {
+		closerPair3 = new5Index;
+		furtherPair3 = new6Index;
+	}
+	else {
+		closerPair3 = new6Index;
+		furtherPair3 = new5Index;
 	}
 
 	//We now create the new triangles
 	//First triangle (overwrite)
 	(*indices)[triIndex] = sharedIndex;
-	(*indices)[triIndex + 1] = internalIndex;
+	(*indices)[triIndex + 1] = closerPair3;
 	(*indices)[triIndex + 2] = closerPair1;
 
 	//Second triangle
 	indices->push_back(sharedIndex);
 	indices->push_back(closerPair2);
-	indices->push_back(internalIndex);
+	indices->push_back(closerPair3);
 
 	//Third triangle
 	indices->push_back(furtherPair2);
 	indices->push_back(opposite1);
-	indices->push_back(internalIndex);
+	indices->push_back(furtherPair3);
 
 	//Fourth triangle
-	indices->push_back(internalIndex);
+	indices->push_back(furtherPair3);
 	indices->push_back(opposite1);
 	indices->push_back(opposite2);
 
 	//Fifth triangle
 	indices->push_back(furtherPair1);
-	indices->push_back(internalIndex);
+	indices->push_back(furtherPair3);
 	indices->push_back(opposite2);
 
 }
@@ -329,57 +365,137 @@ void MeshCutter::cutSameEdge(const vec3& entrance, const vec3& internal,
 	Vertex v2 = vertices->at(edge2);
 	Vertex v3 = vertices->at(opposite);
 
-	//We create a new vertex for the entrance, internal and exit points
-	Vertex internalPoint(internal, v1.color());
-	Vertex entrancePoint(entrance, v1.color());
-	Vertex exitPoint(exit, v1.color());
+	//Creating intermediate points. We need 6, 2 for entrance,
+	//2 for exit and 2 internally.
+	//For the entrance:
+	vec3 intermediate1, intermediate2;
+	vec3 sharedEdge = v2.position() - v1.position();
+	float length = glm::length(sharedEdge);
+	sharedEdge = glm::normalize(sharedEdge);
+	intermediate1 = entrance - (length / 50.0f) * sharedEdge;
+	intermediate2 = entrance + (length / 50.0f) * sharedEdge;
 
-	//We'll have four new triangles. No new vertices need to
-	//be created here, we just add internal, entrance and exit.
-	unsigned int internalIndex, entranceIndex, exitIndex;
-	vertices->push_back(internalPoint);
-	internalIndex = static_cast<unsigned int>(vertices->size() - 1);
-	vertices->push_back(entrancePoint);
-	entranceIndex = internalIndex + 1;
-	vertices->push_back(exitPoint);
-	exitIndex = entranceIndex + 1;
+	//For the exit:
+	vec3 intermediate3, intermediate4;
+	intermediate3 = exit - (length / 50.0f) * sharedEdge;
+	intermediate4 = exit + (length / 50.0f) * sharedEdge;
+
+	//Internal points
+	vec3 intermediate5, intermediate6;
+	//We need the normal vector
+	vec3 n = glm::normalize(glm::cross(v2.position() - v1.position(),
+		v3.position() - v2.position()));
+	vec3 dir = glm::normalize(internal - entrance);
+	vec3 openingDirection = glm::cross(dir, n);
+	//Reusing the previous length.
+	intermediate5 = internal - (length / 50.0f) * openingDirection;
+	intermediate6 = internal + (length / 50.0f) * openingDirection;
+
+	//Adding all the new points.
+	Vertex new1(intermediate1, v1.color());
+	Vertex new2(intermediate2, v2.color());
+	Vertex new3(intermediate3, v3.color());
+	Vertex new4(intermediate4, v1.color());
+	Vertex new5(intermediate5, v2.color());
+	Vertex new6(intermediate6, v3.color());
+
+	unsigned int new1Index, new2Index, new3Index, new4Index, new5Index, new6Index;
+	vertices->push_back(new1);
+	new1Index = static_cast<unsigned int>(vertices->size() - 1);
+	vertices->push_back(new2);
+	new2Index = new1Index + 1;
+	//The new exit vertices are the currentIntermediates
+	vertices->push_back(new3);
+	currentIntermediate1 = new3Index = new2Index + 1;
+	vertices->push_back(new4);
+	currentIntermediate2 = new4Index = new3Index + 1;
+	vertices->push_back(new5);
+	new5Index = new4Index + 1;
+	vertices->push_back(new6);
+	new6Index = new5Index + 1;
 
 	//Now we need to find out to which vertex the entrance is closer.
 	unsigned int closerToEntrance, closerToExit;
-	float d1 = glm::distance(entrance, v1.position());
-	float d2 = glm::distance(entrance, v2.position());
+	float dv1 = glm::distance(entrance, v1.position());
+	float dv2 = glm::distance(entrance, v2.position());
 
-	if (d1 < d2) {
+	vec3 closerPoint;
+
+	if (dv1 < dv2) {
 		closerToEntrance = edge1;
 		closerToExit = edge2;
+		closerPoint = v1.position();
 	}
 	else {
 		closerToEntrance = edge2;
 		closerToExit = edge1;
+		closerPoint = v2.position();
+	}
+
+	float d1 = glm::distance(closerPoint, intermediate1);
+	float d2 = glm::distance(closerPoint, intermediate2);
+	float d3 = glm::distance(closerPoint, intermediate3);
+	float d4 = glm::distance(closerPoint, intermediate4);
+
+	//Sorting these points
+	pair<unsigned int, float> pair1(new1Index, d1);
+	pair<unsigned int, float> pair2(new2Index, d2);
+	pair<unsigned int, float> pair3(new3Index, d3);
+	pair<unsigned int, float> pair4(new4Index, d4);
+	vector< pair<unsigned int, float> > pairVec;
+	pairVec.push_back(pair1);
+	pairVec.push_back(pair2);
+	pairVec.push_back(pair3);
+	pairVec.push_back(pair4);
+
+	std::sort(pairVec.begin(), pairVec.end(), [](auto& left, auto& right) {
+		return left.second < right.second;
+	});
+
+	//Now we find out which of the new internal points is closer to the edge
+	vec3 p1 = v1.position();
+	//Remember sharedEdge is the normalized direction of the edge, from v1 to v2.
+	vec3 p1i5 = intermediate5 - p1;
+	vec3 p1i6 = intermediate6 - p1;
+	float dist1 = glm::length(p1i5 - (glm::dot(p1i5, sharedEdge) * sharedEdge));
+	float dist2 = glm::length(p1i6 - (glm::dot(p1i6, sharedEdge) * sharedEdge));
+	unsigned int closerToEdge, furtherFromEdge;
+	if (dist1 < dist2) {
+		closerToEdge = new5Index;
+		furtherFromEdge = new6Index;
+	}
+	else {
+		closerToEdge = new6Index;
+		furtherFromEdge = new5Index;
 	}
 
 	//We now need to overwrite the previous triangle
-	//and add the 3 other new ones.
+	//and add the 4 other new ones.
 
 	//First triangle (overwrite)
-	(*indices)[triIndex] = internalIndex;
-	(*indices)[triIndex + 1] = closerToEntrance;
-	(*indices)[triIndex + 2] = entranceIndex;
+	(*indices)[triIndex] = pairVec[1].first;
+	(*indices)[triIndex + 1] = closerToEdge;
+	(*indices)[triIndex + 2] = pairVec[2].first;
 
 	//Second triangle
-	indices->push_back(internalIndex);
-	indices->push_back(exitIndex);
-	indices->push_back(closerToExit);
+	indices->push_back(closerToEntrance);
+	indices->push_back(pairVec[0].first);
+	indices->push_back(furtherFromEdge);
 
 	//Third triangle
-	indices->push_back(internalIndex);
-	indices->push_back(closerToExit);
+	indices->push_back(closerToEntrance);
+	indices->push_back(furtherFromEdge);
 	indices->push_back(opposite);
 
 	//Fourth triangle
-	indices->push_back(closerToEntrance);
-	indices->push_back(internalIndex);
+	indices->push_back(pairVec[3].first);
+	indices->push_back(closerToExit);
+	indices->push_back(furtherFromEdge);
+
+	//Fifth triangle
+	indices->push_back(closerToExit);
 	indices->push_back(opposite);
+	indices->push_back(furtherFromEdge);
 }
 
 void MeshCutter::regularCut(const vec3& entrance, const vec3& internal,

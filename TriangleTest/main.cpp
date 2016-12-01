@@ -23,15 +23,26 @@ int main(int argc, char* argv[])
 	mesh.addTriangularFace(0, 1, 2);*/
 
 	//Grid for test
-	Grid grid(1);
-	/*CollisionPath testPath;
-	vec3 p1(0.3f, 0.1f, 1.0f);
-	vec3 p2(0.8f, 0.9f, 1.0f);
+	Grid grid(2);
+	CollisionPath testPath;
+	vec3 p1(0.3f, 0.2f, 0.0f);
+	vec3 p2(1.3f, 0.2f, 0.0f);
 	testPath.addPoint(p1);
-	testPath.addPoint(p2);
 	testPath.addIndex(0);
-	testPath.addIndex(3);
-	grid.cut(testPath);*/
+	vec3 dir = glm::normalize(p2 - p1);
+	for (int i = 1; i < 100; ++i) {
+		vec3 point = p1 + (i / 100.0f) * dir;
+		testPath.addPoint(point);
+		if (point.x <= 0.8f)
+			testPath.addIndex(0);
+		else if (point.x > 1.0f)
+			testPath.addIndex(12);
+		else
+			testPath.addIndex(3);
+	}
+	testPath.addPoint(p2);	
+	testPath.addIndex(12);
+	grid.cut(testPath);
 
 	//Loading mesh from file
 	Mesh mesh;
@@ -44,7 +55,7 @@ int main(int argc, char* argv[])
 	StartScreen sscreen;
 	sscreen.show();*/
 
-    Window window(true);
+    Window window(false);
     window.setMesh(&grid);
 	window.setInterator(&interatorMesh);
     window.setFormat(format);
