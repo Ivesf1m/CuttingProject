@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 
 	//Grid for test
 	Grid grid(2);
-	CollisionPath testPath;
+	/*CollisionPath testPath;
 	vec3 p1(0.3f, 0.2f, 0.0f);
 	vec3 p2(1.3f, 0.2f, 0.0f);
 	testPath.addPoint(p1);
@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
 	}
 	testPath.addPoint(p2);	
 	testPath.addIndex(12);
-	grid.cut(testPath);
+	grid.cut(testPath);*/
 
 	//Loading mesh from file
 	Mesh mesh;
@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
 	StartScreen sscreen;
 	sscreen.show();*/
 
-    Window window(false);
+    Window window(true);
     window.setMesh(&grid);
 	window.setInterator(&interatorMesh);
     window.setFormat(format);

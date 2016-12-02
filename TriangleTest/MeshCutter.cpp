@@ -159,12 +159,12 @@ void MeshCutter::cutDifferentEdges(const vec3& entrance, const vec3& internal,
 	vertices->push_back(new6);
 	new6Index = new5Index + 1;
 
-	cout << intermediate1.x << "\t" << intermediate1.y << "\t" << intermediate1.z << endl;
+	/*cout << intermediate1.x << "\t" << intermediate1.y << "\t" << intermediate1.z << endl;
 	cout << intermediate2.x << "\t" << intermediate2.y << "\t" << intermediate2.z << endl;
 	cout << intermediate3.x << "\t" << intermediate3.y << "\t" << intermediate3.z << endl;
 	cout << intermediate4.x << "\t" << intermediate4.y << "\t" << intermediate4.z << endl;
 	cout << intermediate5.x << "\t" << intermediate5.y << "\t" << intermediate5.z << endl;
-	cout << intermediate6.x << "\t" << intermediate6.y << "\t" << intermediate6.z << endl;
+	cout << intermediate6.x << "\t" << intermediate6.y << "\t" << intermediate6.z << endl;*/
 
 	//Now we need to check which vertex from each of the new pairs
 	//is closer to the shared vertex.
@@ -506,8 +506,14 @@ void MeshCutter::regularCut(const vec3& entrance, const vec3& internal,
 	unsigned int edge1, edge2, opposite;
 	bool edgeFound = getPointsEdge(entrance, triIndex, edge1, edge2, opposite);
 
+	if (!edgeFound)
+		return;
+
 	unsigned int edge3, edge4, opposite2;
 	edgeFound = getPointsEdge(exit, triIndex, edge3, edge4, opposite2);
+
+	if (!edgeFound)
+		return;
 
 	//They are on the same edge if they have the same opposite vertex.
 	if (opposite == opposite2)

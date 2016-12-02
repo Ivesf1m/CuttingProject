@@ -347,11 +347,6 @@ void Mesh::cut(CollisionPath& path)
 		cout << indexOrder[i] << endl;
 	}
 
-	cout << "Internal Points per Index" << endl;
-	for (int i = 0; i < internalPointsPerIndex.size(); ++i) {
-		cout << internalPointsPerIndex[i].size() << endl;		
-	}
-
 	//Calculating medians (the new unique internal points for each triangle)
 	map<unsigned int, vec3> medianList;
 	for (unsigned int i = 0; i < internalPointsPerIndex.size(); ++i) {
@@ -499,7 +494,7 @@ void Mesh::cut(CollisionPath& path)
 		vec3 point = newPath.getCollisionPoints().at(i);
 		cout << point.x << "\t" << point.y << "\t" << point.z << endl;
 	}
-
+	cout << endl;
 	updateMesh(newPath, internalFirst);
 
 	//Clearing the path

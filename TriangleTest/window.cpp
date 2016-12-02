@@ -130,6 +130,7 @@ void Window::paintGL()
 	shaderProgram->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
 	glDrawElements(GL_TRIANGLES, mesh->getNumberOfIndices(), GL_UNSIGNED_INT, 
 		0);
+	shaderProgram->release();
 	
 
 	//Drawing the interator
@@ -142,13 +143,12 @@ void Window::paintGL()
 	shaderProgram->setUniformValue("translateFactor", interatorX, interatorY, 0.0f);
 	shaderProgram->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
 	glDrawElements(GL_TRIANGLES, interatorMesh->getNumberOfIndices(), 
-		GL_UNSIGNED_INT, reinterpret_cast<void*>(indexOffset));
+		GL_UNSIGNED_INT, reinterpret_cast<void*>(indexOffset));*/
 
 	//Haptic Rendering
-	hapticRendering();*/
+	hapticRendering();
 
 	vertexArrayObject.release();
-	shaderProgram->release();
 }
 
 void Window::teardownGL()
@@ -251,12 +251,13 @@ void Window::hapticRendering()
 
 	hlBeginShape(HL_SHAPE_FEEDBACK_BUFFER, haptic.getShapeID());
 	//vertexArrayObject.bind();
-	shaderProgram->setUniformValue("translateFactor", 0.0f, 0.0f, 0.0f);
+	shaderProgram->bind();
+	shaderProgram->setUniformValue("translateFactor", -1.0f, -1.0f, 0.0f);
 	shaderProgram->setUniformValue("mvp", QMatrix4x4(glm::value_ptr(mvp)));
 	glDrawElements(GL_TRIANGLES, mesh->getNumberOfIndices(), GL_UNSIGNED_INT,
 		0);
 	//vertexArrayObject.release();
-	//shaderProgram->release();
+	shaderProgram->release();
 	hlEndShape();
 
 	hlEndFrame();
