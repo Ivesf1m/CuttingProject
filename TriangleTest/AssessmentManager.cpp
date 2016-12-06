@@ -317,6 +317,7 @@ void AssessmentManager::asssesTrajectory(CollisionPath& path)
 			float cosine = glm::dot(firstVector, secondVector);
 			if (cosine < std::cos(PI / 6.0f))
 				goodDirection = false;
+			firstVector = secondVector;
 		}
 	}
 
